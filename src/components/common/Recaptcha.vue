@@ -1,9 +1,9 @@
 <template>
     <div>
         <p
-            class="grey--text my-2"
-            v-html="$t('Common.hcaptchaLegalNotice')"
             v-if="displayLegalNotice"
+            class="grey--text my-2"
+            v-html="$t('Common.RecaptchaLegalNotice')"
         />
         <div ref="root" />
     </div>
@@ -18,8 +18,9 @@ import { DEBUG } from '@/utils/debug'
 
 @Component({})
 export default class Recaptcha extends Vue implements IRecaptcha {
-    static api: any = null
     @Prop({ type: Boolean, default: true }) displayLegalNotice!: boolean
+
+    static api: any = null
     running = false
     dirty = false
     cached: string | null = null
@@ -92,7 +93,7 @@ export default class Recaptcha extends Vue implements IRecaptcha {
             const callback = '__callback' + Math.random().toString().slice(2)
             const script = document.createElement('script')
             script.src =
-                `https://hcaptcha.com/1/api.js?onload=${callback}&render=explicit&hl=${this.$t('Meta.LangCode')}`
+                `https://www.google.com/recaptcha/api.js?onload=${callback}&render=explicit&hl=${this.$t('Meta.LangCode')}`
             script.async = true
             script.defer = true;
             (window as any)[callback] = function (): void {

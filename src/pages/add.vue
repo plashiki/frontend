@@ -71,7 +71,7 @@
         </v-card>
         <div
             class="text--secondary caption mt-2"
-            v-html="$t('Common.hcaptchaLegalNotice')"
+            v-html="$t('Common.RecaptchaLegalNotice')"
         />
     </div>
 </template>

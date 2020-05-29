@@ -51,7 +51,9 @@ export default class ConfigModule extends VuexModule {
 
     // filtering in viewer. they do not interfere things above and do not affect sorting.
     languageFilters: Record<string, true | undefined> = {}
-    playersFilters: Record<string, true | undefined> = {}
+    playersFilters: Record<string, true | undefined> = {
+        'smotret-anime.online': true
+    }
 
     // idk how to call it. basically key-value stuff
     components: Record<string, any> = {}

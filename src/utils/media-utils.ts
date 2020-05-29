@@ -10,6 +10,9 @@ export function getMediaPreferredName (media?: { name: Media['name'] }): string 
     if (media.name[configStore.preferredNameLanguage]) {
         return media.name[configStore.preferredNameLanguage]!
     }
+    if (configStore.preferredNameLanguage === 'japanese' && media.name.romaji) {
+        return media.name.romaji
+    }
     if (i18n.locale === 'ru' && media.name.russian) {
         return media.name.russian
     }
@@ -23,6 +26,13 @@ export function getMediaSecondaryName (media?: { name: Media['name'] }): string 
             return media.name.russian
         }
         return media.name.english ?? media.name.japanese
+    }
+    if (configStore.preferredNameLanguage === 'japanese') {
+        if (media.name.romaji) {
+            return media.name.romaji
+        } else {
+            return media.name.english ?? media.name.russian
+        }
     }
     if (!media.name[configStore.preferredNameLanguage] && i18n.locale === 'ru' && media.name.russian) {
         return media.name.romaji

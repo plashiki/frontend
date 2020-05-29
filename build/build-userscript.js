@@ -7,10 +7,6 @@ const { config } = require('dotenv')
 const sass = require('sass')
 const vm = require('vm')
 
-config({
-    path: path.join(__dirname, '../.env.local'),
-})
-
 const header = `
 // ==UserScript==
 // @name            PlaShiki
@@ -51,6 +47,16 @@ function buildUserscript () {
         return
     }
     const us = sandbox.__RESULT__
+
+    if (!us.__debug) {
+        config({
+            path: path.join(__dirname, '../.env.production.local'),
+        })
+    }
+
+    config({
+        path: path.join(__dirname, '../.env.local'),
+    })
 
     let text = header
         .replace('%VERSION%', us.__version)

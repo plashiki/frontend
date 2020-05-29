@@ -4,7 +4,7 @@ import { merge } from '@/utils/object-utils'
 import { Galo4ka, User } from '@/types/user'
 import { getUserGalo4ki } from '@/api/user'
 
-@VLocalModule()
+@VLocalModule('AuthModule')
 export default class AuthModule extends VuexModule {
     user: User | null = null
     firebaseToken: string | null = null

@@ -3,7 +3,7 @@ import { VModule } from '@/utils/vuex-sugar'
 import { merge } from '@/utils/object-utils'
 import { DEBUG } from '@/utils/debug'
 
-@VModule()
+@VModule('AppModule')
 export default class AppModule extends VuexModule {
     unsavedData = false
     pageTitle: string | null = null

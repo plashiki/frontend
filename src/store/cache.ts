@@ -3,7 +3,7 @@ import { SharedMutation, VModule } from '@/utils/vuex-sugar'
 import { Media, MediaId, MediaStatus, MediaType } from '@/types/media'
 
 // yes i do know about DRY but bruh
-@VModule()
+@VModule('CacheModule')
 export default class CacheModule extends VuexModule {
     media: Record<string, [Media, number]> = {}
     mediaNames: Record<string, [Media['name'], number]> = {}

@@ -12,7 +12,7 @@ import { defaultProvider, shikimori } from '@/config'
 
 const idb = new IndexedDBClient()
 
-@VLocalModule()
+@VLocalModule('ConfigModule')
 export default class ConfigModule extends VuexModule {
     // ui
     dark = false

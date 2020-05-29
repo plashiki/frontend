@@ -48,7 +48,7 @@ export interface VModuleOptions extends StaticModuleOptions {
     local?: boolean
 }
 
-export function VModule (options: VModuleOptions | string = {}): ClassDecorator {
+export function VModule (options: VModuleOptions | string): ClassDecorator {
     return function (constructor: any): void {
         if (typeof options === 'string') {
             options = {
@@ -56,7 +56,7 @@ export function VModule (options: VModuleOptions | string = {}): ClassDecorator 
             }
         }
 
-        if (!options.name) options.name = constructor.name
+        if (!options.name) throw new Error('name is not provided!')
 
         const modName = options.name!
 

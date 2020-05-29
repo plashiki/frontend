@@ -4,7 +4,7 @@ import { storedNotificationsLimit } from '@/config'
 import { indexOfBy, merge } from '@/utils/object-utils'
 import { ApiNotification } from '@/types/notification'
 
-@VLocalModule()
+@VLocalModule('NotificationsModule')
 export default class NotificationsModule extends VuexModule {
     items: ApiNotification[] = []
     lastSyncTime = 0

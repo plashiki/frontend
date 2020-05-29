@@ -1,29 +1,20 @@
-# plashiki-frontend
+# PlaShiki frontend
+Written mostly in TypeScript, uses Vue.
 
-## Project setup
+## Build
 ```
-yarn install
-```
+yarn
+cp .env.example .env.local
+# fill .env.local
 
-### Compiles and hot-reloads for development
-```
 yarn serve
-```
-
-### Compiles and minifies for production
-```
+# or
 yarn build
 ```
 
-### Run your unit tests
-```
-yarn test:unit
-```
+## Contributing
+Contributions are always welcome! List of tasks can be
+found here: https://trello.com/b/3YDquDRn/plashiki.
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+When naming commits, please use
+[Angular commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)

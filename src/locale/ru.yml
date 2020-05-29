@@ -1,0 +1,738 @@
+Meta:
+  LangName: Русский
+  LangCode: ru
+  LangCodeFull: ru_RU
+  PluralStrategy: Slavic
+  # (N) заменить на $n
+  # - (0) столов
+  # - (1) стол
+  # - (2) стола
+  # - (5) столов
+Pages:
+  Login:
+    Name: Вход
+    LoginVia: Войти через $name
+    Login: Войти
+    Logout: Выйти
+    AcceptTos: Продолжая, вы соглашаетесь с <a target="_blank" href="/tos">Пользовательским соглашением PlaShiki</a>
+  Error:
+    Name: Ошибка $code
+    Occurred: Произошла ошибка
+    Codes:
+      404: Страница не найдена
+      403: Доступ запрещен
+      500: Ошибка отрисовки
+      600: Неизвестная ошибка
+    FullCodes:
+      500: >
+        Во время отрисовки этой страницы произошла фатальная ошибка, из-за которой сайт не может работать нормально.
+        Обычно это связано с багом на стороне сайта. <br/>
+        Если проблема повторяется, обратитесь в поддержку. <br/><br/>
+      404: По этому адресу никакой страницы нет.
+      403: К сожалению, у вас нет доступа к этой странице. Если вы считаете это ошибкой, обратитесь в поддержку.
+      400: API отдал что-то совсем непонятное.
+      600: Что-то пошло очень сильно не так.
+    Restart: Перезапустить
+  Support:
+    Name: Поддержка
+  Legal:
+    Name: Правообладателям
+    Text: >
+      <p>
+          Данный сайт не хранит медиафайлы, а лишь предоставляет обертку для базы данных с
+          ссылками на них.<br/>
+          Все видео, доступные на этом сайте, по факту размещены на внешних веб-сайтах третьих лиц,
+          за содержание которых мы не несем ответственности.
+          Текстовое и информационное содержимое также получается из внешних источников (а именно:
+          <a href="//shikimori.one" target="_blank">Шикимори</a>), за содержание которых мы также не несем ответственности.<br/><br/>
+          Однако, если вы обнаружили материал, представленный на нашем сайте, который нарушает
+          ваши авторские права
+          или же дискредитирует Вашу компанию, предоставляя неверную или искаженную информацию,
+          пожалуйста свяжитесь с нами для решения этого вопроса.<br/><br/>
+          Для этого необходимо отправить e-mail с вашего корпоративного почтового ящика
+          содержащий:
+      </p>
+      <ul>
+          <li>контактные данные, реквизиты вашей компании</li>
+          <li>прямую ссылку(ссылки) на материал, который вы считаете спорным</li>
+          <li>заверенные сканированные копии документов, подтверждающих ваше эксклюзивное право на
+              материал
+          </li>
+          <li>в случае, если вы представляете интересы другой компании – копии документов на
+              посреднические услуги
+          </li>
+      </ul>
+      <p>
+          На адрес <a href="mailto:legal@plashiki.su">legal@plashiki.su</a><br/>
+          Спасибо за понимание и сотрудничество.
+      </p>
+  Tos:
+    Name: Пользовательское соглашение
+    Text: lorem
+  Settings:
+    Name: Настройки
+    DarkMode: Темная тема
+    EnableDarkMode: Включить темную тему
+    DisableDarkMode: Выключить темную тему
+    AccountTab: Аккаунт
+    NetworkTab: Сеть
+    PersonalizationTab: Персонализация
+    AboutTab: О проекте
+    # AccountTab
+    ChangeNickname: Сменить имя пользователя
+    ConnectedServices: Подключенные сервисы
+    PrimaryService: Основной сервис
+    MakePrimaryService: Сделать основным
+    PrimaryServiceDescription: С основного сервиса (по возможности) будет получаться информация об аниме/манге,
+      а списки будут синхронизироваться именно с этим сервисом.
+    JumpToProfile: Перейти
+    Connect: Привязать
+    Disconnect: Отвязать
+    # PersonalizationTab
+    PrimaryColor: Основной цвет
+    AccentColor: Цвет акцента
+    PreferredNameLanguage: Предпочтительный язык названия
+    Language_russian: Русский
+    Language_english: Английский
+    Language_romaji: Ромадзи
+    Language_japanese: Японский
+    OnlyOngoingsInRecent: Только онгоинги в Недавних
+    OnlyOngoingsInRecentDescription: На главной странице в разделе "Недавние" будут отображаться только онгоинги
+    TranslationPreferenceOrder: Приоритет сортировки переводов
+    Field_lang: Язык
+    Field_kind: Тип
+    Field_author: Автор
+    Field_player: Плеер
+    # NetworkTab
+    ConnectionIndicatorAlwaysVisible: Индикатор подключения всегда виден
+    RequestTimeout: Тайм-аут запроса (мс)
+    RequestTimeoutDescription: Увеличьте это значение, если вы часто встречаете ошибку "Превышено время ожидания ответа".
+      Значение 0 отключит функцию (не рекомендуется).
+    ApiServer: API сервер $service
+    ApiServerDescription: Эти настройки предназначены для регионов, в которых ограничен доступ к некоторым сервисам.
+    EnableProxy: Включить прокси
+    # AboutTab
+    Version: Версия
+    BuiltOnCommit: Собрано на коммите
+    BuildDate: Дата сборки
+    License: Лицензия
+    Documentation: Документация
+    Developer: Разработчик
+    Contributors: Соучастники разработки
+    Moderators: Модераторы
+    MaybeYou: возможно, вы?
+  Oauth:
+    WaitASec: одну секунду...
+    Done: Готово!
+    DontCloseThisWindow: (не закрывайте это окно, оно закроется автоматически)
+    ClosingIn:
+      - (окно закроется через $n секунд)
+      - (окно закроется через $n секунду)
+      - (окно закроется через $n секунды)
+      - (окно закроется через $n секунд)
+    ProvideNickname: Для завершения регистрации выберите имя пользователя
+    Finish: Завершить
+  Index:
+    Name: Главная
+    RecentlyUpdated: Недавно обновленные
+    RecentlyUpdatedOngoings: Новые серии
+    OpenInSearch: Открыть в поиске
+    TopOngoings: Топ онгоингов
+    TopReleased: Топ вышедших
+  Viewer:
+    Name: Смотреть
+    TitleDelimiter: ' / '
+    Episodes: Серии
+    Chapters: Главы
+    NMoreLinks:
+      - (+$n ссылок)
+      - (+$n ссылка)
+      - (+$n ссылки)
+      - (+$n ссылок)
+    LinkTimes: x$n $name
+    Players: Плееры
+    Languages: Языки
+    ResetFilters: Сбросить фильтры
+    PrevEpisode: Предыдущая серия
+    PrevChapter: Предыдущая глава
+    NextEpisode: Следующая серия
+    NextChapter: Следующая глава
+    OutOf: '/ $n'
+    DirectLink: Прямая ссылка
+    NoTranslationsAvailable: Переводов не найдено
+    NotificationsTitle: 'Уведомлять о:'
+    NotificationNewEpisodes: Новых сериях
+    NotificationNewEpisodesMeta: Новых сериях $meta
+    TabAll: Все
+    TabSub: Субтитры
+    TabDub: Озвучка
+    TabRaw: Оригинал
+  Search:
+    Name: Поиск
+    Action: Искать
+    Filters: Фильтры
+    NoFilters: Нет доступных фильтров
+    Sort:
+      ByScore: По оценке
+      ByPopularity: По популярности
+      ByPartCount: По кол-ву частей
+      ByReleaseDate: По дате выхода
+      ByName: По имени
+      Random: Случайно
+    GenreGroup:
+      Main: Основные
+      All: Все
+    Genres: Жанры
+    MinimumScore: Минимальная оценка
+    Popular: Попуряные
+    Ongoings: Онгоинги
+    Latest: Недавно вышедшие
+    FilterName: Название фильтра
+  AddTranslation:
+    Name: Добавить перевод
+    SentModeration: Отправлено на модерацию
+    Added: Добавлено
+  Report:
+    Name: Пожаловаться
+    SuggestEdit: Предложить изменение
+    ReportSent: Жалоба отправлена! ID $id
+  Calendar:
+    Name: Календарь
+  Lists:
+    Name: Мои списки
+    GroupSpecial: Специальные
+    GroupGeneral: Основные
+    Recent: Недавние
+    Updated: Обновления
+    Recommendations: Рекомендации
+  Moderation:
+    Name: Модерация
+    Consider: Рассмотреть
+    Decline: Отклонить
+    Accept: Принять
+    DeclineReason: Причина (необязательно)
+    Translations: Переводы
+    Reports: Жалобы
+    Options: Параметры
+    Stats: Статистика
+    YourStats: 'Ваша статистика:'
+    Accepted:
+      - Принято <b>$n</b> переводов
+      - Принято <b>$n</b> перевод
+      - Принято <b>$n</b> перевода
+      - Принято <b>$n</b> переводов
+    Declined:
+      - Отклонено <b>$n</b> переводов
+      - Отклонено <b>$n</b> перевод
+      - Отклонено <b>$n</b> перевода
+      - Отклонено <b>$n</b> переводов
+    ReportsCount:
+      - Рассмотрено <b>$n</b> жалоб
+      - Рассмотрено <b>$n</b> жалоба
+      - Рассмотрено <b>$n</b> жалобы
+      - Рассмотрено <b>$n</b> жалоб
+  Redirect:
+    Name: Переадресация...
+    Text: Секунду, сейчас переадресуем.
+  Donate:
+    Name: Поддержать
+    Text: >
+      Привет. <br>
+      PlaShiki - открытый некоммерческий проект, поддерживаемый энтузиастами.
+      У нас (пока) нет рекламы, поэтому единственный способ остаться проекту в живых -
+      это денежные пожертвования от пользователей. Все деньги идут на поддержку, развитие и обслуживание
+      проекта и инфраструктуры. Мы рады любому пожертвованию, но предложить взамен можем не очень много...
+      <br><br>
+      Все, поддержавшие проект, попадут в историю ниже, а те, кто в сумме пожертвовал более 300 рублей,
+      будут иметь значок, видимый всем пользователям скрипта PlaShiki на всех поддерживаемых сервисах.
+      <br><br>
+      Несколько ссылок на оплату ниже ＞﹏＜
+    Left:
+      - 'Осталось: $n рублей.'
+      - 'Осталось: $n рубль.'
+      - 'Осталось: $n рубля.'
+      - 'Осталось: $n рублей.'
+    WillLast:
+      - Этого хватит на оплату ~$n месяцев сервера. Спасибо!
+      - Этого хватит на оплату ~$n месяца сервера. Спасибо!
+      - Этого хватит на оплату ~$n месяцев сервера. Спасибо!
+      - Этого хватит на оплату ~$n месяцев сервера. Спасибо!
+    Qiwi: Qiwi/карта
+    YM: Яндекс.Деньги/карта
+    Sberbank: Сбербанк
+    History: История
+    Top: Топ
+  Image:
+    UrlTab: URL
+    UrlLabel: Ссылка на изображение
+    ImgurTab: Imgur
+    LoadError: Ошибка загрузки
+  Applications:
+    Name: Приложения
+    HaveAccessTab: Доступ
+    MyAppsTab: Мои
+    AllAppsTab: Все
+    HaveAccess: Приложения с доступом к моему аккаунту
+    MyApps: Мои приложения
+    AllApps: Все приложения
+    Revoke: Отозвать
+    ServerScope: Серверные разрешения
+    ServerScopeFmt: через запятую без пробелов
+  Player:
+    ParseFailed: Не удалось загрузить информацию о плеере
+  Userscript:
+    Name: Установить скрипт
+    Text: >
+      <h3>Зачем?</h3>
+      <p>
+          На всех поддерживаемых сайтах на странице с аниме появится кнопка
+          перехода напрямую к просмотру, а также возле никнеймов/аватаров пользователей,
+          поддержавших проект, появится специальная отметка.
+          <br/>
+          Скрипт не является обязательным, сайт отлично работает и без него
+      </p>
+      <h3>Как?</h3>
+      <ol>
+          <li>
+              Установите мененджер скриптов. Мы рекомендуем
+              <a href="$violentLink" target="_blank">ViolentMonkey</a>
+              или
+              <a href="$tamperLink" target="_blank">TamperMonkey</a>
+          </li>
+          <li>
+              Установите <a href="/static/plashiki.user.js" target="_blank">скрипт</a>
+          </li>
+          <li>
+              Обновите страницу
+          </li>
+      </ol>
+      <p>
+          Если все успешно, то кнопка, предлагающая установку скрипта, пропадет из бокового меню.
+      </p>
+  Admin:
+    Name: Управление
+  Statistics:
+    Name: Статистика
+    LightMode: Графики отображаются лучше всего в светлой теме интерфейса
+    DateRangeFrom: Начало периода
+    DateRangeTo: Конец периода
+    Today: Сегодня
+    Yesterday: Вчера
+    LastWeek: Последняя неделя
+    LastMonth: Последний месяц
+    LastYear: Последний год
+    AllTime: Все время
+    Users: Пользователи
+    Registration: Регистрация
+    Login: Вход
+    Moderation: Модерация
+    ModerationSent: Отправлено на модерацию
+    ModerationAccepted: Принято
+    ModerationDeclined: Отклонено
+    Senders: Отправители
+    Moderators: Модераторы
+    Translations: Переводы
+    TranslationsAdded: Добавлено переводов
+    TranslationsRemoved: Удалено переводов
+    TranslationsAdditionSource: Добавление
+    TranslationsRemovalSource: Удаление
+    ImportersEfficiency: Эффективность импортеров
+  UsersAdmin:
+    Name: Пользователи
+    FindBy: 'Найти по:'
+    Budget: Бюджет
+    Expense: Расход (-)
+    Donation: (+) Донат
+    Amount: Размер
+    ChangeTime: Время изменения
+    Comment: Комментарий
+    From: от
+  AdminTranslations:
+    Name: Переводы
+    Group: Группа
+    LeaveBlankForAll: Оставьте пустым чтобы отобразить все переводы
+Items:
+  User:
+    Anonymous: Аноним
+    ID: ID
+    Avatar: Аватар
+    Nickname: Имя пользователя
+    ConnectedServices: Подключенные сервисы
+    FirstLogin: Первый вход
+    Donated: Задонатил (руб)
+    Donator: Поддержал проект
+    Banned: Забанен
+    Trusted: Доверенный
+    Moderator: Модератор
+    Admin: Админ
+  Media:
+    PartPrefix: '#'
+    Episode: Серия
+    Chapter: Глава
+    AddedNthEpisode:
+      - + $n серия
+    AddedNthChapter:
+      - + $n глава
+    NthEpisode:
+      - $n серия
+    NthChapter:
+      - $n глава
+    OpenExternal: Открыть на $service
+    anime: Аниме
+    manga: Манга
+    ReleaseType:
+      tv: TV сериал
+      tv_13: Сериал (12)
+      tv_24: Сериал (24)
+      tv_48: Сериал (48)
+      movie: Фильм
+      ova: OVA
+      ona: ONA
+      special: Спешл
+      music: Клип
+      manga: Манга
+      manhwa: Манхва
+      manhua: Маньхуа
+      novel: Ранобэ
+      one_shot: Ван-шот
+      doujin: Додзинси
+    Status:
+      announced: Анонс
+      ongoing: Онгоинг
+      released: Завершен
+      recent: Недавно завершен
+    DurationText: Длительность серии
+    Duration:
+      S: < 10 мин.
+      D: 10-30 мин.
+      F: '> 30 мин.'
+    AgeRatingText: Возрастной рейтинг
+    AgeRating:
+      g: G (все)
+      pg: PG (дети)
+      pg_13: PG-13 (подростки)
+      r: R (17+)
+      r_plus: R+
+    SeasonText: Сезон
+    Season:
+      winterN: Зима $n
+      springN: Весна $n
+      summerN: Лето $n
+      fallN: Осень $n
+      year: $n год
+      yearRange: $a - $b
+      decade: $n-е
+      older: Более старые
+    ByName: По названию
+    ById: По ID
+    InvalidId: Неверный ID
+    NEpisodes:
+      - $n серий
+      - $n серия
+      - $n серии
+      - $n серий
+    NChapters:
+      - $n глав
+      - $n глава
+      - $n главы
+      - $n глав
+    OnlyNEpisodes:
+      - В этом аниме всего $n серий
+      - В этом аниме всего $n серия
+      - В этом аниме всего $n серии
+      - В этом аниме всего $n серий
+    OnlyNChapters:
+      - В этой манге всего $n глав
+      - В этой манге всего $n глава
+      - В этой манге всего $n главы
+      - В этой манге всего $n глав
+  Translation:
+    NamePlural: Переводы
+    UnknownAuthor: Неизвестный автор
+    KindName: Тип перевода
+    KindNameShort: Тип
+    Kind:
+      all: Все
+      sub: Субтитры
+      dub: Озвучка
+      raw: Оригинал
+
+      scan: Сканлейт
+      off: Официальный
+    LanguageName: Язык перевода
+    Language:
+      ru: Русский
+      en: Английский
+      jp: Японский
+      cn: Китайский
+      ko: Корейский
+      by: Белорусский
+      ua: Украинский
+      fr: Французский
+      de: Немецкий
+      other: Другой язык
+
+      # sub
+      ensub: Английские субтитры
+      rusub: Русские субтитры
+      bysub: Белорусские субтитры
+      uasub: Украинские субтитры
+      jpsub: Японские субтитры
+      frsub: Французские субтитры
+      desub: Немецкие субтитры
+      cnsub: Китайские субтитры
+      kosub: Корейские субтитры
+      othersub: Субтитры на другом языке
+      # dub
+      endub: Английская озвучка
+      rudub: Русская озвучка
+      bydub: Белорусская озвучка
+      uadub: Украинская озвучка
+      jpdub: Японская озвучка
+      frdub: Французская озвучка
+      dedub: Немецкая озвучка
+      cndub: Китайская озвучка
+      kodub: Корейская озвучка
+      otherdub: Озвучка на другом языке
+      # raw
+      enraw: Оригинал на английском
+      ruraw: Оригинал на русском
+      byraw: Оригинал на белорусском
+      uaraw: Оригинал на украинском
+      jpraw: Оригинал на японском
+      frraw: Оригинал на французском
+      deraw: Оригинал на немецком
+      cnraw: Оригинал на китайском
+      koraw: Оригинал на корейском
+      otherraw: Оригинал на другом языке
+    IsHq: Высокое качество
+    IsHqShort: HQ?
+    Author: Автор
+    LeaveBlankIfUnknown: Оставьте пустым если автор неизвестен
+    Url: Ссылка
+    StatusName: Статус
+    Status:
+      pending: На модерации
+      added: Принято
+      declined: Отклонено
+    Target: Цель
+    Part: Часть
+    Edit: Редактировать перевод
+    Deleted: <удалено>
+  Notification:
+    Name: Уведомление
+    NamePlural: Уведомления
+    Zero: Нет уведомлений
+    BrowserPush: В браузере
+    BrowserPushDeclined: Разрешение на отправку уведомлений не получено.
+    Text:
+      NewTranslationTitle: Новый перевод
+      NewTranslationBodyAnime: $episode серия «$animeName» $meta от $author уже доступна!
+      NewTranslationModerationTitle: '[MOD] Новый перевод'
+      NewTranslationModerationBody: Перевод $part части «$name» $meta. Отправил $sender
+      NewReportTitle: Новая жалоба
+      NewReportBody: Жалоба на перевод №$id от $sender - $type
+  UserRate:
+    ControlButton:
+      new-anime: Добавить в список
+      new-manga: Добавить в список
+      new-part-anime: Отметить просмотренной
+      new-part-manga: Отметить прочитанной
+      start-repeat-anime: Начать пересматривать
+      start-repeat-manga: Начать перечитывать
+      old-part-anime: Отметить непросмотренной
+      old-part-manga: Отметить непрочитанной
+    StatusText:
+      planned: Запланировано
+      in_progress: В процессе
+      completed: Завершено
+      on_hold: Отложено
+      dropped: Брошено
+
+      rewatching: Пересматриваю
+    EditEntry: Изменить запись
+    Episodes: Серий просмотрено
+    Chapters: Глав прочитано
+    Volumes: Томов прочитано
+    Repeats: Повторов
+    Score: Оценка
+    ResetScore: Сбросить оценку
+    Status: Статус
+    InList: В списке
+  Report:
+    NamePlural: Жалобы
+    TypeText: Тип жалобы
+    Type:
+      invalid_media: Неверное аниме/манга
+      invalid_part: Неверная серия/глава
+      invalid_meta: Неверный язык или тип
+      broken_link: Нерабочая страница
+      legal_issue: Юридические проблемы
+      other: Другое
+    Comment: Комментарий
+    ProposedEdit: Предложенное изменение
+    Status:
+      pending: Ожидает
+      resolved: Обработано
+      discarded: Отклонено
+    Discard: Игнорировать
+    EditNFields:
+      - $n полей
+      - $n поле
+      - $n поля
+      - $n полей
+Common:
+  Yes: да
+  No: нет
+  NeedAuth: Необходима авторизация
+  Description: Описание
+  NoDescription: Нет описания
+  Sender: Отправитель
+  ItemName: Название
+  Load: Загрузить
+  Loading: Загрузка...
+  Success: Успех
+  UpdatedAt: Обновлено
+  Network:
+    Connected: Подключено
+    ReconnectingInN:
+      - Переподключение через $n секунд
+      - Переподключение через $n секунду
+      - Переподключение через $n секунды
+      - Переподключение через $n секунд
+    Connecting: Подключение...
+  Collection:
+    NoItemsFound: Ничего не найдено
+    DataFrom: Данные с $provider
+    Select: Выбрать
+    Deselect: Снять выделение
+    WithSelected: С выбранными
+  Action:
+    TryAgain: Попробуйте еще раз
+    Update: Обновить
+    Deleting: Удаление...
+    Deleted: Удалено
+    Reset: Сбросить
+    Open: Открыть
+    Control: Управление
+  Form:
+    ThisFieldIsRequired: Это поле обязательно!
+    InvalidNumber: Неверное число
+    InvalidUrl: Неверная ссылка
+    Optional: (необязательно)
+    Create: Создать
+    Save: Сохранить
+    Edit: Изменить
+    Delete: Удалить
+    Send: Отправить
+    Cancel: Отменить
+    ChangesSaved: Изменения сохранены
+    Apply: Применить
+    SelectFile: Выберите файл
+    InvalidFile: Неверный файл
+    MaxFileSize: Максимум $size
+
+    PlusNOther:
+      - (+$n других)
+      - (+$n другой)
+      - (+$n других)
+      - (+$n других)
+  #  hcaptchaLegalNotice: >
+  #    This site is protected by hCaptcha and its
+  #    <a href="https://hcaptcha.com/privacy">Privacy Policy</a> and
+  #    <a href="https://hcaptcha.com/terms">Terms of Service</a> apply.
+  hcaptchaLegalNotice: >
+    Этот сайт защищен hCAPTCHA. Применяются
+    <a target="_blank" href="https://hcaptcha.com/privacy">Политика конфиденциальности</a> и
+    <a target="_blank" href="https://hcaptcha.com/terms">Условия использования</a>.
+Services:
+  Shikimori: Шикимори
+Providers:
+  shikimori: Шикимори
+Genres:
+  Police: Полиция
+  Drama: Драма
+  Game: Игры
+  Seinen: Сейнен
+  Psychological: Психологическое
+  Demons: Демоны
+  Josei: Дзёсей
+  Adventure: Приключения
+  Yuri: Юри
+  Shounen: Сёнен
+  Comedy: Комедия
+  Supernatural: Сверхъестественное
+  Ecchi: Этти
+  Shoujo: Сёдзе
+  Vampire: Вампиры
+  Yaoi: Яой
+  Music: Музыка
+  Samurai: Самураи
+  Action: Экшен
+  Parody: Пародия
+  Slice of Life: Повседневность
+  Horror: Ужасы
+  Mecha: Меха
+  Romance: Романтика
+  Shounen Ai: Сёнен Ай
+  Historical: Исторический
+  Fantasy: Фэнтези
+  Magic: Магия
+  Harem: Гарем
+  Sports: Спорт
+  Hentai: Хентай
+  Space: Космос
+  School: Школа
+  Sci-Fi: Фантастика
+  Gender Bender: Смена пола
+  Doujinshi: Додзинси
+  Thriller: Триллер
+  Shoujo Ai: Сёдзе Ай
+  Super Power: Супер сила
+  Mystery: Детектив
+  Military: Военное
+  Kids: Детское
+  Cars: Машины
+  Martial Arts: Боевые искусства
+  Dementia: Безумие
+Api:
+  Errors:
+    # common
+    Internal Error: Внутренняя ошибка сервера
+    TIMEOUT: Истекло время ожидания ответа
+    ECONNABORTED: Соединение прервано
+    BAD_CONNECTION: Ошибка соединения
+    VALIDATION_ERROR: 'Ошибка API запроса: $description'
+    INTERNAL_ERROR: 'Внутренняя ошибка сервера. ID ошибки: $errorUuid'
+    UNEXPECTED_RESPONSE: API вернул неожиданный объект
+    RATE_LIMIT: Слишком частые запросы
+    NO_AUTH: Вы не авторизованы
+    NOT_FOUND: Не найдено
+    IMGUR_ERROR: 'Ошибка Imgur: $description'
+    FETCH_ERROR: Ошибка внешнего API
+    # providers
+    SHIKIMORI_ERROR: 'Ошибка API Шикимори: $description'
+    SHIKIMORI_API_ERROR: 'Ошибка API Шикимори: $description'
+    NO_MAL_ID: Не удалось сопоставить ID провайдера с ID на MAL. Возможно, этот ресурс недоступен на MAL.
+    RECOMMENDATIONS_NOT_READY: Рекомендации еще не готовы. Подождите немного (обычно это занимает около минуты).
+    # auth
+    HAS_AUTH: Вы уже авторизованы!
+    NICKNAME_CLAIMED: Имя пользователя уже занято
+    INVALID_AUTH_CODE: Неверный код авторизации
+    USER_UNKNOWN: Ошибка сессии
+    INVALID_SESSION: Ошибка сессии
+    INVALID_TOKEN: 'Ошибка сессии: неверный токен'
+    ACCESS_DENIED: Ошибка доступа
+    NOT_CONNECTED: Этот сервис не привязан
+    LAST_SERVICE: Этот сервис - последний
+    NO_EDIT: Нет изменения
+    INVALID_LANG: Неверный язык
+    Captcha verification failed: Ошибка капчи
+    # moder
+    TRANSLATION_DUPLICATE: Этот перевод является дупликатом <a href="/translation/$description">$description</a>
+    ALREADY_PROCESSED: Этот перевод уже обработан
+    BANNED: Вы забанены
+    NOT_DECLINED: Этот перевод не отклонен
+    # misc
+    INVALID_FIREBASE_TOKEN: Неверный токен Firebase
+    UNKNOWN_FIELD: Неизвестное поле, $description

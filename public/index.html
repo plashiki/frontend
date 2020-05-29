@@ -1,17 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        name="viewport"
+    >
+    <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', '<%= VUE_APP_GA %>', 'auto');ga('send', 'pageview');</script>
+    <link href="<%= BASE_URL %>img/icons/apple-touch-icon.png?new" rel="apple-touch-icon" sizes="180x180">
+    <link href="<%= BASE_URL %>img/icons/favicon-32x32.png?new" rel="icon" sizes="32x32" type="image/png">
+    <link href="<%= BASE_URL %>img/icons/favicon-16x16.png?new" rel="icon" sizes="16x16" type="image/png">
+    <link href="<%= BASE_URL %>manifest.json?new" rel="manifest">
+    <link color="#5bbad5" href="<%= BASE_URL %>img/icons/safari-pinned-tab.svg?new" rel="mask-icon">
+    <link href="<%= BASE_URL %>search.xml" rel="search" title="PlaShiki" type="application/opensearchdescription+xml" />
+    <meta content="PlaShiki" name="apple-mobile-web-app-title">
+    <meta content="PlaShiki" name="application-name">
+    <meta content="#1867c0" name="msapplication-TileColor">
+    <meta content="#1867c0" name="theme-color">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <title>PlaShiki</title>
+</head>
+<body>
+<noscript>
+    <strong>This website uses JavaScript, enable it please.</strong>
+</noscript>
+<div id="app">
+    <style>body,html,#app,#obj{width:100%;height:100%;display:flex;justify-content:center;align-items:center;margin:0;padding:0}html.light{background:#fafafa}html.dark{background:#303030}.v-progress-circular{position:relative;display:inline-flex;vertical-align:middle;justify-content:center;align-items:center;color:#1976d2!important;caret-color:#1976d2!important}.v-progress-circular svg{width:100%;height:100%;margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;z-index:0;animation:progress-circular-rotate 1.4s linear infinite;transform-origin:center center;transition:all 0.2s ease-in-out}.v-progress-circular .v-progress-circular__overlay{animation:progress-circular-dash 1.4s ease-in-out infinite;stroke-linecap:round;stroke-dasharray:80,200;stroke-dashoffset:0}.v-progress-circular__overlay{stroke:currentColor;z-index:2;transition:all 0.6s ease-in-out}@keyframes progress-circular-dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0}50%{stroke-dasharray:100,200;stroke-dashoffset:-15px}100%{stroke-dasharray:100,200;stroke-dashoffset:-125px}}@keyframes progress-circular-rotate{100%{transform:rotate(360deg)}}</style>
+
+    <div id="obj">
+        <div class="v-progress-circular" style="height: 64px; width: 64px;">
+            <svg
+                style="transform: rotate(0deg);"
+                viewBox="20.64516129032258 20.64516129032258 41.29032258064516 41.29032258064516"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <circle
+                    class="v-progress-circular__overlay"
+                    cx="41.29032258064516"
+                    cy="41.29032258064516"
+                    fill="transparent"
+                    r="20"
+                    stroke-dasharray="125.664"
+                    stroke-dashoffset="125.66370614359172px"
+                    stroke-width="1.2903225806451613"
+                ></circle>
+            </svg>
+        </div>
+    </div>
+
+    <script>!function(){var a=JSON.parse(localStorage["plashiki-local"]||"{}");document.documentElement.classList.add(a.ConfigModule&&!0===a.ConfigModule.dark?"dark":"light")}();</script>
+</div>
+</body>
 </html>

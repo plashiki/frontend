@@ -1,0 +1,18 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>PlaShiki</ShortName>
+    <Description>PlaShiki anime search</Description>
+    <Image width="32" height="32" type="image/png">
+        https://plashiki.su/img/icons/favicon-32x32.png
+    </Image>
+    <Url type="text/html" rel="results" template="https://plashiki.su/search?q={searchTerms}&amp;utm_source=omnibox"/>
+    <!-- uwu sorry we dont host anime db, so we use shikimori owo -->
+    <Url type="application/x-suggestions+json" method="GET" rel="suggestions"
+         template="https://shikimori.one/animes.os?search={searchTerms}"/>
+    <InputEncoding>UTF-8</InputEncoding>
+    <OutputEncoding>UTF-8</OutputEncoding>
+    <InputEncoding>UTF-8</InputEncoding>
+    <SyndicationRight>open</SyndicationRight>
+    <AdultContent>false</AdultContent>
+    <Language>*</Language>
+    <Contact>admin@plashiki.su</Contact>
+</OpenSearchDescription>

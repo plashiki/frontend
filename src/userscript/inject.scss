@@ -1,0 +1,124 @@
+.shiki-theme#plashiki-inject {
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    display: block;
+    text-align: center;
+    position: relative;
+    padding: 5px;
+    overflow: hidden;
+    border-width: 0;
+    outline: none;
+    border-radius: 24px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    color: #ecf0f1;
+    transition: background-color .3s, color .3s;
+    width: 100%;
+    background-color: var(--color-primary);
+    max-width: 200px;
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.shiki-theme#plashiki-inject:hover {
+    background-color: var(--color-primary-hovered);
+}
+
+.shiki-theme#plashiki-inject:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    transform: translate(-50%, -50%);
+    width: 0;
+    padding-top: 0;
+    border-radius: 100%;
+    opacity: 0;
+    transition: opacity .3s ease-out, width 1ms ease .3s, padding-top 1ms ease .3s;
+    background-color: rgba(236, 240, 241, .3);
+}
+
+.shiki-theme#plashiki-inject:active:before {
+    opacity: 1;
+    width: 120%;
+    padding-top: 120%;
+    transition: width .2s ease-out, padding-top .2s ease-out, opacity 1ms ease-out;
+}
+
+@mixin baseGalo4ka {
+    content: '';
+    border-radius: 50%;
+    background-color: #536DFE;
+    // star icon from @mdi/svg, licensed under MIT
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0ibWRpLXN0YXIiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTEyLDE3LjI3TDE4LjE4LDIxTDE2LjU0LDEzLjk3TDIyLDkuMjRMMTQuODEsOC42MkwxMiwyTDkuMTksOC42MkwyLDkuMjRMNy40NSwxMy45N0w1LjgyLDIxTDEyLDE3LjI3WiIgLz48L3N2Zz4=);
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 999;
+}
+
+// shikimori user profile galo4ka
+@media (max-width: 767px) {
+    .l-top_menu-v2 .menu-dropdown.profile.plashiki-has-galo4ka > span:before {
+        @include baseGalo4ka;
+
+        width: 12px !important;
+        height: 12px !important;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 8px;
+    }
+}
+
+.l-top_menu-v2 .menu-dropdown.profile.plashiki-has-galo4ka .nickname:after {
+    @include baseGalo4ka;
+
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    margin: 0 4px;
+}
+
+// shikimori user list galo4ka
+.b-user.avatar > a.avatar.plashiki-has-galo4ka:before,
+.b-user.named_avatar > a.avatar.plashiki-has-galo4ka:before {
+    @include baseGalo4ka;
+
+    position: absolute;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    left: 50%;
+    margin: 0 4px;
+}
+
+.b-user.named_avatar > a.avatar.plashiki-has-galo4ka:before {
+    width: 16px;
+    height: 16px;
+    margin-bottom: 20px;
+}
+
+// shikimori user profile page galo4ka
+.profile-head .head.misc.plashiki-has-galo4ka > h1:after,
+.profile-head .head.misc.plashiki-has-galo4ka > h1.aliases:after {
+    @include baseGalo4ka;
+
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    margin: 0 4px 0 8px;
+}
+
+// shikimori comment sender galo4ka
+.b-comment.shiki-object .inner header .name-date .name.plashiki-has-galo4ka:after,
+.b-user.moderation .name.plashiki-has-galo4ka:after,
+.b-user.detailed .name.plashiki-has-galo4ka:after {
+    @include baseGalo4ka;
+
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin: 0 6px;
+}

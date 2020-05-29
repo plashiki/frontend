@@ -1,0 +1,146 @@
+<template>
+    <div>
+        <transition-group name="basic-list-movement">
+            <v-btn
+                :key="tr.key"
+                :outlined="!itemActive(tr)"
+                @click="itemClicked(tr)"
+                class="translation-chip basic-list-movement-item"
+                color="primary"
+                ripple
+                rounded
+                small
+                v-for="tr in translations"
+            >
+                <v-avatar
+                    :color="itemActive(tr) ? 'white' : 'primary'"
+                    class="mr-2"
+                    size="8"
+                    v-if="tr.hq"
+                />
+                {{ tr.name }}
+            </v-btn>
+        </transition-group>
+        <span
+            @click="showFull = true"
+            class="link-like grey--text caption text-no-wrap ml-2 no-dots"
+            v-show="!showFull && invisibleItemsCount > 0"
+            v-tooltip="invisibleItemsCountWithNames"
+        >
+            {{ $tc('Pages.Viewer.NMoreLinks', invisibleItemsCount) }}
+        </span>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop, PropSync, Vue } from 'vue-property-decorator'
+import { filterVisibleTranslations } from '@/utils/user-preferences-utils'
+import { configStore } from '@/store'
+import { SingleTranslationData } from '@/types/translation'
+
+@Component({})
+export default class TranslationsList extends Vue {
+    @Prop({ default: () => [] }) data!: SingleTranslationData[]
+    @Prop({ default: '' }) keyPrefix!: string
+    @PropSync('translation') selectedTranslation!: number
+
+    @Prop() selectedTranslations!: number[]
+    @Prop() translationSelectionMode!: boolean
+
+    showFull = false
+
+    get translations (): (SingleTranslationData & { key: string })[] {
+        let times: Record<string, number> = {}
+        return (this.showFull ? this.preFilteredData : this.filteredData).map((it: any) => {
+            if (!(it.name in times)) {
+                times[it.name] = 0
+            }
+            this.$set(it, 'key', `${this.keyPrefix}||${it.name}||${times[it.name]++}`)
+            return it
+        })
+    }
+
+    get preFilteredData (): SingleTranslationData[] {
+        // im bad at naming lol
+        return this.data.filter(tr => configStore.playersFilters[tr.name] !== true)
+    }
+
+    get filteredData (): SingleTranslationData[] {
+        return filterVisibleTranslations(this.preFilteredData, this.selectedTranslation)
+    }
+
+    get invisibleItemsCount (): number {
+        return this.preFilteredData.length - this.filteredData.length
+    }
+
+    get invisibleItemsCountWithNames (): string {
+        if (this.invisibleItemsCount === 0) return ''
+
+        let times: Record<string, number> = {}
+        let timesFiltered: Record<string, number> = {}
+
+        for (let it of this.preFilteredData) {
+            const name = (it.hq ? 'HQ ' : '') + it.name
+            if (!(name in times)) {
+                times[name] = 0
+            }
+            times[name]++
+        }
+
+
+        for (let it of this.filteredData) {
+            const name = (it.hq ? 'HQ ' : '') + it.name
+            if (!(name in timesFiltered)) {
+                timesFiltered[name] = 0
+            }
+            timesFiltered[name]++
+        }
+
+        let ret: string[] = []
+
+        for (let key of Object.keys(times)) {
+            let diff = times[key] - (timesFiltered[key] ?? 0)
+            if (diff !== 0) {
+                ret.push(this.$t('Pages.Viewer.LinkTimes', {
+                    n: diff,
+                    name: key
+                }) as string)
+            }
+        }
+
+        return ret.join(', ')
+    }
+
+    itemClicked (it: SingleTranslationData): void {
+        let active = this.itemActive(it)
+        if (this.translationSelectionMode) {
+            if (active) {
+                let idx = this.selectedTranslations.indexOf(it.id)
+                this.selectedTranslations.splice(idx, 1)
+            } else {
+                this.selectedTranslations.push(it.id)
+            }
+        } else {
+            this.selectedTranslation = it.id
+        }
+    }
+
+    itemActive (it: SingleTranslationData): boolean {
+        if (this.translationSelectionMode) {
+            return this.selectedTranslations.indexOf(it.id) > -1
+        }
+        return this.selectedTranslation === it.id
+    }
+}
+</script>
+
+<style>
+.translation-chip {
+    height: 26px !important;
+    font-size: 12px !important;
+    text-transform: none !important;
+    padding: 2px 10px !important;
+    margin: 4px 6px !important;
+    letter-spacing: normal !important;
+}
+</style>

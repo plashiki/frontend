@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=utf8" http-equiv="content-type" />
+    <title>OAuth Blank</title>
+</head>
+<body>
+Пожалуйста, <b>не копируйте</b> данные из адресной строки или поля ниже для сторонних сайтов. Таким образом вы можете
+<b>потерять</b> ваши данные или аккаунт.<br />
+Ваш токен: <input id="token" readonly value="JavaScript недоступен">
+<script>
+var q = location.search.match(/[\?&]token=(.*?)(?:&|$)/),
+    i = document.getElementById('token')
+i.value = q ? decodeURIComponent(q[1]) : 'Токен не найден'
+i.onfocus = i.select
+</script>
+</body>
+</html>

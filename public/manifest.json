@@ -1,0 +1,20 @@
+{
+    "name": "PlaShiki",
+    "short_name": "PlaShiki",
+    "icons": [
+        {
+            "src": "/img/icons/android-chrome-192x192.png?new",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/img/icons/android-chrome-512x512.png?new",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1867c0",
+    "theme_color": "#1867c0"
+}

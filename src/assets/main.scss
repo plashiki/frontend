@@ -1,0 +1,291 @@
+$mdi-font-path: '~@mdi/font/fonts/';
+@import '~@mdi/font/scss/materialdesignicons';
+@import '~izitoast/dist/css/iziToast.min.css';
+
+
+// kawaii scroll (chrome, safari, firefox (?)).
+// on mobile its kawaii by default
+html:not(.touch) *:not(.default-scroll) {
+    scrollbar-color: #7f7f7f transparent;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        margin-left: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #7f7f7f;
+        border-radius: 6px;
+    }
+}
+
+.theme--light.v-application, .theme--light .card-layout-bg, html.light {
+    background: #f2f2f2;
+}
+
+.theme--dark.v-application, .theme--dark .card-layout-bg, html.dark {
+    background: #303030;
+}
+
+.fix-active-bg .theme--light.v-list-item--active::before {
+    opacity: 0;
+}
+
+html.light.overflow-y-hidden,
+html.dark.overflow-y-hidden {
+    overflow-y: scroll !important;
+}
+
+.mdi-spin-fast:before {
+    animation: mdi-spin 0.5s infinite linear;
+}
+
+.tooltip {
+    display: block !important;
+    z-index: 10000;
+    font-family: "Roboto", sans-serif;
+}
+
+.tooltip .tooltip-inner {
+    background: rgba(97, 97, 97, 0.9);
+    color: white;
+    border-radius: 4px;
+    padding: 5px 16px;
+    font-size: 14px;
+}
+
+.tooltip .tooltip-arrow {
+    display: none
+}
+
+.tooltip[x-placement^="top"] {
+    margin-bottom: 5px
+}
+
+.tooltip[x-placement^="bottom"] {
+    margin-top: 5px
+}
+
+.tooltip[x-placement^="right"] {
+    margin-left: 5px
+}
+
+.tooltip[x-placement^="left"] {
+    margin-right: 5px
+}
+
+.tooltip[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .15s, visibility .15s
+}
+
+.tooltip[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .15s
+}
+
+.no-underline {
+    text-decoration: none !important;
+}
+
+span.has-tooltip:not(.no-dots) {
+    text-decoration: underline;
+    text-decoration-style: dotted
+}
+
+.v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes) .v-slide-group__prev {
+    display: none !important
+}
+
+.v-chip--pill.v-size--small .v-avatar {
+    height: 24px !important;
+    width: 24px !important;
+}
+
+.v-chip.no-hover:hover::before {
+    opacity: 0 !important
+}
+
+.rating-smaller-gap button {
+    padding: 4px !important
+}
+
+.v-badge__badge {
+    pointer-events: none;
+}
+
+.icon-mid-size {
+    font-size: 20px !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.link-like {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.v-application .pa-05 {
+    padding: 2px !important;
+}
+
+.v-tabs-slider {
+    // md2 slider is qt
+    width: 60% !important;
+    margin-left: 20%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.v-responsive-center .v-responsive__content {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.small-input-text .v-label {
+    font-size: 14px !important;
+}
+
+.small-input-text input,
+.small-input-text .v-file-input__text {
+    font-size: 13px !important;
+    white-space: nowrap;
+}
+
+.basic-list-movement {
+    &-item {
+        z-index: 1;
+    }
+
+    &-move {
+        transition: transform 0.5s;
+    }
+
+    &-enter-active {
+        transition: all 0.5s ease-out;
+    }
+
+    &-leave-active {
+        transition: all 0.2s ease-in;
+        position: absolute;
+        z-index: 0;
+    }
+
+    &-enter, &-leave-to {
+        opacity: 0;
+    }
+}
+
+.pretty-prefix .v-text-field__prefix, .pretty-prefix-self {
+    background-color: #eee !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    margin-right: 14px !important;
+    color: #000 !important;
+    font-size: 14px;
+}
+
+.fill-height {
+    height: 100%;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+    .pretty-prefix .v-text-field__prefix, .pretty-prefix-self {
+        font-size: 12px !important;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .pretty-prefix .v-text-field__prefix, .pretty-prefix-self {
+        padding: 3px !important;
+        margin-right: 4px !important;
+    }
+}
+
+.theme--dark .pretty-prefix .v-text-field__prefix {
+    background-color: #4a4a4a !important;
+    color: #fff !important;
+}
+
+.viewer-iframe {
+    border: none;
+    height: 100%;
+    width: 100%;
+
+    &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+    }
+}
+
+.v-text-field.text-right input {
+    text-align: right !important;
+}
+
+.small-badge .v-badge__badge {
+    height: 14px;
+    padding: 3px 6px;
+    font-size: 10px;
+}
+
+.text--monospace {
+    font-family: 'Fira Code', 'Roboto Mono', monospace;
+}
+
+// emojis
+$base: 'https://noto-website-2.storage.googleapis.com/emoji/emoji_u';
+
+$obj: (
+    ru: '1f1f7_1f1fa',
+    en: '1f1ec_1f1e7',
+    ko: '1f1f0_1f1f7',
+    by: '1f1e7_1f1fe',
+    ua: '1f1fa_1f1e6',
+    jp: '1f1ef_1f1f5',
+    fr: '1f1eb_1f1f7',
+    de: '1f1e9_1f1ea',
+    cn: '1f1e8_1f1f3',
+    other: fe82b
+);
+
+@each $class, $code in $obj {
+    .flag-#{$class}:before {
+        content: '';
+        background-image: url($base + $code + '.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        width: 21px;
+        height: 22px;
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    // god help me, css is killing me
+    .flag-#{$class}.large:before {
+        width: 24px;
+        height: 21px;
+        vertical-align: text-bottom;
+    }
+}

@@ -70,7 +70,7 @@ class UserScript {
 }
 
 const ShikimoriRegex = /^https?:\/\/shikimori\.o(?:ne|rg)/
-const PlashikiRegex = /^https?:\/\/(?:plashiki\.(?:tk|online|su)|shikimori\.online|(?:127.0.0.1|localhost):8123)/
+const PlashikiRegex = /^https?:\/\/(beta\.)?(?:plashiki\.(?:tk|online|su)|shikimori\.online|(?:127.0.0.1|localhost):8123)/
 
 const us = new UserScript()
 
@@ -189,16 +189,6 @@ us.match(ShikimoriRegex, () => {
             btn.innerHTML = us.tr('Watch')
             root.appendChild(btn)
         } else {
-            let html = `
-            <div class="watch-online">
-                <div class="line">
-                    <a class="b-link_button dark" href="https://www.crunchyroll.com/ru/a-certain-scientific-railgun" target="_blank" title="Crunchyroll">
-                        <span class="translation_missing" title="translation missing: ru.animes.watch_online.watch_online">Watch Online</span>
-                    </a>
-                </div>
-                <div class="kind">Crunchyroll</div>
-            </div>
-            `
             let div = document.createElement('div')
             div.className = 'watch-online'
             div.id = 'plashiki-inject'

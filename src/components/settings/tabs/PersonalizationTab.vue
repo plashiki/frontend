@@ -25,6 +25,11 @@
             :label="$t('Pages.Settings.PreferredNameLanguage')"
             v-model="preferredNameLanguage"
         />
+        <p
+            v-if="provider === 'shikimori'"
+            class="caption text--secondary"
+            v-html="$t('Pages.Settings.PreferredNameLanguageShiki')"
+        />
         <v-switch
             :label="$t('Pages.Settings.OnlyOngoingsInRecent')"
             v-model="onlyOngoingsInRecent"
@@ -56,6 +61,10 @@ import ReorderList from '@/components/common/fields/ReorderList.vue'
     components: { ReorderList, VColorField }
 })
 export default class PersonalizationTab extends Vue {
+    get provider (): string {
+        return configStore.dataProvider
+    }
+
     get dark (): boolean {
         return configStore.dark
     }

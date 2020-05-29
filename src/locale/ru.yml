@@ -92,6 +92,8 @@ Pages:
     PrimaryColor: Основной цвет
     AccentColor: Цвет акцента
     PreferredNameLanguage: Предпочтительный язык названия
+    PreferredNameLanguageShiki: На данный момент Шикимори при получении нескольких аниме за раз возвращает
+      только русское и романизированное названия.
     Language_russian: Русский
     Language_english: Английский
     Language_romaji: Ромадзи

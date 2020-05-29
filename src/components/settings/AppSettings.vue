@@ -10,7 +10,7 @@
                 <v-tab
                     :key="i"
                     v-for="(tab, i) in tabs"
-                    v-text="$t('Pages.Settings.' + tab.name)"
+                    v-text="$t('Pages.Settings.' + tab[1])"
                 />
             </v-tabs>
         </v-simple-card>
@@ -21,7 +21,7 @@
                 v-for="(tab, i) in tabs"
             >
                 <v-simple-card>
-                    <component :is="tab" />
+                    <component :is="tab[0]" />
                 </v-simple-card>
             </v-tab-item>
         </v-tabs-items>
@@ -45,10 +45,10 @@ export default class AppSettings extends Vue {
     tab = 0
 
     tabs = Object.freeze([
-        AccountTab,
-        PersonalizationTab,
-        NetworkTab,
-        AboutTab
+        [AccountTab, 'AccountTab'],
+        [PersonalizationTab, 'PersonalizationTab'],
+        [NetworkTab, 'NetworkTab'],
+        [AboutTab, 'AboutTab']
     ])
 }
 </script>

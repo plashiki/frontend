@@ -1,7 +1,6 @@
 <template>
     <v-simple-card
-        class="overflow-x-hidden"
-        style="max-height: 920px;"
+        class="overflow-x-hidden parts-list"
     >
         <transition mode="out-in" name="fade-transition">
             <v-list
@@ -93,5 +92,13 @@ export default class PartsList extends Vue {
 </script>
 
 <style>
+.parts-list {
+    max-height: 800px;
+}
 
+@media (max-width: 730px) {
+    .parts-list {
+        max-height: 500px;
+    }
+}
 </style>

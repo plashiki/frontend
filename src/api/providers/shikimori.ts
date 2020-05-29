@@ -304,10 +304,8 @@ export function shikimoriGetMediaUpdates (type: MediaType): Promise<MediaUpdate[
 export function shikimoriGetRecommendations (mediaType: MediaType, pagination: Pagination): Promise<ShikimoriBriefAnime[]> {
     let page = ''
     if (pagination.limit && pagination.offset) {
-        let n = ~~(pagination.offset / pagination.limit)
-        if (n > 0) {
-            page = '/page/' + n
-        }
+        let n = (~~(pagination.offset / pagination.limit)) + 1
+        page = '/page/' + n
     }
 
     return shikimoriApi({

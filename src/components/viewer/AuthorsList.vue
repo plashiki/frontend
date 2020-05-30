@@ -79,6 +79,7 @@
                                 :selected-translations="selectedTranslations"
                                 :translation-selection-mode="translationSelectionMode"
                                 :translation.sync="selectedTranslation"
+                                :authors="authors"
                                 v-if="expandAll || expanded[author.key] === true"
                             />
                         </v-expand-transition>

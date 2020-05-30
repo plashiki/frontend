@@ -4,7 +4,7 @@
             <v-btn
                 :key="tr.key"
                 :outlined="!itemActive(tr)"
-                @click="itemClicked(tr)"
+                @click="itemClicked(tr, $event)"
                 class="translation-chip basic-list-movement-item"
                 color="primary"
                 ripple
@@ -36,11 +36,12 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator'
 import { filterVisibleTranslations } from '@/utils/user-preferences-utils'
 import { configStore } from '@/store'
-import { SingleTranslationData } from '@/types/translation'
+import { SingleTranslationData, TranslationAuthor } from '@/types/translation'
 
 @Component({})
 export default class TranslationsList extends Vue {
     @Prop({ default: () => [] }) data!: SingleTranslationData[]
+    @Prop({ default: () => ({}) }) authors!: TranslationAuthor[]
     @Prop({ default: '' }) keyPrefix!: string
     @PropSync('translation') selectedTranslation!: number
 
@@ -111,10 +112,39 @@ export default class TranslationsList extends Vue {
         return ret.join(', ')
     }
 
-    itemClicked (it: SingleTranslationData): void {
+    itemClicked (it: SingleTranslationData, event: MouseEvent): void {
         let active = this.itemActive(it)
         if (this.translationSelectionMode) {
-            if (active) {
+            if (event.shiftKey && this.selectedTranslations.length) {
+                let first = this.selectedTranslations[this.selectedTranslations.length - 1]
+                let last = it.id
+
+                if (first > last) {
+                    let tmp = last
+                    last = first
+                    first = tmp
+                }
+
+                let inside = false
+
+                outer:
+                for (let author of this.authors) {
+                    for (let tr of author.translations) {
+                        if (configStore.playersFilters[tr.name] === true) continue
+
+                        if (!inside && tr.id === first) inside = true
+                        if (inside) {
+                            let idx = this.selectedTranslations.indexOf(tr.id)
+                            if (active && idx > -1) {
+                                this.selectedTranslations.splice(idx, 1)
+                            } else if (!active && idx === -1) {
+                                this.selectedTranslations.push(tr.id)
+                            }
+                            if (tr.id === last) break outer
+                        }
+                    }
+                }
+            } else if (active) {
                 let idx = this.selectedTranslations.indexOf(it.id)
                 this.selectedTranslations.splice(idx, 1)
             } else {

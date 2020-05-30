@@ -12,6 +12,12 @@ import { defaultProvider, shikimori } from '@/config'
 
 const idb = new IndexedDBClient()
 
+let defaultPlayersFilters: Record<string, true> = {}
+
+if (!('plashiki-local' in localStorage)) {
+    defaultPlayersFilters['smotret-anime.online'] = true
+}
+
 @VLocalModule('ConfigModule')
 export default class ConfigModule extends VuexModule {
     // ui
@@ -51,9 +57,7 @@ export default class ConfigModule extends VuexModule {
 
     // filtering in viewer. they do not interfere things above and do not affect sorting.
     languageFilters: Record<string, true | undefined> = {}
-    playersFilters: Record<string, true | undefined> = {
-        'smotret-anime.online': true
-    }
+    playersFilters: Record<string, true | undefined> = defaultPlayersFilters
 
     // idk how to call it. basically key-value stuff
     components: Record<string, any> = {}

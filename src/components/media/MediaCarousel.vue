@@ -1,14 +1,16 @@
 <template>
-    <v-slide-group
-        :class="{ loading }"
+    <smooth-slide-group
         :show-arrows="$r12s.isDesktopByWidth"
+        :height="height"
+        :count="cols.length"
         ref="slider"
     >
-        <v-slide-item
+        <template
             v-if="items.length === 0 || loading"
+            #content
         >
             <v-row
-                :style="{ height }"
+                :style="{ height: height + 'px' }"
                 align="center"
                 class="fill-height ma-0"
                 justify="center"
@@ -27,34 +29,37 @@
                     {{ noItemsText }}
                 </h3>
             </v-row>
-        </v-slide-item>
-        <template v-else>
-            <v-slide-item
-                :key="i"
-                v-for="(col, i) in cols"
-            >
-                <div class="pa-0 ma-0">
-                    <MediaCard
-                        :item="item"
-                        :key="j"
-                        class="mx-1 my-2"
-                        fixed-size
-                        v-for="(item, j) in col"
-                    />
-                </div>
-            </v-slide-item>
         </template>
-    </v-slide-group>
+        <template
+            v-else
+            #default
+        >
+            <div
+                v-for="(col, i) in cols"
+                :key="i"
+                class="pa-0 ma-0"
+            >
+                <MediaCard
+                    v-for="(item, j) in col"
+                    :key="j"
+                    :item="item"
+                    class="mx-1 my-2"
+                    fixed-size
+                />
+            </div>
+        </template>
+    </smooth-slide-group>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import MediaCard from '@/components/media/MediaCard.vue'
 import { chunksArray } from '@/utils/object-utils'
 import { Media } from '@/types/media'
+import SmoothSlideGroup from '@/components/common/SmoothSlideGroup.vue'
 
 @Component({
-    components: { MediaCard }
+    components: { SmoothSlideGroup, MediaCard }
 })
 export default class MediaCarousel extends Vue {
     @Prop({ required: true }) items!: Media[]
@@ -62,14 +67,21 @@ export default class MediaCarousel extends Vue {
     @Prop({ type: Boolean, default: false }) loading!: boolean
     @Prop({ type: Number, default: 1 }) rows!: number
 
-    get height (): string {
+    get height (): number {
         return (240 * this.rows
             + 8 * (this.rows + 1)) // gaps - top, bottom + between rows
-            + 'px'
     }
 
     get cols (): Media[][] {
         return chunksArray(this.items, this.rows)
+    }
+
+    @Watch('cols')
+    @Watch('loading')
+    update (): void {
+        this.$nextTick(() => {
+            (this.$refs.slider as any).updateButtons()
+        })
     }
 }
 </script>

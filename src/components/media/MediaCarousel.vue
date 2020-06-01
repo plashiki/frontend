@@ -1,6 +1,6 @@
 <template>
     <smooth-slide-group
-        :show-arrows="$r12s.isDesktopByWidth"
+        :show-buttons="$r12s.isDesktopByWidth"
         :height="height"
         :count="cols.length"
         ref="slider"

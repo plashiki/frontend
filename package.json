@@ -38,7 +38,8 @@
         "vuex-module-decorators": "^0.16.1",
         "vuex-persist": "^2.2.0",
         "vuex-shared-mutations": "^1.0.2",
-        "workbox-precaching": "^5.1.1"
+        "workbox-precaching": "^5.1.1",
+        "rebound": "^0.1.0"
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",

@@ -8,7 +8,7 @@
 
         <v-app-bar
             app
-            dark
+            :dark="isDark"
             v-if="showAppBar"
         >
             <v-app-bar-nav-icon
@@ -23,16 +23,18 @@
             <v-spacer />
 
             <v-text-field
+                v-model="searchInput"
                 :label="$t('Pages.Search.Name')"
-                @blur="$route.name === 'search' && doSearch()"
-                @click:append="doSearch"
-                @keyup.enter="doSearch"
+                :solo-inverted="isDark"
+                :solo="!isDark"
+                class="search-field"
                 append-icon="mdi-magnify"
                 flat
                 hide-details
-                solo-inverted
                 v-if="showSearch"
-                v-model="searchInput"
+                @blur="$route.name === 'search' && doSearch()"
+                @click:append="doSearch"
+                @keyup.enter="doSearch"
             />
 
             <v-spacer />
@@ -267,3 +269,9 @@ export default class DefaultLayout extends Vue {
     }
 }
 </script>
+
+<style>
+.theme--light.search-field.v-text-field--solo > .v-input__control > .v-input__slot {
+    background: #d9d9d9 !important;
+}
+</style>

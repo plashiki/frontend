@@ -84,6 +84,23 @@
                             target="_blank"
                             v-if="media !== null"
                         />
+                        <TranslationSubscribeMenu
+                            :media-id="mediaId"
+                            :media-type="mediaType"
+                            :translation="translation"
+                            offset-x
+                            right
+                            transition="slide-x-transition"
+                            v-if="translation && media && authenticated && $r12s.screenWidth <= 480"
+                        >
+                            <template #default="{ on }">
+                                <VListItemIconText
+                                    :title="$t('Items.Notification.NamePlural')"
+                                    icon="mdi-bell"
+                                    v-on="on"
+                                />
+                            </template>
+                        </TranslationSubscribeMenu>
                         <VListItemIconText
                             :title="$t('Items.Translation.Edit')"
                             @click="editDialog = true"

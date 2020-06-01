@@ -1,6 +1,6 @@
 {
     "name": "plashiki-frontend",
-    "version": "3.0.0-rc2",
+    "version": "3.0.0-rc3",
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",

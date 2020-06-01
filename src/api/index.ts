@@ -64,6 +64,9 @@ const webSocketRequestMap: Record<number, [Function, Function, number, number]> 
 let nextWebSocketRequestId = 0
 let nextWebSocketBackOff = 1
 
+let lastKeepAlive = -1
+let keepAliveTimerId: number | null
+
 export function makeApiRequestForEnvelope<T = any> (options: MakeApiRequestOptions): Promise<ApiEnvelope<T>> {
     if (options.body !== undefined && options.method === undefined) {
         options.method = 'POST'
@@ -237,6 +240,18 @@ function onWebSocketClose (evt: CloseEvent): void {
     emitWebSocketStatusUpdate()
 
     webSocketReconnectionTimer()
+    if (keepAliveTimerId) {
+        clearTimeout(keepAliveTimerId)
+    }
+}
+
+function websocketKeepAlive (): void {
+    if (!webSocket) return
+    lastKeepAlive = performance.now()
+    webSocket.send('KA')
+
+    // random wait between 45-55 secs
+    keepAliveTimerId = setTimeout(websocketKeepAlive, 45000 + Math.random() * 10000)
 }
 
 export function createWebSocket (resetBackoff = false): void {
@@ -263,9 +278,22 @@ export function createWebSocket (resetBackoff = false): void {
         webSocketStatus.state = WebSocketStatusState.CONNECTED
         webSocketEventBus.$emit('ready')
         nextWebSocketBackOff = 1
+
+        if (isProduction) {
+            keepAliveTimerId = setTimeout(websocketKeepAlive, 45000 + Math.random() * 10000)
+        }
+
         emitWebSocketStatusUpdate()
     })
     webSocket.addEventListener('message', (evt) => {
+        if (evt.data === 'KAACK') {
+            if (lastKeepAlive !== -1) {
+                ga('send', 'timing', 'API', 'ws_ka_roundtrip', performance.now() - lastKeepAlive)
+                lastKeepAlive = -1
+            }
+            return
+        }
+
         webSocketEventBus.$emit('message', JSON.parse(evt.data))
     })
     webSocket.addEventListener('close', onWebSocketClose)
@@ -358,7 +386,10 @@ export function updateInitData (retry = false): void {
 export function initApi (): void {
     if (!isProduction) {
         (window as any).$api = {
-            makeApiRequest
+            makeApiRequest,
+            get ws (): WebSocket | null {
+                return webSocket
+            }
         }
     }
 

@@ -93,10 +93,11 @@ export default class SmoothSlideGroup extends Vue {
     }
 
     onWheel (e: WheelEvent): void {
-        this.scroll(0, e.deltaY)
-
         if (e.deltaY > 0 && !this.isEnd || e.deltaY < 0 && !this.isBegin) {
             e.preventDefault()
+
+            let direction = Math.min(Math.max(e.deltaY, -1), 1)
+            this.scroll(0, direction * 100)
         }
     }
 

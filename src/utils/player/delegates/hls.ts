@@ -3,13 +3,13 @@ import { PlayerDelegate } from '@/types/player'
 import { nop } from '@/utils/helpers'
 
 export default class HlsPlayer extends PlayerDelegate {
+    _lastSrc = ''
     hls: Hls
 
     constructor (tech: HTMLVideoElement) {
         super(tech)
 
         this.hls = new Hls()
-        this.hls.attachMedia(tech)
     }
 
     getDuration () {
@@ -37,11 +37,13 @@ export default class HlsPlayer extends PlayerDelegate {
     }
 
     getSrc () {
-        return this.tech.src
+        return this._lastSrc
     }
 
     setSrc (val: string) {
+        this._lastSrc = val
         this.hls.loadSource(val)
+        this.hls.attachMedia(this.tech)
     }
 
     getPosition () {
@@ -56,18 +58,22 @@ export default class HlsPlayer extends PlayerDelegate {
         this.vuedio = instance
         this.vuedio.progressiveLevels = true
         this.hls.on(Hls.Events.MANIFEST_PARSED, (ev: string, data: any) => {
-            this.vuedio.progressiveLevels =
-                data.levels.map((it: any, i: number) => (
-                    {
-                        name: it.name || it.height + 'p',
-                        id: i,
-                        selected: i === data.firstLevel,
-                        callback: () => {
-                            this.hls.currentLevel = i
+            if (this.vuedio.sources && this.vuedio.sources.length <= 1) {
+                this.vuedio.progressiveLevels =
+                    data.levels.map((it: any, i: number) => (
+                        {
+                            name: it.name || it.height + 'p',
+                            id: i,
+                            selected: i === data.firstLevel,
+                            callback: () => {
+                                this.hls.currentLevel = i
+                            }
                         }
-                    }
-                ))
-            this.vuedio.subtitlesAvailable = this.hls.subtitleTracks.length > 0
+                    ))
+            }
+            if (!this.vuedio.subtitlesAvailable) {
+                this.vuedio.subtitlesAvailable = this.hls.subtitleTracks.length > 0
+            }
         })
         this.hls.on(Hls.Events.LEVEL_SWITCHED, (ev: string, { level }: Hls.levelSwitchedData) => {
             if (!Array.isArray(this.vuedio.progressiveLevels)) {
@@ -78,11 +84,15 @@ export default class HlsPlayer extends PlayerDelegate {
             }
         })
         this.hls.on(Hls.Events.SUBTITLE_TRACKS_UPDATED, (ev: string, { subtitleTracks }: any) => {
-            this.vuedio.subtitlesAvailable = subtitleTracks.length > 0
-            this.vuedio.subtitlesEnabled = this.hls.subtitleDisplay
+            if (!this.vuedio.subtitlesAvailable) {
+                this.vuedio.subtitlesAvailable = subtitleTracks.length > 0
+                this.vuedio.subtitlesEnabled = this.hls.subtitleDisplay
+            }
         })
-        this.vuedio.externalSubtitles = true
-        this.vuedio.externalSubtitlesListener = this.subtitlesListener.bind(this)
+        if (!this.vuedio.subtitlesAvailable) {
+            this.vuedio.externalSubtitles = true
+            this.vuedio.externalSubtitlesListener = this.subtitlesListener.bind(this)
+        }
     }
 
     off (event: string, handler: any) {

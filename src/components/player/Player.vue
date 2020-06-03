@@ -792,10 +792,10 @@ export default {
     },
     watch: {
         subtitlesEnabled (val) {
-            if (this.externalSubtitles) {
-                this.externalSubtitlesListener(val)
-            } else if (this.subtitlesClock) {
+            if (this.subtitlesClock) {
                 this.subtitlesClock[val ? 'start' : 'stop']()
+            } else if (this.externalSubtitles) {
+                this.externalSubtitlesListener(val)
             }
         },
         volume (val) {

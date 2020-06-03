@@ -224,7 +224,6 @@ export default {
             infoText: '',
             infoTimer: null,
             changeHandler: null,
-            treatment: null,
         }
     ),
     computed: {
@@ -266,7 +265,7 @@ export default {
         rect () {
             return this.$el.getBoundingClientRect()
         },
-        src (sources, treatment = null) {
+        src (sources) {
             if (!Array.isArray(sources)) {
                 sources = [sources]
             }
@@ -292,7 +291,6 @@ export default {
             this.tech.src = ''
 
             this.sources = sources
-            this.treatment = treatment
             this.currentSource = null
             this.currentVideo = null
             this.currentTime = 0
@@ -400,7 +398,7 @@ export default {
             if (this.player) {
                 this.player.destroy()
             }
-            this.player = new pl.default(this.tech, this.treatment)
+            this.player = new pl.default(this.tech)
             if (this.player.bind) {
                 this.player.bind(this)
             }

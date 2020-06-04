@@ -23,7 +23,7 @@ export default class ConfigModule extends VuexModule {
     // ui
     dark = false
     listViewMode: 'cards' | 'items' = 'cards'
-    expandAllViewer = false
+    expandAllViewer = true
     lightColors = {
         primary: '#1976D2',
         accent: '#82B1FF'

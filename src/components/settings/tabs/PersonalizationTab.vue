@@ -30,6 +30,13 @@
             class="caption text--secondary"
             v-html="$t('Pages.Settings.PreferredNameLanguageShiki')"
         />
+        
+        <v-switch
+            :label="$t('Pages.Settings.ExpandAllAuthors')"
+            v-model="expandAllViewer"
+            hide-details
+        />
+
         <v-switch
             :label="$t('Pages.Settings.OnlyOngoingsInRecent')"
             v-model="onlyOngoingsInRecent"
@@ -124,6 +131,16 @@ export default class PersonalizationTab extends Vue {
     set onlyOngoingsInRecent (val: boolean) {
         configStore.merge({
             onlyOngoingsInRecent: val
+        })
+    }
+
+    get expandAllViewer (): boolean {
+        return configStore.expandAllViewer
+    }
+
+    set expandAllViewer (val: boolean) {
+        configStore.merge({
+            expandAllViewer: val
         })
     }
 

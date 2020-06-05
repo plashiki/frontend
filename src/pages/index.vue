@@ -2,19 +2,6 @@
     <div>
         <ErrorAlert :error="error" />
 
-        <OneTimeAlert
-            border="left"
-            colored-border
-            name="3.0-beta-notice"
-            outlined
-            type="info"
-        >
-            PlaShiki 3.0 находится в стадии бета-тестирования.
-            Используется снимок базы данных от <b>28.05.20</b> на отдельной, тестовой базе данных.
-            Все, что создано/изменено в течение бета-тестирования, будет удалено во время релиза и перезаписано данными
-            из релизной базы данных. Обо всех багах просьба <a href="//github.com/plashiki/frontend/issues" target="_blank">сообщать нам</a>.
-        </OneTimeAlert>
-
         <v-card class="my-2">
             <v-card-text>
                 <HeadlineWithLinkButton

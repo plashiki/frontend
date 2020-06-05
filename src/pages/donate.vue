@@ -13,7 +13,7 @@
                 <v-row justify="center">
                     <v-btn
                         class="ma-2"
-                        href="https://qiwi.com/n/plashiki"
+                        href="https://qiwi.com/n/tggdesu"
                         target="_blank"
                     >
                         {{ $t('Pages.Donate.Qiwi') }}

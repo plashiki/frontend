@@ -65,7 +65,7 @@ export default class VNumberField extends Vue {
     }
 
     increment (): void {
-        this.vmodel = Math.min(this.max, this.vmodel + this.step)
+        this.vmodel = Math.min(this.max, this.vmodel - (-this.step))
     }
 
     validNumber (v: string, predicate?: (v: number) => boolean): boolean {

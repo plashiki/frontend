@@ -1,5 +1,5 @@
 import { makeApiRequest } from '@/api/index'
-import { ModerationStatistics, Report } from '@/types/moderation'
+import { ModerationStatistics, PlayerMeta, Report } from '@/types/moderation'
 import { Translation } from '@/types/translation'
 import { PaginatedResponse, Pagination, PaginationSort } from '@/types/api'
 import { DeleteResult } from '@/types/misc'
@@ -159,5 +159,11 @@ export function getDeclineReason (id: number): Promise<string | null> {
 export function getModerationStatistics (): Promise<ModerationStatistics> {
     return makeApiRequest({
         path: '/v2/moderation/statistics'
+    })
+}
+
+export function getPlayerMeta (translationId: number): Promise<PlayerMeta | null> {
+    return makeApiRequest({
+        path: `/v2/translations/${translationId}/playerMeta`
     })
 }

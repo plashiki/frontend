@@ -15,10 +15,11 @@
 
         <v-card-text>
             <TranslationForm
+                v-if="editableTranslation"
+                ref="form"
                 :disabled="loading"
                 :form="editableTranslation"
-                ref="form"
-                v-if="editableTranslation"
+                :show-meta="showMeta"
                 v-model="valid"
             >
                 <slot />
@@ -109,6 +110,7 @@ export default class TranslationEditDialog extends Vue {
     @Prop({ type: Number, default: null }) translationId!: number | null
     @Prop({ type: Boolean, default: false }) hideDelete!: boolean
     @Prop({ type: Boolean, default: false }) moderator!: boolean
+    @Prop({ type: Boolean, default: false }) showMeta!: boolean
     @Prop({ type: Number, default: -1 }) reportId!: number
 
     error: ApiException | null = null

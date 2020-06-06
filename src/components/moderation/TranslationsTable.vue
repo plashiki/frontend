@@ -3,7 +3,8 @@
         <v-dialog v-model="editing">
             <TranslationEditDialog
                 :init-translation="editingTranslation"
-                :moderator="moderator"
+                :moderator="moderator && editingTranslation.status === 'pending'"
+                :show-meta="moderator"
                 @close="editing = false"
                 @media="medias[$event.id] = $event"
                 @update="update"

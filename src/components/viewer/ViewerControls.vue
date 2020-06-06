@@ -22,12 +22,14 @@
                 </v-dialog>
 
                 <v-dialog
+                    v-if="isModerator"
                     max-width="800"
                     v-model="editDialog"
                     scrollable
                 >
                     <TranslationEditDialog
                         :translation-id="translation.id"
+                        show-meta
                         @close="editDialog = false"
                         @delete="requestUpdate"
                         @update="requestUpdate"

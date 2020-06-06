@@ -35,3 +35,13 @@ export interface ModerationStatistics {
     declined: number
     reports: number
 }
+
+
+export interface PlayerMeta {
+    title?: string
+    description?: string
+    uploader?: string
+    url?: string
+    // ---- //
+    error?: string
+}

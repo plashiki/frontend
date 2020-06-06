@@ -4,6 +4,7 @@
             <TranslationEditDialog
                 :report-id="currentReport.id"
                 :translation-id="currentReport.translation_id"
+                show-meta
                 @close="editing = false"
                 @delete="update"
                 @update="update"

@@ -141,6 +141,38 @@
                 wrap
             >
                 <slot />
+                <template v-if="showMeta">
+                    <v-simple-card class="v-card--outlined text-wrap">
+                        <v-progress-linear v-if="playerMetaLoading" />
+                        <template v-if="playerMeta !== null">
+                            <h4
+                                v-if="playerMeta.title"
+                                v-text="playerMeta.title"
+                            />
+                            <p
+                                v-if="playerMeta.description"
+                                v-text="playerMeta.description"
+                            />
+                            <a
+                                v-if="playerMeta.uploader"
+                                :href="playerMeta.uploader"
+                                target="_blank"
+                                v-text="playerMeta.uploader"
+                            /><br />
+                            <a
+                                v-if="playerMeta.url"
+                                :href="playerMeta.url"
+                                target="_blank"
+                                v-text="playerMeta.url"
+                            /><br />
+                            <p
+                                v-if="playerMeta.error"
+                                class="error--text"
+                                v-text="playerMeta.error"
+                            />
+                        </template>
+                    </v-simple-card>
+                </template>
             </v-layout>
         </v-row>
     </v-form>
@@ -161,6 +193,10 @@ import VNumberField from '@/components/common/fields/VNumberField.vue'
 import { Translation, TranslationLanguage } from '@/types/translation'
 import { Media, MediaType } from '@/types/media'
 import { ApiException } from '@/types/api'
+import VSimpleCard from '@/components/common/VSimpleCard.vue'
+import { PlayerMeta } from '@/types/moderation'
+import { getPlayerMeta } from '@/api/moderation'
+import { iziToastError } from '@/plugins/izitoast'
 
 const formDefaults = {
     author: '',
@@ -174,7 +210,7 @@ type TranslationFormData = {
 }
 
 @Component({
-    components: { VNumberField, ErrorAlert, MediaByIdField, TwoOptionSwitch, SearchFieldAutocomplete }
+    components: { VSimpleCard, VNumberField, ErrorAlert, MediaByIdField, TwoOptionSwitch, SearchFieldAutocomplete }
 })
 export default class TranslationForm extends Vue {
     @Prop({ type: Object, default: () => ({}) }) form!: TranslationFormData
@@ -182,6 +218,7 @@ export default class TranslationForm extends Vue {
     @Prop({ type: Boolean, default: false }) noPreview!: boolean
     @Prop({ type: Boolean, default: false }) noUrl!: boolean
     @Prop({ type: Boolean, default: false }) disabled!: boolean
+    @Prop({ type: Boolean, default: false }) showMeta!: boolean
     @Prop({ type: Boolean, default: false }) allowEmpty!: boolean
 
     byId = false
@@ -193,6 +230,9 @@ export default class TranslationForm extends Vue {
     mediaType: MediaType = 'anime'
     selectedMedia: Media | null = null
     inputUrl = ''
+
+    playerMeta: PlayerMeta | null = null
+    playerMetaLoading = false
 
     get posterSrc (): string {
         return this.selectedMedia ? getMediaSmallImage(this.selectedMedia) ?? getMediaFullImage(this.selectedMedia) : transparentPixel
@@ -312,9 +352,27 @@ export default class TranslationForm extends Vue {
         }
     }
 
+    loadPlayerMeta (): void {
+        if (!this.form.id || this.playerMetaLoading) return
+
+        this.playerMetaLoading = true
+        getPlayerMeta(this.form.id)
+            .then((meta) => {
+                this.playerMeta = meta
+            })
+            .catch(iziToastError)
+            .finally(() => {
+                this.playerMetaLoading = false
+            })
+    }
+
     mounted (): void {
         this.initForm()
         this.updateInputMedia()
+
+        if (this.showMeta) {
+            this.loadPlayerMeta()
+        }
     }
 }
 </script>

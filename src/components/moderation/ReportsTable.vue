@@ -72,7 +72,7 @@
                                 @click="edit(item)"
                                 icon
                                 small
-                                v-tooltip="$t('Pages.Moderation.CloserLook')"
+                                v-tooltip="$t('Pages.Moderation.Consider')"
                             >
                                 <v-icon small>
                                     mdi-eye

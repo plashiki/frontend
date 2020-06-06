@@ -105,10 +105,10 @@
                             :title="$t('Items.Translation.Edit')"
                             @click="editDialog = true"
                             icon="mdi-pencil"
-                            v-if="translation !== null && isModerator && $r12s.screenWidth < 570"
+                            v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
                         />
                         <VListItemIconText
-                            v-if="translation !== null && isModerator && $r12s.screenWidth < 570"
+                            v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
                             :title="$t('Items.Translation.Delete')"
                             icon="mdi-delete"
                             @click="deleteCurrent"
@@ -256,7 +256,7 @@
 
                 <v-btn
                     v-tooltip="$t('Items.Translation.Delete')"
-                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth >= 570"
                     icon
                     @click="deleteCurrent"
                 >
@@ -265,7 +265,7 @@
 
                 <v-btn
                     v-tooltip="$t('Items.Translation.Edit')"
-                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth >= 570"
                     icon
                     @click="editDialog = true"
                 >

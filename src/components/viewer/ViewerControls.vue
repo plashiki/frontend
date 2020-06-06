@@ -105,7 +105,7 @@
                             :title="$t('Items.Translation.Edit')"
                             @click="editDialog = true"
                             icon="mdi-pencil"
-                            v-if="translation !== null && isModerator"
+                            v-if="translation !== null && isModerator && $r12s.screenWidth < 570"
                         />
                         <VListItemIconText
                             :title="$t(translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select')"
@@ -247,6 +247,15 @@
                 </v-menu>
 
                 <v-spacer />
+
+                <v-btn
+                    v-tooltip="$t('Items.Translation.Edit')"
+                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    icon
+                    @click="editDialog = true"
+                >
+                    <v-icon>mdi-pencil</v-icon>
+                </v-btn>
 
                 <AuthorsFiltersMenu :data="authors" />
 

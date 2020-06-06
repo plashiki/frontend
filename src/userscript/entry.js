@@ -1,5 +1,5 @@
 class UserScript {
-    __version = '1.0.0'
+    __version = '1.0.1'
     __debug = false
     __matchers = []
     __assets = process.env.ASSETS
@@ -257,7 +257,7 @@ us.match(ShikimoriRegex, () => {
                 const old = $('.plashiki-inject-stats')
                 if (old) old.remove()
 
-                let text
+                let text = ''
                 if (res.banned) {
                     text = `<span style="color: #de3e35">${us.tr('Banned')}</span>`
                 } else if (res.admin) {

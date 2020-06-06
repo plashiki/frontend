@@ -32,6 +32,7 @@ export default class ConfigModule extends VuexModule {
         primary: '#2196F3',
         accent: '#FF4081'
     }
+    reverseSortParts = false
 
     // data & api
     dataProvider: DataProvider = defaultProvider

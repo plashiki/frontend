@@ -3,34 +3,52 @@
         class="overflow-x-hidden parts-list"
     >
         <transition mode="out-in" name="fade-transition">
-            <v-list
-                color="transparent"
-                dense
+            <div
                 v-if="data != null && parts.length > 0"
             >
-                <v-list-item
-                    :class="{ 'primary--text v-list-item--active': selectedPart === partN }"
-                    :key="partN"
-                    :ref="'part-' + partN"
-                    @click="onItemClicked(partN)"
-                    v-for="partN in parts"
+                <div class="d-flex flex-row">
+                    <v-spacer />
+                    <v-btn
+                        icon
+                        small
+                        @click="reverseSortParts = !reverseSortParts"
+                    >
+                        <v-icon
+                            small
+                            v-text="reverseSortParts ? 'mdi-sort-numeric-descending' : 'mdi-sort-numeric-ascending'"
+                        />
+                    </v-btn>
+                </div>
+                <v-list
+                    color="transparent"
+                    dense
                 >
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            {{ $tc(mediaType === 'anime' ? 'Items.Media.NthEpisode' : 'Items.Media.NthChapter', partN)
-                            }}
-                        </v-list-item-title>
-                        <v-list-item-subtitle class="text-truncate">
-                            {{ data[partN].players.join(', ') }}
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-avatar size="30" v-if="userRate && partN <= userRate.parts">
-                        <v-icon color="success">
-                            mdi-check
-                        </v-icon>
-                    </v-list-item-avatar>
-                </v-list-item>
-            </v-list>
+                    <transition-group name="basic-list-movement">
+                        <v-list-item
+                            :class="{ 'primary--text v-list-item--active': selectedPart === partN }"
+                            :key="partN"
+                            :ref="'part-' + partN"
+                            class="basic-list-movement-item"
+                            @click="onItemClicked(partN)"
+                            v-for="partN in parts"
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    {{ $tc(mediaType === 'anime' ? 'Items.Media.NthEpisode' : 'Items.Media.NthChapter', partN) }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle class="text-truncate">
+                                    {{ data[partN].players.join(', ') }}
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-avatar size="30" v-if="userRate && partN <= userRate.parts">
+                                <v-icon color="success">
+                                    mdi-check
+                                </v-icon>
+                            </v-list-item-avatar>
+                        </v-list-item>
+                    </transition-group>
+                </v-list>
+            </div>
             <v-skeleton-loader
                 type="list-item-two-line, list-item-two-line, list-item-two-line, list-item-two-line, list-item-two-line"
                 v-else-if="data === null && loading"
@@ -50,6 +68,7 @@ import { MediaType } from '@/types/media'
 import { UserRate } from '@/types/user-rate'
 import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
+import { configStore } from '@/store'
 
 @Component({
     components: { VSimpleCard, NoItemsPlaceholder }
@@ -61,9 +80,27 @@ export default class PartsList extends Vue {
     @Prop({ default: false }) loading!: boolean
     @PropSync('part') selectedPart!: number
 
+    get reverseSortParts (): boolean {
+        return configStore.reverseSortParts
+    }
+
+    set reverseSortParts (val: boolean) {
+        configStore.merge({
+            reverseSortParts: val
+        })
+    }
+
     get parts (): number[] {
         if (!this.data) return []
-        return Object.keys(this.data).map(i => parseInt(i))
+        let ret = Object.keys(this.data).map(i => parseInt(i))
+
+        if (this.reverseSortParts) {
+            ret.sort((a, b) => b - a)
+        } else {
+            ret.sort((a, b) => a - b)
+        }
+
+        return ret
     }
 
     @Watch('selectedPart')

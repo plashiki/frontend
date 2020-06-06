@@ -147,6 +147,7 @@ Pages:
     TitleDelimiter: ' / '
     Episodes: Серии
     Chapters: Главы
+    Availability: Доступность
     NMoreLinks:
       - (+$n ссылок)
       - (+$n ссылка)

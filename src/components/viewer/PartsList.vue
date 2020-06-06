@@ -7,6 +7,22 @@
                 v-if="data != null && parts.length > 0"
             >
                 <div class="d-flex flex-row">
+                    <AuthorAvailabilityPopup
+                        :data="data"
+                    >
+                        <template #default="{ on }">
+                            <v-btn
+                                v-tooltip="$t('Pages.Viewer.Availability')"
+                                icon
+                                small
+                                v-on="on"
+                            >
+                                <v-icon small>
+                                    mdi-folder-information
+                                </v-icon>
+                            </v-btn>
+                        </template>
+                    </AuthorAvailabilityPopup>
                     <v-spacer />
                     <v-btn
                         icon
@@ -69,9 +85,10 @@ import { UserRate } from '@/types/user-rate'
 import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
 import { configStore } from '@/store'
+import AuthorAvailabilityPopup from '@/components/viewer/AuthorAvailabilityPopup.vue'
 
 @Component({
-    components: { VSimpleCard, NoItemsPlaceholder }
+    components: { AuthorAvailabilityPopup, VSimpleCard, NoItemsPlaceholder }
 })
 export default class PartsList extends Vue {
     @Prop({ default: () => ({}) }) data!: Readonly<TranslationData>

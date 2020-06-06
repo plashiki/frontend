@@ -91,7 +91,7 @@
                             offset-x
                             right
                             transition="slide-x-transition"
-                            v-if="translation && media && authenticated && $r12s.screenWidth <= 480"
+                            v-if="media && authenticated && $r12s.screenWidth <= 480"
                         >
                             <template #default="{ on }">
                                 <VListItemIconText
@@ -144,7 +144,7 @@
                     offset-y
                     top
                     transition="slide-y-transition"
-                    v-if="translation && media && authenticated && $r12s.screenWidth > 480"
+                    v-if="media && authenticated && $r12s.screenWidth > 480"
                 >
                     <template #default="{ on }">
                         <v-btn

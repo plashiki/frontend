@@ -44,26 +44,31 @@ import { formatAnimeTranslationMeta } from '@/utils/notification-utils'
 
 @Component({})
 export default class TranslationSubscribeMenu extends Vue {
-    @Prop({ required: true }) translation!: ExtendedSingleTranslationData
+    @Prop({ required: true }) translation!: ExtendedSingleTranslationData | null
     @Prop({ required: true }) mediaType!: MediaType
     @Prop({ required: true }) mediaId!: number
 
     loading: false | string = false
 
     get topics (): any[] {
-        return [
+        let ret = [
             {
                 topic: `tr:${this.mediaType}:${this.mediaId}`,
                 name: this.$t('Pages.Viewer.NotificationNewEpisodes')
-            },
-            {
-                topic: `tr:${this.mediaType}:${this.mediaId}:${this.translation.author.lang}:${this.translation.author.kind}`,
-                name: this.$t('Pages.Viewer.NotificationNewEpisodesMeta', { meta: this.i18nMeta })
             }
         ]
+        if (this.translation) {
+            ret.push({
+                topic: `tr:${this.mediaType}:${this.mediaId}:${this.translation.author.lang}:${this.translation.author.kind}`,
+                name: this.$t('Pages.Viewer.NotificationNewEpisodesMeta', { meta: this.i18nMeta })
+            })
+        }
+        return ret
     }
 
     get i18nMeta (): string {
+        if (!this.translation) return ''
+
         return formatAnimeTranslationMeta({
             kind: this.translation.author.kind,
             lang: this.translation.author.lang

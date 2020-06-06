@@ -24,6 +24,7 @@
                 <v-dialog
                     max-width="800"
                     v-model="editDialog"
+                    scrollable
                 >
                     <TranslationEditDialog
                         :translation-id="translation.id"

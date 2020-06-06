@@ -108,6 +108,12 @@
                             v-if="translation !== null && isModerator && $r12s.screenWidth < 570"
                         />
                         <VListItemIconText
+                            v-if="translation !== null && isModerator && $r12s.screenWidth < 570"
+                            :title="$t('Items.Translation.Delete')"
+                            icon="mdi-delete"
+                            @click="deleteCurrent"
+                        />
+                        <VListItemIconText
                             :title="$t(translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select')"
                             @click.stop.prevent="translationSelectionMode = !translationSelectionMode"
                             icon="mdi-select-group"
@@ -249,6 +255,15 @@
                 <v-spacer />
 
                 <v-btn
+                    v-tooltip="$t('Items.Translation.Delete')"
+                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    icon
+                    @click="deleteCurrent"
+                >
+                    <v-icon>mdi-delete</v-icon>
+                </v-btn>
+
+                <v-btn
                     v-tooltip="$t('Items.Translation.Edit')"
                     v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
                     icon
@@ -289,7 +304,7 @@ import { SingleTranslationData, TranslationAuthor, TranslationData } from '@/typ
 import { UserRate, UserRateStatus } from '@/types/user-rate'
 import ReportForm from '@/components/moderation/ReportForm.vue'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
-import { deleteMultipleTranslations } from '@/api/moderation'
+import { deleteMultipleTranslations, deleteTranslation } from '@/api/moderation'
 import MultipleTranslationEditDialog from '@/components/moderation/MultipleTranslationEditDialog.vue'
 import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 import TranslationSubscribeMenu from '@/components/notifications/TranslationSubscribeMenu.vue'
@@ -385,6 +400,15 @@ export default class ViewerControls extends Vue {
 
     editMultiple (): void {
         this.editMultipleDialog = true
+    }
+
+    deleteCurrent (): void {
+        if (!this.translation) return
+
+        deleteTranslation(this.translation.id).then(() => {
+            iziToastSuccess(this.$t('Common.Action.Deleted'))
+            this.requestUpdate()
+        }).catch(iziToastError)
     }
 
     deleteMultiple (): void {

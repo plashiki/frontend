@@ -522,6 +522,7 @@ Items:
     Target: Цель
     Part: Часть
     Edit: Редактировать перевод
+    Delete: Удалить перевод
     Deleted: <удалено>
   Notification:
     Name: Уведомление

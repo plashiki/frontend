@@ -8,7 +8,7 @@ import NotificationsModule from '@/store/notifications'
 import { getModule } from 'vuex-module-decorators'
 import createMutationsSharer, {
     BroadcastChannelStrategy,
-    LocalStorageStrategy,
+    LocalStorageStratery,
     SharedMutationStrategy
 } from 'vuex-shared-mutations'
 import { localModules, localMutations, sharedMutations } from '@/utils/vuex-sugar'
@@ -49,7 +49,7 @@ const sharingIsCaring = (store: Store<any>): void => {
             key: 'plashiki-mutations'
         })
     } else {
-        strategy = new LocalStorageStrategy({
+        strategy = new LocalStorageStratery({
             key: 'plashiki-mutations'
         })
     }

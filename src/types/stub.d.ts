@@ -21,7 +21,7 @@ declare module 'vuex-shared-mutations' {
         constructor (options?: { key?: string })
     }
 
-    export class LocalStorageStrategy extends BuiltinSharedMutationStrategy {
+    export class LocalStorageStratery extends BuiltinSharedMutationStrategy {
         constructor (options?: { key?: string, maxMessageLength?: number })
     }
 

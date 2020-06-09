@@ -10,6 +10,14 @@ import vuetify from './plugins/vuetify'
 import { initApi } from '@/api'
 import VTooltip from 'v-tooltip'
 import './plugins/izitoast'
+import * as Sentry from '@sentry/browser'
+import { Vue as VueIntegration } from '@sentry/integrations'
+
+Sentry.init({
+    dsn: 'https://2e3b1eb46ef44c88ad89b14aa7e0ae0a@o250330.ingest.sentry.io/5270119',
+    integrations: [new VueIntegration({ Vue, attachProps: true })]
+})
+
 
 Vue.config.productionTip = false
 

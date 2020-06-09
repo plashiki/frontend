@@ -23,6 +23,7 @@ import { ApiNotification } from '@/types/notification'
 import { iziToastError } from '@/plugins/izitoast'
 import { firebaseMessaging } from '@/plugins/firebase'
 import { prepareNotification } from '@/utils/notification-utils'
+import { configureScope } from '@sentry/browser'
 
 let thisTab: SessionTab = {
     id: -1,
@@ -353,6 +354,9 @@ export function updateInitData (retry = false): void {
     getCurrentUser().then(user => {
         authStore.setUser(user)
         ga('set', 'userId', user.id)
+        configureScope(scope => scope.setUser({
+            id: user.id + ''
+        }))
 
         getMissedNotifications(notificationsStore.lastSyncTime).then((items) => {
             Promise.all(items.map(i => prepareNotification(i))).then((items) => {

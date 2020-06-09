@@ -304,7 +304,7 @@ Pages:
               <a href="$tamperLink" target="_blank">TamperMonkey</a>
           </li>
           <li>
-              Установите <a href="/static/plashiki.user.js" target="_blank">скрипт</a>
+              Установите <a href="/assets/plashiki.user.js" target="_blank">скрипт</a>
           </li>
           <li>
               Обновите страницу

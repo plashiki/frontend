@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 const idb = new IndexedDBClient()
-firebaseMessaging.setBackgroundMessageHandler((obj) => {
+firebaseMessaging?.setBackgroundMessageHandler((obj) => {
     const data = obj.data
     if (data.type === 'push') {
         const payload = data as PushNotification

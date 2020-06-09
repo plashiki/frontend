@@ -122,7 +122,7 @@ export default class NotificationsDialog extends Vue {
             // but as a precaution...
             return false
         }
-        return typeof window.Notification !== 'undefined'
+        return typeof window.Notification !== 'undefined' && firebaseMessaging !== null
     }
 
     toggleBrowserPush (val: boolean): void {
@@ -131,7 +131,7 @@ export default class NotificationsDialog extends Vue {
                 this.pushPermission = perm
                 this.toggleBrowserPush(val)
                 if (perm) {
-                    firebaseMessaging.getToken().then((token) => {
+                    firebaseMessaging!.getToken().then((token) => {
                         authStore.setFirebaseToken(token)
                         return registerFirebaseToken(token)
                     }).catch(iziToastError)

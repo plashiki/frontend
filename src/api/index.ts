@@ -374,14 +374,14 @@ export function updateInitData (retry = false): void {
         else if (!retry) setTimeout(() => updateInitData(true), 1000)
     })
 
-    firebaseMessaging.onTokenRefresh(async () => {
+    firebaseMessaging?.onTokenRefresh(async () => {
         DEBUG.api('token refresh')
         const oldToken = authStore.firebaseToken
         if (oldToken) {
             await unregisterFirebaseToken(oldToken).catch(iziToastError)
         }
 
-        return firebaseMessaging.getToken()
+        return firebaseMessaging!.getToken()
             .then((token) => registerFirebaseToken(token))
             .catch(iziToastError)
     })

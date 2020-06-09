@@ -83,13 +83,6 @@ module.exports = {
         },
     },
     pluginOptions: {
-        sw: {
-            dest: 'sw.js',
-            src: 'src/service-worker.ts',
-            plugins: [
-                // ... webpack plugins that will be applied only to SW ...
-            ],
-        },
         webpackBundleAnalyzer: {
             openAnalyzer: false,
         },

@@ -10,7 +10,7 @@ declare const self: ServiceWorkerGlobalScope
 declare const clients: Clients
 
 // we dont need auto caching, we handle it manually
-/* self.__WB_MANIFEST */
+let manifest = (self as any).__WB_MANIFEST
 
 if (process.env.NODE_ENV === 'production') {
     registerRoute(

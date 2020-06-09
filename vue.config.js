@@ -61,9 +61,7 @@ module.exports = {
             .loader('vue-svg-loader')
 
         const workBoxConfig = {
-            exclude: [
-                'sw.js',
-            ],
+            include: [],
             swDest: 'sw.js',
             swSrc: join(__dirname, 'src/service-worker.ts'),
         }

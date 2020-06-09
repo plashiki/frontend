@@ -114,6 +114,8 @@ Pages:
     ApiServer: API сервер $service
     ApiServerDescription: Эти настройки предназначены для регионов, в которых ограничен доступ к некоторым сервисам.
     EnableProxy: Включить прокси
+    CacheSize: Размер кеша
+    ClearCache: Очистить кеш
     # AboutTab
     Version: Версия
     BuiltOnCommit: Собрано на коммите

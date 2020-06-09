@@ -25,9 +25,20 @@
             v-model="shikimoriApiEndpoint"
         />
         <p
-            class="caption text--secondary mb-0"
+            class="caption text--secondary"
             v-html="$t('Pages.Settings.ApiServerDescription')"
         />
+
+        <v-divider class="mb-4" />
+        <p class="mb-0">
+            <b v-text="$t('Pages.Settings.CacheSize')" />:
+            {{ cacheSize + (cacheQuota ? ' / ' + cacheQuota : '') }} (<span
+                class="caption"
+                :class="this.clearingCache ? 'text--secondary' : 'primary--text link-like'"
+                @click="clearCache"
+                v-text="$t('Pages.Settings.ClearCache')"
+            />)
+        </p>
     </div>
 </template>
 
@@ -37,6 +48,8 @@ import VNumberField from '@/components/common/fields/VNumberField.vue'
 import { configStore } from '@/store'
 import { mainDomain, shikimori } from '@/config'
 import ApiServerField from '@/components/settings/ApiServerField.vue'
+import { formatFileSize } from '@/utils/filesize'
+import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 
 @Component({
     components: { ApiServerField, VNumberField }
@@ -44,6 +57,10 @@ import ApiServerField from '@/components/settings/ApiServerField.vue'
 export default class NetworkTab extends Vue {
     defaultShikimori = shikimori.endpoint
     shikimoriProxy = `https://sh.${mainDomain}/api`
+
+    cacheSize = 'N/A'
+    cacheQuota = ''
+    clearingCache = false
 
     get apiTimeout (): number {
         return configStore.apiTimeout
@@ -72,6 +89,35 @@ export default class NetworkTab extends Vue {
     set connectionIndicator (val: boolean) {
         configStore.merge({
             connectionIndicator: val
+        })
+    }
+
+    clearCache (): void {
+        if (this.clearingCache || typeof caches === 'undefined') return
+
+        this.clearingCache = true
+        caches.keys()
+            .then((keys) => Promise.all(keys.map(k => caches.delete(k))))
+            .then(() => iziToastSuccess())
+            .catch(iziToastError)
+            .finally(() => {
+                this.clearingCache = false
+            })
+    }
+
+    mounted (): void {
+        navigator.storage?.estimate().then((result) => {
+            let bytes: number | undefined
+            if ('usageDetails' in result) {
+                bytes = (result as any).usageDetails.caches
+            } else {
+                bytes = result.usage
+            }
+
+            this.cacheSize = formatFileSize(bytes ?? 0)
+            if (result.quota) {
+                this.cacheQuota = formatFileSize(result.quota)
+            }
         })
     }
 }

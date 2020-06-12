@@ -448,7 +448,7 @@ export default class ViewerControls extends Vue {
             prom = createUserRate({
                 target_id: parseInt(this.$route.params.id),
                 target_type: this.mediaType,
-                parts: 1,
+                parts: this.partNumber,
                 status: UserRateStatus.InProgress
             }).then((rate) => {
                 this.userRate = rate

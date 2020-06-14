@@ -2,6 +2,7 @@ import { appName } from '@/config'
 import { Vue } from 'vue-property-decorator'
 import { PaginationSort } from '@/types/api'
 import { AnyKV } from '@/types'
+import { memoize } from '@/utils/function-utils'
 
 export const titleTemplate = (val: string): string => val ? val + ' - ' + appName : appName
 export const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))
@@ -55,6 +56,20 @@ export function formatTime (seconds: number, duration: number) {
 
     return h + m + s
 }
+
+export const isLocalStorageSupported = memoize((): boolean =>  {
+    try {
+        const key = `_LSPROBE_${Date.now()}_`
+        const ls = window.localStorage
+        if (!ls) return false
+        ls.setItem(key, key)
+        ls.removeItem(key)
+
+        return true
+    } catch (e) {
+        return false
+    }
+})
 
 export function compareVersions (a: string, b: string): number {
     let i

@@ -13,6 +13,7 @@ import createMutationsSharer, {
 } from 'vuex-shared-mutations'
 import { localModules, localMutations, sharedMutations } from '@/utils/vuex-sugar'
 import VuexPersistence from 'vuex-persist'
+import { isLocalStorageSupported } from '@/utils/helpers'
 
 Vue.use(Vuex)
 
@@ -48,10 +49,12 @@ const sharingIsCaring = (store: Store<any>): void => {
         strategy = new BroadcastChannelStrategy({
             key: 'plashiki-mutations'
         })
-    } else {
+    } else if (isLocalStorageSupported()) {
         strategy = new LocalStorageStratery({
             key: 'plashiki-mutations'
         })
+    } else {
+        return
     }
 
     createMutationsSharer({
@@ -62,6 +65,8 @@ const sharingIsCaring = (store: Store<any>): void => {
     })(store)
 }
 const storage = (store: Store<any>): void => {
+    if (!isLocalStorageSupported()) return
+
     const vuexLocal = new VuexPersistence<any>({
         storage: window.localStorage,
         key: 'plashiki-local',

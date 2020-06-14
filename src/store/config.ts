@@ -7,14 +7,14 @@ import { Vue } from 'vue-property-decorator'
 import { Media, MediaType } from '@/types/media'
 import { AnyKV } from '@/types'
 import IndexedDBClient from '@/utils/indexed-db-client'
-import { nop } from '@/utils/helpers'
+import { isLocalStorageSupported, nop } from '@/utils/helpers'
 import { defaultProvider, shikimori } from '@/config'
 
 const idb = new IndexedDBClient()
 
 let defaultPlayersFilters: Record<string, true> = {}
 
-if (!('plashiki-local' in localStorage)) {
+if (!isLocalStorageSupported() || !('plashiki-local' in localStorage)) {
     defaultPlayersFilters['smotret-anime.online'] = true
 }
 

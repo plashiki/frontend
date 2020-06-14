@@ -162,7 +162,7 @@ import determineSource from '@/utils/player/determine-source'
 import determineDuration, { updateTimestamps } from '@/utils/player/determine-duration'
 import PlayPauseIcon from './PlayPauseIcon.vue'
 import PlayerSeekbar from './PlayerSeekbar.vue'
-import { formatTime } from '@/utils/helpers'
+import { formatTime, isLocalStorageSupported } from '@/utils/helpers'
 import { SubtitlesOctopus } from '@/vendor/libassjs'
 import HighSpeedClock from '@/utils/high-speed-clock'
 import { DEBUG } from '@/utils/debug'
@@ -411,7 +411,7 @@ export default {
             }
             const time = this.currentTime
             this.currentSource = src
-            if (persist && src.height) {
+            if (persist && src.height && isLocalStorageSupported()) {
                 localStorage['vuedio-quality'] = src.height
             }
             this.updatePlayer(src.type)
@@ -809,7 +809,9 @@ export default {
                 val = 0
             }
             this.tech.volume = val
-            localStorage['vuedio-volume'] = val
+            if (isLocalStorageSupported()) {
+                localStorage['vuedio-volume'] = val
+            }
         },
     },
     mounted () {
@@ -839,7 +841,7 @@ export default {
             attributes: true,
         })
         this.onResize()
-        this.volume = parseFloat(localStorage['vuedio-volume'] || 1)
+        this.volume = isLocalStorageSupported() ? parseFloat(localStorage['vuedio-volume'] || 1) : 1
         this.bindGestures()
     },
 }

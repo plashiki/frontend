@@ -37,10 +37,3 @@ export default class PlayerPage extends Vue {
     }
 }
 </script>
-
-<style>
-.vuedio-fill {
-    width: 100%;
-    height: 100%;
-}
-</style>

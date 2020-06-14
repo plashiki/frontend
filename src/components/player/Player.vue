@@ -1153,4 +1153,9 @@ export default {
         transform: rotate(360deg);
     }
 }
+
+.vuedio-fill {
+    width: 100%;
+    height: 100%;
+}
 </style>

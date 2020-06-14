@@ -114,6 +114,12 @@ const routes: any[] = [
         meta: { layout: 'empty' }
     },
     {
+        path: '/player/anilibria',
+        name: 'player-anilibria',
+        component: () => import(/* webpackChunkName: "player-anilibria" */ '@/pages/player/anilibria.vue'),
+        meta: { layout: 'empty' }
+    },
+    {
         path: '/settings',
         name: 'settings',
         component: () => import(/* webpackChunkName: "settings" */ '@/pages/settings.vue')

@@ -305,13 +305,6 @@ export function requestAppRestart (): void {
     location.reload()
 }
 
-election.awaitLeadership().then(() => {
-    thisTab.master = true
-    DEBUG.api('became WS master')
-    emitIpc('MASTER_CHANGED', {})
-    createWebSocket()
-})
-
 channel.addEventListener('message', (msg: IPCEvent) => {
     DEBUG.api('<<< (IPC)', msg)
     if (msg.act === 'API_REQUEST' && thisTab.master) {
@@ -387,7 +380,12 @@ export function updateInitData (retry = false): void {
     })
 }
 
+export let apiInitialized = false
+
 export function initApi (): void {
+    if (apiInitialized || window !== window.parent) return
+    apiInitialized = true
+
     if (!isProduction) {
         (window as any).$api = {
             makeApiRequest,
@@ -404,4 +402,11 @@ export function initApi (): void {
     })
 
     onceStoreReady(updateInitData)
+
+    election.awaitLeadership().then(() => {
+        thisTab.master = true
+        DEBUG.api('became WS master')
+        emitIpc('MASTER_CHANGED', {})
+        createWebSocket()
+    })
 }

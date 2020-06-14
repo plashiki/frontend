@@ -7,7 +7,6 @@ import './plugins/vue-i18n'
 import router from './router'
 import store, { appStore } from './store'
 import vuetify from './plugins/vuetify'
-import { initApi } from '@/api'
 import VTooltip from 'v-tooltip'
 import './plugins/izitoast'
 import * as Sentry from '@sentry/browser'
@@ -20,8 +19,6 @@ Sentry.init({
 
 
 Vue.config.productionTip = false
-
-initApi()
 
 Vue.use(VTooltip)
 

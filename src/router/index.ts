@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { Route } from 'vue-router'
 import { appStore, authStore } from '@/store'
 import ErrorPage from '@/pages/error.vue'
+import { apiInitialized, initApi } from '@/api'
 
 Vue.use(VueRouter)
 
@@ -27,7 +28,8 @@ const routes: any[] = [
         component: () => import(/* webpackChunkName: "auth" */ '@/pages/auth.vue'),
         meta: {
             layout: 'plain',
-            auth: false
+            auth: false,
+            noapi: true
         }
     },
     {
@@ -36,7 +38,8 @@ const routes: any[] = [
         component: () => import(/* webpackChunkName: "oauth-shikimori" */ '@/pages/oauth/shikimori.vue'),
         meta: {
             layout: 'plain',
-            auth: false
+            auth: false,
+            noapi: true
         }
     },
     {
@@ -111,13 +114,19 @@ const routes: any[] = [
         path: '/player',
         name: 'player',
         component: () => import(/* webpackChunkName: "player" */ '@/pages/player.vue'),
-        meta: { layout: 'empty' }
+        meta: {
+            layout: 'empty',
+            noapi: true
+        }
     },
     {
         path: '/player/anilibria',
         name: 'player-anilibria',
         component: () => import(/* webpackChunkName: "player-anilibria" */ '@/pages/player/anilibria.vue'),
-        meta: { layout: 'empty' }
+        meta: {
+            layout: 'empty',
+            noapi: true
+        }
     },
     {
         path: '/settings',
@@ -164,7 +173,10 @@ const routes: any[] = [
         path: '/user(s)?/shikimori/:id(\\d+)',
         name: 'shikimori-redirect',
         component: () => import(/* webpackChunkName: "shikimori-redirect" */ '@/pages/user-redirect/shikimori.vue'),
-        meta: { layout: 'plain' }
+        meta: {
+            layout: 'plain',
+            noapi: true
+        }
     }
 ]
 
@@ -215,6 +227,9 @@ router.beforeResolve((to, from, next) => {
         appStore.reset({
             keepSearch: to.name === 'search'
         })
+    }
+    if ((from.meta.noapi || !apiInitialized) && !to.meta.noapi) {
+        initApi()
     }
 
     next()

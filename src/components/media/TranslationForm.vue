@@ -130,6 +130,7 @@
                 <iframe
                     :src="form.url"
                     allowfullscreen
+                    allow="autoplay encrypted-media fullscreen"
                     class="viewer-iframe"
                 ></iframe>
             </v-responsive>

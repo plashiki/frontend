@@ -21,6 +21,18 @@
 
                         <template #buttons-right>
                             <v-btn
+                                v-if="selected === '$recent'"
+                                v-tooltip="$t('Common.Clear')"
+                                class="ma-1"
+                                icon
+                                @click="clearRecent"
+                            >
+                                <v-icon>
+                                    mdi-delete-sweep
+                                </v-icon>
+                            </v-btn>
+
+                            <v-btn
                                 :disabled="selectedState.loading"
                                 @click="resetSelected"
                                 class="ma-1"
@@ -233,6 +245,17 @@ export default class ListsPage extends Vue {
             this.state = {}
             this.initState()
         }
+    }
+
+    clearRecent (): void {
+        configStore.set({
+            key: 'recentMedias',
+            value: {
+                anime: [],
+                manga: []
+            }
+        })
+        this.resetSelected()
     }
 
     endReached (): void {

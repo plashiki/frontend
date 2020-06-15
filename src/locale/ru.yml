@@ -591,6 +591,7 @@ Items:
 Common:
   Yes: да
   No: нет
+  Clear: Очистить
   NeedAuth: Необходима авторизация
   Description: Описание
   NoDescription: Нет описания

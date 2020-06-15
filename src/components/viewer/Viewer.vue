@@ -42,7 +42,7 @@
                             :src="iframeUrl"
                             @load="onIframeLoad"
                             allowfullscreen
-                            allow="autoplay encrypted-media fullscreen"
+                            allow="autoplay, encrypted-media, fullscreen"
                             class="viewer-iframe"
                             ref="iframe"
                         />

@@ -278,6 +278,13 @@ export default class TranslationForm extends Vue {
 
     @Watch('inputUrl')
     urlChanged (val: string): void {
+        let m = val.match(/^\s*<iframe[^>]*?src=['"](.*?)['"][^>]*?>/i)
+        if (m) {
+            let val = m[1]
+            if (val.startsWith('//')) val = 'https:' + val
+            this.inputUrl = val.replace(/&amp;/ig, '&')
+            return
+        }
         let valid = val !== '' && urlValidator(val) === true
         this.form.url = valid ? val : null
     }

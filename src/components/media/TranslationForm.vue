@@ -115,7 +115,18 @@
             autocomplete="off"
             v-model="inputUrl"
             validate-on-blur
-        />
+        >
+            <template #append-outer>
+                <v-btn
+                    icon
+                    :href="inputUrl"
+                    :disabled="inputUrl === ''"
+                    target="_blank"
+                >
+                    <v-icon>mdi-open-in-new</v-icon>
+                </v-btn>
+            </template>
+        </v-text-field>
         <v-row
             align="center"
             class="mt-3 overflow-x-auto"

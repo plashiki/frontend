@@ -58,6 +58,8 @@
                                     <li v-html="$tc('Pages.Moderation.Accepted', stats.accepted)" />
                                     <li v-html="$tc('Pages.Moderation.Declined', stats.declined)" />
                                     <li v-html="$tc('Pages.Moderation.ReportsCount', stats.reports)" />
+                                    <li v-html="$tc('Pages.Moderation.EditedCount', stats.edited)" />
+                                    <li v-html="$tc('Pages.Moderation.DeletedCount', stats.deleted)" />
                                 </ul>
                             </div>
 

@@ -34,6 +34,8 @@ export interface ModerationStatistics {
     accepted: number
     declined: number
     reports: number
+    edited: number
+    deleted: number
 }
 
 

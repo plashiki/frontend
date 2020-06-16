@@ -203,12 +203,14 @@ export function getDefaultTranslation (
     let { playersFilters, languageFilters } = configStore
     let authors = translations?.[partNumber]?.authors
     let lastAuthor = appStore.lastAuthor
+    let lastKind = appStore.lastKind
     if (!authors) return { translation: null }
 
     for (let i = 0; i < authors.length; i++) {
         if (tab !== AuthorsTab.All && authors[i].kind !== TabToKind[tab]) continue
         if (languageFilters[authors[i].lang] === true) continue
         if (!ignoreAuthor && lastAuthor) {
+            if (authors[i].kind !== lastKind) continue
             let { studio } = processAuthorName(authors[i].name)
             if (studio !== lastAuthor) continue
         }

@@ -17,6 +17,7 @@ export default class AppModule extends VuexModule {
     searchInput = ''
 
     lastAuthor = ''
+    lastKind = ''
 
     loading = false
 

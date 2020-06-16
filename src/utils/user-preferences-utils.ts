@@ -50,6 +50,11 @@ export function processAuthorName (name: string): {
 
     let [, studio, names] = match
 
+    if (studio.match(/[,;]|\s[и&]\s/)) {
+        names = studio
+        studio = ''
+    }
+
     return {
         studio,
         names: names?.split(/[,;]|\s[и&]\s/gi).map(i => i.trim()) ?? []

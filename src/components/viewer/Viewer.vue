@@ -175,7 +175,12 @@ import HeadlineWithLinkButton from '@/components/common/HeadlineWithLinkButton.v
 import { appStore, authStore, configStore } from '@/store'
 import PartsList from '@/components/viewer/PartsList.vue'
 import AuthorsList from '@/components/viewer/AuthorsList.vue'
-import { collectTelemetry, getDefaultTranslation, sortTranslations } from '@/utils/user-preferences-utils'
+import {
+    collectTelemetry,
+    getDefaultTranslation,
+    processAuthorName,
+    sortTranslations
+} from '@/utils/user-preferences-utils'
 import ViewerControls from '@/components/viewer/ViewerControls.vue'
 import { Media, MediaGenre, MediaType } from '@/types/media'
 import {
@@ -327,6 +332,15 @@ export default class Viewer extends LoadableVue {
             this.iframeUrl = 'about:blank'
             return
         }
+
+        let author = ''
+        if (val.author.name) {
+            let { studio } = processAuthorName(val.author.name)
+            author = studio
+        }
+        appStore.merge({
+            lastAuthor: author
+        })
 
         this.iframeUrl = val.url
     }

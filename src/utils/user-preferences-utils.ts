@@ -1,4 +1,4 @@
-import { configStore } from '@/store'
+import { appStore, configStore } from '@/store'
 import { merge, sum } from '@/utils/object-utils'
 import { i18n } from '@/plugins/vue-i18n'
 import { SingleTranslationData, TranslationAuthor, TranslationData, TranslationKind } from '@/types/translation'
@@ -193,7 +193,8 @@ export function collectTelemetry (translation: SingleTranslationData & { author:
 export function getDefaultTranslation (
     translations: TranslationData | null,
     partNumber: number,
-    tab: AuthorsTab = AuthorsTab.All
+    tab: AuthorsTab = AuthorsTab.All,
+    ignoreAuthor = false
 ): {
     translation: SingleTranslationData | null
     allTab?: true
@@ -201,11 +202,16 @@ export function getDefaultTranslation (
     // this.data?.[val]?.authors?.[0]?.translations?.[0]?.id ?? null
     let { playersFilters, languageFilters } = configStore
     let authors = translations?.[partNumber]?.authors
+    let lastAuthor = appStore.lastAuthor
     if (!authors) return { translation: null }
 
     for (let i = 0; i < authors.length; i++) {
         if (tab !== AuthorsTab.All && authors[i].kind !== TabToKind[tab]) continue
         if (languageFilters[authors[i].lang] === true) continue
+        if (!ignoreAuthor && lastAuthor) {
+            let { studio } = processAuthorName(authors[i].name)
+            if (studio !== lastAuthor) continue
+        }
 
         for (let j = 0; j < authors[i].translations.length; j++) {
             if (playersFilters[authors[i].translations[j].name]) continue
@@ -214,8 +220,12 @@ export function getDefaultTranslation (
         }
     }
 
+    if (!ignoreAuthor) {
+        return getDefaultTranslation(translations, partNumber, tab, true)
+    }
+
     if (tab !== AuthorsTab.All) {
-        let { translation } = getDefaultTranslation(translations, partNumber)
+        let { translation } = getDefaultTranslation(translations, partNumber, AuthorsTab.All, ignoreAuthor)
         return {
             translation,
             allTab: true

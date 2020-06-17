@@ -5,7 +5,9 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "build:userscript": "node build/build-userscript.js",
-        "build:all": "yarn build && yarn build:userscript",
+        "build:ext-chrome": "node build/build-extension.js chrome",
+        "build:ext-firefox": "node build/build-extension.js firefox",
+        "build:all": "yarn build && yarn build:userscript && yarn build:ext-chrome && yarn build:ext-firefox",
         "test:unit": "vue-cli-service test:unit",
         "lint": "vue-cli-service lint"
     },

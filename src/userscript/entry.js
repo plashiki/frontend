@@ -326,13 +326,124 @@ us.match(ShikimoriRegex, () => {
 
 
 us.match(PlashikiRegex, () => {
-    unsafeWindow.USERSCRIPT_VERSION = us.__version
-    unsafeWindow.corsAjax = GM_xmlhttpRequest
-    unsafeWindow.toggleGalo4ki = (val) => {
-        galo4kiEnabled = val
-        GM_setValue('galo4kiEnabled', val + '')
-    }
-    unsafeWindow.galo4kiEnabled = () => {
-        return Promise.resolve(GM_getValue('galo4kiEnabled')).then(i => i !== 'false')
+    if (process.ctx.isUserscript) {
+        unsafeWindow.USERSCRIPT_VERSION = us.__version
+        unsafeWindow.corsAjax = GM_xmlhttpRequest
+        unsafeWindow.toggleGalo4ki = (val) => {
+            galo4kiEnabled = val
+            GM_setValue('galo4kiEnabled', val + '')
+        }
+        unsafeWindow.galo4kiEnabled = () => {
+            return Promise.resolve(GM_getValue('galo4kiEnabled')).then(i => i !== 'false')
+        }
+    } else {
+        const vendorGlobal = process.ctx.target === 'firefox' ? browser : chrome
+
+        // basically the original Greasemonkey implementation.
+        // https://github.com/greasemonkey/greasemonkey
+        // licensed under MIT
+        // doesnt support .abort() but idc tbh
+        function GM_xmlhttpRequest (d) {
+            if (!d) throw new Error('xhr_no_details')
+            if (!d.url) throw new Error('xhr_no_url')
+
+            let url
+            try {
+                url = new URL(d.url, location.href)
+            } catch (e) {
+                throw new Error('xhr_bad_url ' + d.url + ' ' + e.stack)
+            }
+
+            if (url.protocol !== 'http:' && url.protocol !== 'https:' && url.protocol !== 'ftp:') {
+                throw new Error('xhr_bad_url_scheme ' + d.url)
+            }
+
+            let port = vendorGlobal.runtime.connect(extensionId, { name: 'PageXhr' })
+            port.onMessage.addListener(function (msg) {
+                if (msg.responseState.responseXML) {
+                    try {
+                        msg.responseState.responseXML = (new DOMParser()).parseFromString(
+                            msg.responseState.responseText,
+                            'application/xml',
+                        )
+                    } catch (e) {
+                        console.warn('GM_xhr could not parse XML:', e)
+                        msg.responseState.responseXML = null
+                    }
+                }
+                let o = msg.src === 'up' ? d.upload : d
+                let cb = o['on' + msg.type]
+                if (cb) cb(msg.responseState)
+            })
+
+            let noCallbackDetails = {}
+            Object.keys(d).forEach(k => {
+                let v = d[k]
+                noCallbackDetails[k] = v
+                if ('function' == typeof v) noCallbackDetails[k] = true
+            })
+            noCallbackDetails.upload = {}
+            d.upload && Object.keys(k => noCallbackDetails.upload[k] = true)
+            noCallbackDetails.url = url.href
+            port.postMessage({
+                'details': noCallbackDetails,
+                'name': 'open',
+            })
+        }
+
+        function getGalo4kiEnabled (callback) {
+            // in ff i cant return promises from exported functions, lol
+            // return new Promise(callback => {
+            return vendorGlobal.runtime.sendMessage(extensionId, {
+                action: 'getGalo4kiEnabled',
+            }, callback)
+            // })
+        }
+
+        function toggleGalo4ki (val, callback) {
+            // return new Promise(callback => {
+            return vendorGlobal.runtime.sendMessage(extensionId, {
+                action: 'toggleGalo4ki',
+                val,
+            }, callback)
+            // })
+        }
+
+        if (process.ctx.target === 'firefox') {
+            unsafeWindow.EXTENSION_VERSION = '%VERSION%'
+            unsafeWindow.EXTENSION_ID = extensionId
+            unsafeWindow.EXTENSION_SPECIALS_API_VERSION = '1'
+            unsafeWindow.firefox = true
+            exportFunction(function (onload, onerror, onabort, onprogress, onreadystatechange, ontimeout, params) {
+                // firefox cant xray-vision functions inside object fsr, so using this XD
+                return GM_xmlhttpRequest({
+                    onload,
+                    onerror,
+                    onabort,
+                    onprogress,
+                    onreadystatechange,
+                    ontimeout,
+                    ...params,
+                })
+            }, window, { defineAs: 'corsAjaxFF' })
+
+            let scr = document.createElement('script')
+            scr.text =
+                'window.corsAjax = function (p) { return corsAjaxFF(p.onload, p.onerror, p.onabort, p.onprogress, p.onreadystatechange, p.ontimeout, p) }'
+            document.documentElement.appendChild(scr)
+            scr.onload = () => {
+                scr.remove()
+            }
+
+            exportFunction(getGalo4kiEnabled, window, { defineAs: 'galo4kiEnabled' })
+            exportFunction(toggleGalo4ki, window, { defineAs: 'toggleGalo4ki' })
+        } else if (process.ctx.target === 'chrome') {
+            window.EXTENSION_VERSION = '%VERSION%'
+            window.EXTENSION_SPECIALS_API_VERSION = '1'
+            window.EXTENSION_ID = extensionId
+            window.corsAjax = GM_xmlhttpRequest
+            window.galo4kiEnabled = getGalo4kiEnabled
+            window.toggleGalo4ki = toggleGalo4ki
+        }
     }
 })

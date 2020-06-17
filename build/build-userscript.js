@@ -32,7 +32,7 @@ const header = `
 // ==/UserScript==
 `.trimStart()
 
-function buildUserscript () {
+function buildUserscript (ctx = {}) {
     let source = fs.readFileSync(path.join(__dirname, '../src/userscript/entry.js')).toString('utf-8')
     let sandbox = {
         process,
@@ -58,14 +58,17 @@ function buildUserscript () {
         path: path.join(__dirname, '../.env.local'),
     })
 
-    let text = header
-        .replace('%VERSION%', us.__version)
-        .replace(
-            '%INCLUDES%',
-            us.__matchers
-                .map(({ matcher }) => '// @include ' + matcher)
-                .join('\n'),
-        )
+    let text = ''
+    if (ctx.isExtension !== true) {
+        text = header
+            .replace('%VERSION%', us.__version)
+            .replace(
+                '%INCLUDES%',
+                us.__matchers
+                    .map(({ matcher }) => '// @include ' + matcher)
+                    .join('\n'),
+            )
+    }
 
     const assetsNames = []
     source.replace(/us\.asset\((['"])(.+?)\1\)/, (_, $1, $2) => {
@@ -86,8 +89,15 @@ function buildUserscript () {
         }
     }
 
+    const ctxs = '(' + JSON.stringify({
+        isUserscript: true,
+        isExtension: false,
+        ...ctx
+    }) + ')'
+
     let code = source
             .replace(/process\.env\.ASSETS/g, JSON.stringify(assets))
+            .replace(/process.ctx/g, ctxs)
             .replace(/process\.env\.([A-Z_]+)/g, (_, $1) => JSON.stringify(process.env[$1]))
         + '\n\nus.execute(location.href)'
 
@@ -109,11 +119,13 @@ function buildUserscript () {
 
     text += code.code
 
-    return text
+    return { text, version: us.__version, debug: us.__debug }
 }
+
+module.exports = buildUserscript
 
 if (require.main === module) {
     console.log('Building userscript...')
-    const text = buildUserscript()
+    const text = buildUserscript().text
     fs.writeFileSync(path.join(__dirname, '../public/static/plashiki.user.js'), text)
 }

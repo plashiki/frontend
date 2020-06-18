@@ -175,10 +175,14 @@ export default class AuthorsList extends Vue {
 
     @Watch('data')
     dataChanged (): void {
-        setTimeout(() => {
-            // fix slider position
-            (this.$refs.tabs as any).callSlider()
-        }, 100)
+        const fixSliderPosition = (n = 0) => {
+            if (!this.$refs.tabs && n < 5) {
+                setTimeout(fixSliderPosition, 100, n + 1)
+            } else {
+                (this.$refs.tabs as any).callSlider()
+            }
+        }
+        fixSliderPosition()
     }
 
     playerNames (author: TranslationAuthor): string {

@@ -255,7 +255,7 @@ function onWebSocketClose (evt: CloseEvent): void {
 }
 
 function websocketKeepAlive (): void {
-    if (!webSocket) return
+    if (!webSocket || webSocket.readyState !== WebSocket.OPEN) return
     lastKeepAlive = performance.now()
     webSocket.send('KA')
 

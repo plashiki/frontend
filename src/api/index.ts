@@ -75,11 +75,19 @@ export function makeApiRequestForEnvelope<T = any> (options: MakeApiRequestOptio
 
     if (options.via === 'websocket'
         // fallback to http in case ws is not ready
-        || (experimentalWSApi && options.via !== 'http' && webSocketStatus.state === WebSocketStatusState.CONNECTED)
+        || (experimentalWSApi
+            && options.via !== 'http'
+            && webSocketStatus.state === WebSocketStatusState.CONNECTED
+            && webSocket?.readyState === WebSocket.OPEN
+        )
     ) {
         DEBUG.api('>>> (WS)', options)
         return new Promise<ApiEnvelope<T>>((resolve, reject) => {
-            if (webSocket && webSocketStatus.state === WebSocketStatusState.CONNECTED || !thisTab.master) {
+            if (webSocket
+                && webSocketStatus.state === WebSocketStatusState.CONNECTED
+                && webSocket?.readyState === WebSocket.OPEN
+                || !thisTab.master
+            ) {
                 const requestId = nextWebSocketRequestId++
                 if (!thisTab.master) {
                     const request: ExtractIpcData<IPCEvent, 'API_REQUEST'> = {
@@ -90,7 +98,7 @@ export function makeApiRequestForEnvelope<T = any> (options: MakeApiRequestOptio
                         }
                     }
                     emitIpc('API_REQUEST', request)
-                } else if (webSocket && webSocketStatus.state === WebSocketStatusState.CONNECTED) {
+                } else if (webSocket && webSocketStatus.state === WebSocketStatusState.CONNECTED && webSocket?.readyState === WebSocket.OPEN) {
                     const request: WebSocketRPCOut = {
                         ...options,
                         id: requestId,

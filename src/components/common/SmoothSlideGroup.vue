@@ -113,7 +113,9 @@ export default class SmoothSlideGroup extends Vue {
         this._spring.setCurrentValue(0)
         this._spring.addListener({
             onSpringUpdate: (spring: Spring) => {
-                this.group.scrollLeft = Math.round(spring.getCurrentValue())
+                if (this.group) {
+                    this.group.scrollLeft = Math.round(spring.getCurrentValue())
+                }
             }
         })
 

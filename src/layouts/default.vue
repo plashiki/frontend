@@ -110,7 +110,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import AppNavigation from '@/components/common/AppNavigation.vue'
-import { sleep } from '@/utils/helpers'
+import { nop, sleep } from '@/utils/helpers'
 import { appStore, configStore, notificationsStore } from '@/store'
 import NotificationsDialog from '@/components/notifications/NotificationsDialog.vue'
 import { createWebSocket, webSocketEventBus, webSocketStatus } from '@/api'
@@ -205,7 +205,7 @@ export default class DefaultLayout extends Vue {
             query: {
                 q: this.searchInput
             }
-        })
+        }).catch(nop)
     }
 
     forceReconnection (): void {

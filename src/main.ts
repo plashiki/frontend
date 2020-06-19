@@ -1,3 +1,4 @@
+import 'core-js/modules/es.promise.finally'
 import Vue, { CreateElement } from 'vue'
 import App from './App.vue'
 import './register-sw'

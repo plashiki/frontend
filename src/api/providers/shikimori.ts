@@ -84,9 +84,9 @@ export async function shikimoriApi<T> (
 
 
     if (params.query) {
-        url += '?' + qs.stringify(params.query) + '&__=/autocomplete'
+        url += '?' + qs.stringify(params.query) + '&__/autocomplete'
     } else {
-        url += '?__=/autocomplete'
+        url += '?__/autocomplete'
     }
 
     let headers: AnyKV = {}

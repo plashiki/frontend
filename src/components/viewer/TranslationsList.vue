@@ -114,6 +114,8 @@ export default class TranslationsList extends Vue {
 
     itemClicked (it: SingleTranslationData, event: MouseEvent): void {
         let active = this.itemActive(it)
+        this.selectedTranslation = it.id
+
         if (this.translationSelectionMode) {
             if (event.shiftKey && this.selectedTranslations.length) {
                 let first = this.selectedTranslations[this.selectedTranslations.length - 1]
@@ -150,8 +152,6 @@ export default class TranslationsList extends Vue {
             } else {
                 this.selectedTranslations.push(it.id)
             }
-        } else {
-            this.selectedTranslation = it.id
         }
     }
 

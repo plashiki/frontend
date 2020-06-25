@@ -6,10 +6,10 @@
     >
         <template #default="{ on }">
             <v-chip
+                v-if="user != null"
                 :class="chipClass"
                 pill
                 v-bind="$attrs"
-                v-if="user != null"
                 v-on="{ ...$listeners, ...on }"
             >
                 <v-avatar left>

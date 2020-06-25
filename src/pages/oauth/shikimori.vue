@@ -7,9 +7,9 @@
         <p>{{ $t('Pages.Oauth.ProvideNickname') }}</p>
         <v-form v-model="valid">
             <NicknameField
+                v-model="nickname"
                 :label="$t('Items.User.Nickname')"
                 outlined
-                v-model="nickname"
             />
             <div
                 class="text--secondary caption mt-2"
@@ -19,9 +19,9 @@
         <v-btn
             :disabled="!valid"
             :loading="loading"
-            @click="setUserNickname"
             block
             color="primary"
+            @click="setUserNickname"
         >
             {{ $t('Pages.Oauth.Finish') }}
         </v-btn>

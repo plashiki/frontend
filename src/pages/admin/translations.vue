@@ -1,32 +1,32 @@
 <template>
     <div>
         <v-dialog
-            max-width="800"
             v-model="editMultipleDialog"
+            max-width="800"
         >
             <MultipleTranslationEditDialog
+                v-if="editMultipleDialog"
                 :translations="selected"
                 @close="editMultipleDialog = false"
                 @update="this.$refs.table.update"
-                v-if="editMultipleDialog"
             />
         </v-dialog>
 
         <v-simple-card>
             <div class="d-flex flex-row justify-center align-center flex-wrap">
                 <v-text-field
+                    v-model="group"
                     :disabled="groupDeleting"
                     :hint="$t('Pages.AdminTranslations.LeaveBlankForAll')"
                     :label="$t('Pages.AdminTranslations.Group')"
                     persistent-hint
-                    v-model="group"
                 />
                 <v-btn
-                    @click="$refs.table.update()"
                     class="ml-2"
                     color="primary"
                     outlined
                     rounded
+                    @click="$refs.table.update()"
                 >
                     {{ $t('Common.Load') }}
                 </v-btn>
@@ -34,9 +34,9 @@
                 <v-btn
                     :disabled="group.length === 0"
                     :loading="groupDeleting"
-                    @click="deleteGroup"
                     class="ma-1"
                     icon
+                    @click="deleteGroup"
                 >
                     <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -69,8 +69,8 @@
                     <v-list dense>
                         <VListItemIconText
                             :title="$t('Common.Collection.Deselect')"
-                            @click="selected = []"
                             icon="mdi-select-group"
+                            @click="selected = []"
                         />
 
                         <v-subheader
@@ -81,26 +81,26 @@
                         <VListItemIconText
                             :disabled="selected.length === 0"
                             :title="$t('Common.Form.Edit')"
-                            @click="editMultiple"
                             icon="mdi-pencil"
+                            @click="editMultiple"
                         />
 
                         <VListItemIconText
                             :disabled="selected.length === 0"
                             :title="$t('Common.Form.Delete')"
-                            @click="deleteMultiple"
                             icon="mdi-delete"
+                            @click="deleteMultiple"
                         />
                     </v-list>
                 </v-menu>
             </div>
 
             <TranslationsTable
+                ref="table"
+                v-model="selected"
                 :group="group"
                 :medias="medias"
                 admin
-                ref="table"
-                v-model="selected"
             />
         </v-simple-card>
     </div>

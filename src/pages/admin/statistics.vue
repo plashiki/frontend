@@ -7,10 +7,10 @@
                     sm="4"
                 >
                     <v-date-field
+                        v-model="rangeFrom"
                         :disabled="loading"
                         :label="$t('Pages.Statistics.DateRangeFrom')"
                         hide-details
-                        v-model="rangeFrom"
                     />
                 </v-col>
                 <v-col
@@ -18,10 +18,10 @@
                     sm="4"
                 >
                     <v-date-field
+                        v-model="rangeTo"
                         :disabled="loading"
                         :label="$t('Pages.Statistics.DateRangeTo')"
                         hide-details
-                        v-model="rangeTo"
                     />
                 </v-col>
                 <v-col
@@ -31,10 +31,10 @@
                 >
                     <v-btn
                         :disabled="loading"
-                        @click="load"
                         color="primary"
                         outlined
                         rounded
+                        @click="load"
                     >
                         {{ $t('Common.Load') }}
                     </v-btn>
@@ -61,33 +61,33 @@
                         <v-list dense>
                             <VListItemIconText
                                 :title="$t('Pages.Statistics.Today')"
-                                @click="setToday"
                                 icon="mdi-calendar"
+                                @click="setToday"
                             />
                             <VListItemIconText
                                 :title="$t('Pages.Statistics.Yesterday')"
-                                @click="setYesterday"
                                 icon="mdi-calendar"
+                                @click="setYesterday"
                             />
                             <VListItemIconText
                                 :title="$t('Pages.Statistics.LastWeek')"
-                                @click="setLastNDays(7)"
                                 icon="mdi-calendar"
+                                @click="setLastNDays(7)"
                             />
                             <VListItemIconText
                                 :title="$t('Pages.Statistics.LastMonth')"
-                                @click="setLastNDays(31)"
                                 icon="mdi-calendar"
+                                @click="setLastNDays(31)"
                             />
                             <VListItemIconText
                                 :title="$t('Pages.Statistics.LastYear')"
-                                @click="setLastNDays(365)"
                                 icon="mdi-calendar"
+                                @click="setLastNDays(365)"
                             />
                             <VListItemIconText
                                 :title="$t('Pages.Statistics.AllTime')"
-                                @click="setAllTime"
                                 icon="mdi-calendar"
+                                @click="setAllTime"
                             />
                         </v-list>
                     </v-menu>

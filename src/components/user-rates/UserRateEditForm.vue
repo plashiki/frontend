@@ -5,6 +5,7 @@
         <v-form v-model="valid">
             <!-- c-p from translationform coz im lazy. -->
             <v-number-field
+                v-model="parts"
                 :disabled="loading"
                 :label="userRate.target_type === 'anime' ? $t('Items.UserRate.Episodes') : $t('Items.UserRate.Chapters')"
                 :messages="parts && media && media.partsCount !== 0 && parts > media.partsCount ?
@@ -12,23 +13,22 @@
                         : 'Items.Media.OnlyNChapters', media.partsCount) : undefined"
                 :predicate="v => v >= 0"
                 :prefix="$t('Items.Media.PartPrefix')"
-                v-model="parts"
             />
 
             <v-number-field
+                v-if="userRate.target_type === 'manga'"
+                v-model="partsVolumes"
                 :disabled="loading"
                 :label="$t('Items.UserRate.Volumes')"
                 :predicate="v => v >= 0"
                 :prefix="$t('Items.Media.PartPrefix')"
-                v-if="userRate.target_type === 'manga'"
-                v-model="partsVolumes"
             />
 
             <v-select
+                v-model="status"
                 :disabled="loading"
                 :items="statuses"
                 :label="$t('Items.UserRate.Status')"
-                v-model="status"
             >
                 <template #item="{ item, on, attrs }">
                     <v-list-item
@@ -48,10 +48,10 @@
                 </template>
             </v-select>
             <v-number-field
+                v-model="repeats"
                 :disabled="loading"
                 :label="$t('Items.UserRate.Repeats')"
                 :predicate="k => k >= 0"
-                v-model="repeats"
             />
             <p class="ma-0 caption">
                 {{ $t('Items.UserRate.Score') }}
@@ -61,21 +61,21 @@
                 justify="center"
             >
                 <v-rating
+                    v-model="proxyScore"
                     :color="loading ? 'primary lighten-3' : 'primary'"
                     :readonly="loading"
                     class="rating-smaller-gap"
                     half-icon="mdi-star-half-full"
                     half-increments
                     hover
-                    v-model="proxyScore"
                 />
                 <v-btn
+                    v-tooltip="$t('Items.UserRate.ResetScore')"
                     :disabled="loading"
-                    @click="proxyScore = 0"
                     class="ml-2"
                     icon
                     small
-                    v-tooltip="$t('Items.UserRate.ResetScore')"
+                    @click="proxyScore = 0"
                 >
                     <v-icon small>
                         mdi-block-helper
@@ -86,21 +86,21 @@
             <v-row class="mt-3 px-2">
                 <v-btn
                     :disabled="!valid || loading"
-                    @click="save"
                     color="success"
                     rounded
                     small
                     text
+                    @click="save"
                 >
                     {{ $t('Common.Form.Save') }}
                 </v-btn>
                 <v-spacer />
                 <v-btn
+                    v-tooltip="$t('Common.Form.Delete')"
                     :disabled="loading"
-                    @click="del"
                     icon
                     small
-                    v-tooltip="$t('Common.Form.Delete')"
+                    @click="del"
                 >
                     <v-icon small>
                         mdi-delete
@@ -110,10 +110,10 @@
         </v-form>
 
         <v-progress-linear
+            v-if="loading"
             absolute
             bottom
             indeterminate
-            v-if="loading"
         />
     </v-simple-card>
 </template>

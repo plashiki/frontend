@@ -1,9 +1,9 @@
 <template>
     <v-menu
+        v-model="visible"
         :close-on-content-click="false"
         offset-y
         transition="slide-x-reverse-transition"
-        v-model="visible"
     >
         <template #activator="{ on }">
             <v-badge
@@ -26,8 +26,8 @@
                 </span>
                 <v-spacer />
                 <v-btn
-                    @click="clear"
                     icon
+                    @click="clear"
                 >
                     <v-icon>mdi-notification-clear-all</v-icon>
                 </v-btn>
@@ -36,26 +36,26 @@
 
             <template v-if="webPushSupported && authenticated">
                 <v-switch
+                    ref="browserPushSwitch"
                     :disabled="pushPermission === false"
                     :input-value="this.pushPermission === null ? false : pushPermission"
                     :label="$t('Items.Notification.BrowserPush')"
-                    @change="toggleBrowserPush"
                     class="ma-2 mb-3"
                     hide-details
-                    ref="browserPushSwitch"
+                    @change="toggleBrowserPush"
                 />
                 <v-divider />
             </template>
 
             <v-card-text class="overflow-y-auto">
                 <virtual-grid
+                    v-if="items.length > 0"
+                    ref="grid"
                     :fixed-height="150"
                     :gap-y="8"
                     :items="items"
                     :max-columns="1"
                     @visibilitychange="onNotificationVisible($event.item, $event.visible)"
-                    ref="grid"
-                    v-if="items.length > 0"
                 >
                     <template #default="{ item }">
                         <Notification
@@ -66,11 +66,11 @@
                     </template>
                 </virtual-grid>
                 <v-row
+                    v-else
                     align="center"
                     class="grey--text font-weight-bold"
                     justify="center"
                     style="height: 120px"
-                    v-else
                 >
                     {{ $t('Items.Notification.Zero') }}
                 </v-row>

@@ -1,22 +1,22 @@
 <template>
     <div>
         <v-dialog
-            max-width="600"
             v-model="editingDialog"
+            max-width="600"
         >
             <ApplicationEditForm
+                v-if="editingDialog"
                 :app="editing"
                 @close="(editingDialog = false) && (editing = null)"
                 @create="storage[1].push($event)"
                 @update="requestUpdate"
-                v-if="editingDialog"
             />
         </v-dialog>
 
         <v-card class="pa-1">
             <v-tabs
-                centered
                 v-model="tab"
+                centered
             >
                 <v-tab>{{ $t('Pages.Applications.HaveAccessTab') }}</v-tab>
                 <v-tab>{{ $t('Pages.Applications.MyAppsTab') }}</v-tab>
@@ -42,11 +42,11 @@
                             <template #btn>
                                 <v-spacer />
                                 <v-btn
-                                    @click="create"
                                     class="ml-1"
                                     color="primary"
                                     rounded
                                     small
+                                    @click="create"
                                 >
                                     <v-icon
                                         :left="$r12s.screenWidth > 480"
@@ -82,15 +82,15 @@
                         <Application
                             :app="item"
                             :context="context"
+                            class="fill-height"
                             @control="edit(item)"
                             @delete="requestUpdate()"
-                            class="fill-height"
                         />
                     </template>
                 </virtual-grid>
                 <NoItemsPlaceholder
-                    :text="$t('Common.Collection.NoItemsFound')"
                     v-if="storage[tab].length === 0 && !loading[tab]"
+                    :text="$t('Common.Collection.NoItemsFound')"
                 />
                 <v-progress-linear
                     :active="loading[tab]"

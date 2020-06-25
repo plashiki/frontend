@@ -14,13 +14,13 @@
             #default
         >
             <span
-                v-html="$t(`Api.Errors.${error.code}`, error)"
                 v-if="error && error.code"
+                v-html="$t(`Api.Errors.${error.code}`, error)"
             />
             <span
                 v-else-if="error"
-                v-text="error.message"
                 v-tooltip="error.stack && error.stack.replace(/\n/g, '<br>')"
+                v-text="error.message"
             />
             <slot v-if="error" />
         </template>

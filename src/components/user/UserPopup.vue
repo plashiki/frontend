@@ -1,7 +1,7 @@
 <template>
     <v-menu
-        :close-on-content-click="false"
         v-model="visible"
+        :close-on-content-click="false"
     >
         <template #activator="{ on }">
             <slot
@@ -34,11 +34,11 @@
                 </p>
 
                 <VListItemIconText
+                    v-if="fullUser.external_ids.S"
                     :href="'/user/shikimori/' + fullUser.external_ids.S"
                     :title="$t('Services.Shikimori')"
                     dense
                     target="_blank"
-                    v-if="fullUser.external_ids.S"
                 >
                     <template #icon>
                         <ShikimoriIcon class="v-icon v-icon--svg pa-05" fill="#424242" />
@@ -52,36 +52,36 @@
                         :input-value="fullUser.banned"
                         :label="$t('Items.User.Banned')"
                         :loading="updating.banned"
-                        @change="toggleBooleanField('banned', $event)"
                         class="mx-2"
                         hide-details
+                        @change="toggleBooleanField('banned', $event)"
                     />
                     <v-switch
                         :disabled="!canMakeTrusted || updating.trusted"
                         :input-value="fullUser.trusted"
                         :label="$t('Items.User.Trusted')"
                         :loading="updating.trusted"
-                        @change="toggleBooleanField('trusted', $event)"
                         class="mx-2"
                         hide-details
+                        @change="toggleBooleanField('trusted', $event)"
                     />
                     <v-switch
                         :disabled="!canMakeModerator || updating.moderator"
                         :input-value="fullUser.moderator"
                         :label="$t('Items.User.Moderator')"
                         :loading="updating.moderator"
-                        @change="toggleBooleanField('moderator', $event)"
                         class="mx-2"
                         hide-details
+                        @change="toggleBooleanField('moderator', $event)"
                     />
                     <v-switch
                         :disabled="!canMakeAdmin || updating.admin"
                         :input-value="fullUser.admin"
                         :label="$t('Items.User.Admin')"
                         :loading="updating.admin"
-                        @change="toggleBooleanField('admin', $event)"
                         class="mx-2"
                         hide-details
+                        @change="toggleBooleanField('admin', $event)"
                     />
                     <div class="mb-2" />
                 </template>

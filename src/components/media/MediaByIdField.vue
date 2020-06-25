@@ -1,5 +1,7 @@
 <template>
     <v-text-field
+        ref="field"
+        v-model="input"
         :error-messages="notFound ? $t('Common.Collection.NoItemsFound') : undefined"
         :loading="loading"
         :prefix="prefix"
@@ -7,9 +9,7 @@
         :success-messages="media ? name(media) : undefined"
         autocomplete="off"
         class="pretty-prefix"
-        ref="field"
         v-bind="$attrs"
-        v-model="input"
     />
 </template>
 

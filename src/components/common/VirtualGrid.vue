@@ -1,21 +1,21 @@
 <template>
     <div
+        v-intersect="onVisibilityChange"
         :class="{
             ready
         }"
-        @scroll.passive="onScroll"
         class="virtual-grid__wrap"
-        v-intersect="onVisibilityChange"
+        @scroll.passive="onScroll"
     >
         <div
             :style="style"
             class="virtual-grid"
         >
             <div
+                v-for="cell in visiblePool"
                 :key="cell.id"
                 :style="cellStyle(cell.index)"
                 class="virtual-grid__cell"
-                v-for="cell in visiblePool"
             >
                 <slot
                     :index="cell.index"

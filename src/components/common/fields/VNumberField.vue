@@ -1,29 +1,29 @@
 <template>
     <v-text-field
+        v-model="internalValue"
         :rules="[v => validNumber(v, predicate) || $t('Common.Form.InvalidNumber')]"
         type="number"
         v-bind="$attrs"
-        v-model="internalValue"
         v-on="listeners"
     >
         <template #append>
             <v-btn
-                @click="decrement"
                 class="text--primary"
                 icon
                 small
                 tabindex="-1"
+                @click="decrement"
             >
                 <v-icon small>
                     mdi-minus
                 </v-icon>
             </v-btn>
             <v-btn
-                @click="increment"
                 class="text--primary"
                 icon
                 small
                 tabindex="-1"
+                @click="increment"
             >
                 <v-icon small>
                     mdi-plus

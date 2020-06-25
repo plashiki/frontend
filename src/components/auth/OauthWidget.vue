@@ -11,46 +11,46 @@
                 name="scroll-x-reverse-transition"
             >
                 <div
-                    key="loading"
                     v-if="page === 'loading'"
+                    key="loading"
                 >
                     <ErrorAlert :error="error" />
                     <v-progress-circular
+                        v-show="!error"
                         class="mb-3"
                         color="primary"
                         indeterminate
                         size="64"
-                        v-show="!error"
                         width="2"
                     />
                     <p
-                        class="grey--text text--darken-2 font-weight-bold title mb-0"
                         v-show="!error"
+                        class="grey--text text--darken-2 font-weight-bold title mb-0"
                     >
                         {{ $t('Pages.Oauth.WaitASec') }}
                     </p>
                     <p
-                        class="grey--text body-2"
                         v-show="!error"
+                        class="grey--text body-2"
                     >
                         {{ $t('Pages.Oauth.DontCloseThisWindow') }}
                     </p>
                     <p
-                        class="grey--text text--darken-3 body-1"
                         v-show="error"
+                        class="grey--text text--darken-3 body-1"
                     >
                         {{ $t('Common.Action.TryAgain').toLowerCase() }}
                     </p>
                 </div>
                 <div
-                    key="form"
                     v-else-if="page === 'form'"
+                    key="form"
                 >
                     <slot />
                 </div>
                 <div
-                    key="done"
                     v-else
+                    key="done"
                 >
                     <v-icon
                         class="md-3"
@@ -62,7 +62,7 @@
                     <p class="grey--text text--darken-2 font-weight-bold title mb-0">
                         {{ $t(doneString) }}
                     </p>
-                    <p class="grey--text body-2" v-if="then === null">
+                    <p v-if="then === null" class="grey--text body-2">
                         {{ $tc('Pages.Oauth.ClosingIn', closingIn) }}
                     </p>
                 </div>

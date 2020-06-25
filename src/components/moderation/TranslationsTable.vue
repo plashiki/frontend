@@ -2,19 +2,20 @@
     <div>
         <v-dialog v-model="editing">
             <TranslationEditDialog
+                v-if="editing"
                 :init-translation="editingTranslation"
                 :moderator="moderator && editingTranslation.status === 'pending'"
                 :show-meta="moderator"
                 @close="editing = false"
                 @media="medias[$event.id] = $event"
                 @update="update"
-                v-if="editing"
             />
         </v-dialog>
 
         <ErrorAlert :error="error" />
 
         <v-data-table
+            v-model="selected"
             :footer-props="{ itemsPerPageOptions: [15, 25, 50], class: 'flex-nowrap' }"
             :headers="headers"
             :items="items"
@@ -26,28 +27,27 @@
             :show-select="admin"
             class="overflow-auto mt-3"
             multi-sort
-            v-model="selected"
         >
             <template #item.status="{ value, item }">
                 <v-icon
-                    :class="{ 'mr-1': moderator }"
-                    :color="value === 'declined' ? 'error' : value === 'pending' ? 'primary' : 'success'"
                     v-if="value !== 'pending' || moderator || admin"
                     v-tooltip="{
                         content: () => getTooltip(item),
                         loadingContent: $t('Common.Loading')
                     }"
+                    :class="{ 'mr-1': moderator }"
+                    :color="value === 'declined' ? 'error' : value === 'pending' ? 'primary' : 'success'"
                 >
                     {{ value === 'declined' ? 'mdi-close' : value === 'pending' ? 'mdi-clock-outline' : 'mdi-check' }}
                 </v-icon>
                 <template v-if="value === 'pending' || moderator || admin">
                     <template v-if="value === 'pending' && moderator">
                         <v-btn
+                            v-tooltip="$t('Pages.Moderation.Consider')"
                             :disabled="loading"
-                            @click="edit(item)"
                             icon
                             small
-                            v-tooltip="$t('Pages.Moderation.Consider')"
+                            @click="edit(item)"
                         >
                             <v-icon small>
                                 mdi-eye
@@ -57,11 +57,11 @@
                         <DeclineReasonMenu @send="decline(item, $event)">
                             <template #default="{ on }">
                                 <v-btn
+                                    v-tooltip="$t('Pages.Moderation.Decline')"
                                     :disabled="loading"
                                     icon
                                     small
                                     v-on="on"
-                                    v-tooltip="$t('Pages.Moderation.Decline')"
                                 >
                                     <v-icon small>
                                         mdi-close
@@ -72,22 +72,22 @@
                     </template>
                     <template v-else>
                         <v-btn
+                            v-tooltip="$t('Common.Form.Edit')"
                             :disabled="deleting[item.id]"
-                            @click="edit(item)"
                             icon
                             small
-                            v-tooltip="$t('Common.Form.Edit')"
+                            @click="edit(item)"
                         >
                             <v-icon small>
                                 mdi-pencil
                             </v-icon>
                         </v-btn>
                         <v-btn
+                            v-tooltip="$t('Common.Form.Delete')"
                             :disabled="loading || deleting[item.id]"
-                            @click="del(item)"
                             icon
                             small
-                            v-tooltip="$t('Common.Form.Delete')"
+                            @click="del(item)"
                         >
                             <v-icon small>
                                 mdi-delete
@@ -97,12 +97,12 @@
                 </template>
 
                 <v-btn
+                    v-if="value === 'added'"
+                    v-tooltip="$t('Common.Action.Open')"
                     :href="'/translations/' + item.id"
                     icon
                     small
                     target="_blank"
-                    v-if="value === 'added'"
-                    v-tooltip="$t('Common.Action.Open')"
                 >
                     <v-icon small>
                         mdi-open-in-new
@@ -111,33 +111,33 @@
             </template>
             <template #item.uploader_id="{ item }">
                 <UserChip
+                    v-if="item.uploader"
                     :user="item.uploader"
                     control
                     small
-                    v-if="item.uploader"
                 />
                 <b
-                    class="error--text"
                     v-else
+                    class="error--text"
                 >
                     {{ $t('Common.No') }}
                 </b>
             </template>
             <template #item.target_id="{ value, item }">
                 <a
+                    v-tooltip="value in medias ? `${mediaName(medias[value])} (${value})` : undefined"
                     :href="value in medias ? medias[value].url : mediaLinkFor(item)"
                     class="text-truncate d-block text--primary"
                     style="width: 160px"
                     target="_blank"
-                    v-tooltip="value in medias ? `${mediaName(medias[value])} (${value})` : undefined"
                 >
                     {{ value in medias ? mediaName(medias[value]) : 'id' + value }}
                 </a>
             </template>
             <template #item._kind="{ item }">
                 <div
-                    :class="'no-dots text-truncate large flag-' + item.lang"
                     v-tooltip="$t('Items.Translation.Language.' + item.lang + item.kind)"
+                    :class="'no-dots text-truncate large flag-' + item.lang"
                 >
                     <v-icon
                         class="icon-mid-size"
@@ -159,9 +159,9 @@
             </template>
             <template #item.author="{ value }">
                 <span
+                    v-tooltip="value || $t('Items.Translation.UnknownAuthor')"
                     class="text-truncate no-dots d-block"
                     style="width: 140px"
-                    v-tooltip="value || $t('Items.Translation.UnknownAuthor')"
                 >
                     {{ value || $t('Items.Translation.UnknownAuthor') }}
                 </span>

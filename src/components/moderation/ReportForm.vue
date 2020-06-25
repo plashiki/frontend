@@ -12,35 +12,35 @@
                 >
                     <ErrorAlert :error="error" />
                     <v-switch
+                        v-model="showEdit"
                         :disabled="sending"
                         :label="$t('Pages.Report.SuggestEdit')"
                         :loading="translationLoading"
-                        v-model="showEdit"
                     />
                     <v-form v-model="valid1">
                         <v-select
+                            v-model="form.type"
                             :disabled="sending"
                             :items="types"
                             :label="$t('Items.Report.TypeText')"
                             :rules="[requiredField]"
                             class="mb-2"
-                            v-model="form.type"
                             validate-on-blur
                         />
                         <v-textarea
+                            v-model="form.comment"
                             :disabled="sending"
                             :label="$t('Items.Report.Comment')"
                             auto-grow
                             hide-details
                             outlined
-                            v-model="form.comment"
                         />
                     </v-form>
                     <v-responsive
+                        v-if="editableTranslation && !!editableTranslation.url"
                         :aspect-ratio="16/9"
                         :disabled="sending"
                         class="elevation-3 ma-2"
-                        v-if="editableTranslation && !!editableTranslation.url"
                     >
                         <iframe
                             :src="editableTranslation.url"
@@ -51,15 +51,15 @@
                     </v-responsive>
                 </v-col>
                 <v-col
+                    v-if="showEdit && editableTranslation"
                     cols="12"
                     sm="6"
-                    v-if="showEdit && editableTranslation"
                 >
                     <TranslationForm
+                        v-model="valid2"
                         :form="editableTranslation"
                         :media="media"
                         no-preview
-                        v-model="valid2"
                     />
                 </v-col>
             </v-row>
@@ -75,8 +75,8 @@
         <v-card-actions>
             <v-btn
                 :disabled="sending"
-                @click="$emit('close')"
                 text
+                @click="$emit('close')"
             >
                 {{ $t('Common.Form.Cancel') }}
             </v-btn>
@@ -85,17 +85,17 @@
 
             <v-btn
                 :disabled="!valid || sending"
-                @click="send"
                 color="success"
                 text
+                @click="send"
             >
                 {{ $t('Common.Form.Send') }}
             </v-btn>
         </v-card-actions>
 
         <Recaptcha
-            :display-legal-notice="false"
             ref="captcha"
+            :display-legal-notice="false"
         />
     </v-card>
 </template>

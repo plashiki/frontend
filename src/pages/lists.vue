@@ -33,11 +33,11 @@
                             </v-btn>
 
                             <v-btn
+                                v-show="$r12s.screenWidth >= 380"
                                 :disabled="selectedState.loading"
-                                @click="resetSelected"
                                 class="ma-1"
                                 icon
-                                v-show="$r12s.screenWidth >= 380"
+                                @click="resetSelected"
                             >
                                 <v-icon>
                                     mdi-refresh
@@ -47,18 +47,18 @@
 
                         <template #append>
                             <v-progress-linear
+                                v-if="selectedState.more"
+                                ref="loader"
+                                v-intersect="(_, __, v) => v && endReached()"
                                 class="mt-2"
                                 indeterminate
-                                ref="loader"
-                                v-if="selectedState.more"
-                                v-intersect="(_, __, v) => v && endReached()"
                             />
 
                             <ErrorAlert :error="selectedState.error">
                                 &nbsp;
                                 <span
-                                    @click.prevent="retrySelected"
                                     class="link-like primary--text"
+                                    @click.prevent="retrySelected"
                                     v-text="$t('Common.Action.TryAgain')"
                                 />
                             </ErrorAlert>
@@ -77,32 +77,32 @@
                     <v-card-text :class="{'pa-1': $r12s.screenWidth < 480}">
                         <template v-for="(p, i) in ui">
                             <div
+                                v-if="p.group !== undefined && $r12s.screenWidth >= 960"
                                 :key="i"
                                 class="grey--text caption my-2"
-                                v-if="p.group !== undefined && $r12s.screenWidth >= 960"
                             >
                                 {{ $t(p.group) }}
                             </div>
 
                             <v-divider
+                                v-else-if="p.divider !== undefined && $r12s.screenWidth < 960"
                                 :key="i"
                                 class="my-2"
-                                v-else-if="p.divider !== undefined && $r12s.screenWidth < 960"
                             />
 
                             <v-btn
+                                v-else-if="p.id"
+                                :key="i"
                                 :class="{
                                     'v-btn--active primary--text': selected === p.id,
                                     'justify-start': $r12s.screenWidth >= 960
                                 }"
                                 :disabled="p.auth !== false && !authenticated"
-                                :key="i"
-                                @click="selected = p.id"
                                 block
                                 class="my-1"
                                 small
                                 text
-                                v-else-if="p.id"
+                                @click="selected = p.id"
                             >
                                 <v-icon
                                     :left="$r12s.screenWidth >= 960"

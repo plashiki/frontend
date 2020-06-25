@@ -8,44 +8,44 @@
                 no-gutters
             >
                 <v-dialog
-                    max-width="800"
                     v-model="reportDialog"
+                    max-width="800"
                 >
                     <ReportForm
+                        v-if="translation"
                         :media="media"
                         :media-type="mediaType"
                         :translation="translation"
                         @close="reportDialog = false"
                         @update="$emit('update')"
-                        v-if="translation"
                     />
                 </v-dialog>
 
                 <v-dialog
                     v-if="isModerator"
-                    max-width="800"
                     v-model="editDialog"
+                    max-width="800"
                     scrollable
                 >
                     <TranslationEditDialog
+                        v-if="translation !== null && editDialog"
                         :translation-id="translation.id"
                         show-meta
                         @close="editDialog = false"
                         @delete="requestUpdate"
                         @update="requestUpdate"
-                        v-if="translation !== null && editDialog"
                     />
                 </v-dialog>
 
                 <v-dialog
-                    max-width="800"
                     v-model="editMultipleDialog"
+                    max-width="800"
                 >
                     <MultipleTranslationEditDialog
+                        v-if="editMultipleDialog"
                         :translation-ids="selectedTranslations"
                         @close="editMultipleDialog = false"
                         @update="requestUpdate"
-                        v-if="editMultipleDialog"
                     />
                 </v-dialog>
 
@@ -77,24 +77,24 @@
                     <v-list dense>
                         <VListItemIconText
                             :title="$t('Pages.Report.Name')"
-                            @click="reportDialog = true"
                             icon="mdi-alert-circle"
+                            @click="reportDialog = true"
                         />
                         <VListItemIconText
+                            v-if="media !== null"
                             :title="$t('Pages.AddTranslation.Name')"
                             :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
                             icon="mdi-file-plus-outline"
                             target="_blank"
-                            v-if="media !== null"
                         />
                         <TranslationSubscribeMenu
+                            v-if="media && authenticated && $r12s.screenWidth <= 480"
                             :media-id="mediaId"
                             :media-type="mediaType"
                             :translation="translation"
                             offset-x
                             right
                             transition="slide-x-transition"
-                            v-if="media && authenticated && $r12s.screenWidth <= 480"
                         >
                             <template #default="{ on }">
                                 <VListItemIconText
@@ -105,10 +105,10 @@
                             </template>
                         </TranslationSubscribeMenu>
                         <VListItemIconText
-                            :title="$t('Items.Translation.Edit')"
-                            @click="editDialog = true"
-                            icon="mdi-pencil"
                             v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
+                            :title="$t('Items.Translation.Edit')"
+                            icon="mdi-pencil"
+                            @click="editDialog = true"
                         />
                         <VListItemIconText
                             v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
@@ -117,10 +117,10 @@
                             @click="deleteCurrent"
                         />
                         <VListItemIconText
-                            :title="$t(translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select')"
-                            @click.stop.prevent="translationSelectionMode = !translationSelectionMode"
-                            icon="mdi-select-group"
                             v-if="isModerator"
+                            :title="$t(translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select')"
+                            icon="mdi-select-group"
+                            @click.stop.prevent="translationSelectionMode = !translationSelectionMode"
                         />
 
                         <template v-if="isModerator && translationSelectionMode">
@@ -132,28 +132,28 @@
                             <VListItemIconText
                                 :disabled="selectedTranslations.length === 0"
                                 :title="$t('Common.Form.Edit')"
-                                @click="editMultiple"
                                 icon="mdi-pencil"
+                                @click="editMultiple"
                             />
 
                             <VListItemIconText
                                 :disabled="selectedTranslations.length === 0"
                                 :title="$t('Common.Form.Delete')"
-                                @click="deleteSelected"
                                 icon="mdi-delete"
+                                @click="deleteSelected"
                             />
                         </template>
                     </v-list>
                 </v-menu>
 
                 <TranslationSubscribeMenu
+                    v-if="media && authenticated && $r12s.screenWidth > 480"
                     :media-id="mediaId"
                     :media-type="mediaType"
                     :translation="translation"
                     offset-y
                     top
                     transition="slide-y-transition"
-                    v-if="media && authenticated && $r12s.screenWidth > 480"
                 >
                     <template #default="{ on }">
                         <v-btn
@@ -170,10 +170,10 @@
                 <v-spacer />
 
                 <v-btn
-                    :disabled="partNumber <= 1"
-                    @click="partNumber -= 1"
-                    icon
                     v-tooltip="$t(mediaType === 'anime' ? 'Pages.Viewer.PrevEpisode' : 'Pages.Viewer.PrevChapter')"
+                    :disabled="partNumber <= 1"
+                    icon
+                    @click="partNumber -= 1"
                 >
                     <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
@@ -185,81 +185,81 @@
                     style="max-width: 90px;"
                 >
                     <v-text-field
+                        v-model="episodeInput"
                         :label="$t(mediaType === 'anime' ? 'Items.Media.Episode' : 'Items.Media.Chapter')"
                         :suffix="media && media.partsCount ? $t('Pages.Viewer.OutOf', { n: media.partsCount }) : undefined"
-                        @change="episodeInputDone"
                         class="mt-2 mb-1 text-right"
                         height="24"
                         hide-details
-                        v-model="episodeInput"
+                        @change="episodeInputDone"
                     />
                     <a
+                        v-if="translation"
                         :href="translation.rawUrl || translation.url"
                         class="text-center text-truncate"
                         style="font-size: 11px;"
                         target="_blank"
-                        v-if="translation"
                     >
                         {{ $t('Pages.Viewer.DirectLink') }}
                     </a>
                 </v-layout>
 
                 <v-btn
-                    :disabled="media && media.partsCount !== 0 && partNumber >= media.partsCount"
-                    @click="partNumber += 1"
-                    icon
                     v-tooltip="$t(mediaType === 'anime' ? 'Pages.Viewer.NextEpisode' : 'Pages.Viewer.NextChapter')"
+                    :disabled="media && media.partsCount !== 0 && partNumber >= media.partsCount"
+                    icon
+                    @click="partNumber += 1"
                 >
                     <v-icon>mdi-arrow-right</v-icon>
                 </v-btn>
 
                 <v-btn
+                    v-if="$r12s.screenWidth >= 400 || userRate === null"
+                    v-tooltip="{ content: $t(`Items.UserRate.ControlButton.${userRateStatus}-${mediaType}`), trigger: 'hover click focus' }"
                     :color="userRateStatus === 'old-part' ? 'success' : undefined"
                     :disabled="!authenticated || userRateLoading"
                     :loading="userRateControlLoading"
-                    @click="userRateControlClicked"
                     icon
-                    v-if="$r12s.screenWidth >= 400 || userRate === null"
-                    v-tooltip="{ content: $t(`Items.UserRate.ControlButton.${userRateStatus}-${mediaType}`), trigger: 'hover click focus' }"
+                    @click="userRateControlClicked"
                 >
                     <v-icon>{{ userRateIcon }}</v-icon>
                 </v-btn>
 
                 <v-menu
+                    v-model="userRateEditMenu"
                     :close-on-content-click="false"
                     :disabled="userRateLoading"
                     max-width="250"
                     top
                     transition="slide-x-transition"
-                    v-model="userRateEditMenu"
                 >
                     <template #activator="{ on }">
                         <v-btn
+                            v-if="$r12s.screenWidth >= 400 || userRate !== null"
+                            v-tooltip="$t('Items.UserRate.EditEntry')"
                             :disabled="!authenticated || !userRate"
                             icon
-                            v-if="$r12s.screenWidth >= 400 || userRate !== null"
                             v-on="on"
-                            v-tooltip="$t('Items.UserRate.EditEntry')"
                         >
                             <v-icon>mdi-playlist-edit</v-icon>
                         </v-btn>
                     </template>
 
                     <UserRateEditForm
+                        v-if="userRate !== null"
                         :media="media"
                         :rate.sync="userRate"
                         :visible="userRateEditMenu"
                         @close="userRateEditMenu = false"
                         @rate-update="rateUpdated"
-                        v-if="userRate !== null"
                     />
                 </v-menu>
 
                 <v-spacer />
 
                 <v-btn
-                    v-tooltip="$t('Items.Translation.Delete')"
                     v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    v-tooltip="$t('Items.Translation.Delete')"
                     :disabled="translationSelectionMode && selectedTranslations.length === 0"
                     icon
                     @click="translationSelectionMode ? deleteSelected() : deleteCurrent()"
@@ -268,8 +268,8 @@
                 </v-btn>
 
                 <v-btn
-                    v-tooltip="$t('Items.Translation.Edit')"
                     v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    v-tooltip="$t('Items.Translation.Edit')"
                     :disabled="translationSelectionMode && selectedTranslations.length === 0"
                     icon
                     @click="() => { if (translationSelectionMode) { editMultipleDialog = true } else { editDialog = true } }"
@@ -280,9 +280,9 @@
                 <AuthorsFiltersMenu :data="authors" />
 
                 <v-btn
-                    @click="posterVisible = !posterVisible"
-                    icon
                     v-if="!mobileDisplay"
+                    icon
+                    @click="posterVisible = !posterVisible"
                 >
                     <v-icon
                         :class="{ 'mdi-rotate-180': !posterVisible }"

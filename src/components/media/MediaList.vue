@@ -13,23 +13,24 @@
 
                 <v-btn
                     :color="listViewMode === 'cards' ? 'primary' : 'default'"
-                    @click="setListViewMode('cards')"
                     class="ma-1"
                     icon
+                    @click="setListViewMode('cards')"
                 >
                     <v-icon>mdi-view-module</v-icon>
                 </v-btn>
                 <v-btn
                     :color="listViewMode === 'items' ? 'primary' : 'default'"
-                    @click="setListViewMode('items')"
                     class="ma-1"
                     icon
+                    @click="setListViewMode('items')"
                 >
                     <v-icon>mdi-view-list</v-icon>
                 </v-btn>
             </v-row>
             <!-- bruh -->
             <virtual-grid
+                ref="grid"
                 :aspect-ratio="3/2"
                 :fixed-height="listViewMode === 'cards' ? -1 : 64"
                 :gap-x="listViewMode === 'cards' ? 8 : 4"
@@ -38,23 +39,22 @@
                 :max-columns="listViewMode === 'cards' ? 8 : 2"
                 :min-cell-width="listViewMode === 'cards' ? 130 : 300"
                 :min-columns="listViewMode === 'cards' ? 2 : 1"
-                ref="grid"
             >
                 <template #default="{ item }">
                     <MediaCard
-                        :item="item"
                         v-if="listViewMode === 'cards'"
+                        :item="item"
                     />
                     <MediaListItem
-                        :item="item"
                         v-else
+                        :item="item"
                     />
                 </template>
             </virtual-grid>
             <slot name="placeholder">
                 <NoItemsPlaceholder
-                    :text="$t('Common.Collection.NoItemsFound')"
                     v-if="!noPlaceholder && items.length === 0"
+                    :text="$t('Common.Collection.NoItemsFound')"
                 />
             </slot>
 

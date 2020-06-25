@@ -19,6 +19,7 @@ module.exports = {
             SwitchCase: 0,
         }],
         'vue/html-indent': ['error', 4],
+        'vue/attributes-order': 'error',
         '@typescript-eslint/member-naming': ['error', {
             'private': '^_',
             'protected': '^_',

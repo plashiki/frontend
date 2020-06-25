@@ -1,7 +1,7 @@
 <template>
     <Player
-        class="vuedio-fill"
         ref="vuedio"
+        class="vuedio-fill"
     />
 </template>
 

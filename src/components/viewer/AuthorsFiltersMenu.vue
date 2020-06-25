@@ -32,9 +32,9 @@
         >
             <v-card-title class="flex-nowrap">
                 <v-tabs
+                    v-model="tab"
                     grow
                     hide-slider
-                    v-model="tab"
                 >
                     <v-tab>
                         {{ $t('Pages.Viewer.Players') }}
@@ -44,10 +44,10 @@
                     </v-tab>
                 </v-tabs>
                 <v-btn
-                    @click="clearFilters"
+                    v-tooltip="$t('Pages.Viewer.ResetFilters')"
                     class="align-self-center"
                     icon
-                    v-tooltip="$t('Pages.Viewer.ResetFilters')"
+                    @click="clearFilters"
                 >
                     <v-icon>mdi-backup-restore</v-icon>
                 </v-btn>
@@ -57,27 +57,27 @@
                 <v-tabs-items v-model="tab">
                     <v-tab-item>
                         <v-switch
+                            v-for="(it, i) in availablePlayers"
+                            :key="it"
                             :class="{ 'mt-0': i === 0 }"
                             :input-value="!isActive('player', it)"
-                            :key="it"
                             :label="it"
-                            @change="setFilter('player', it, !$event)"
                             hide-details
-                            v-for="(it, i) in availablePlayers"
+                            @change="setFilter('player', it, !$event)"
                         />
                         <NoItemsPlaceholder
-                            :text="$t('Common.Collection.NoItemsFound')"
                             v-if="availablePlayers.length === 0"
+                            :text="$t('Common.Collection.NoItemsFound')"
                         />
                     </v-tab-item>
                     <v-tab-item>
                         <v-switch
+                            v-for="(it, i) in availableLanguages"
+                            :key="it"
                             :class="{ 'mt-0': i === 0 }"
                             :input-value="!isActive('language', it)"
-                            :key="it"
-                            @change="setFilter('language', it, !$event)"
                             hide-details
-                            v-for="(it, i) in availableLanguages"
+                            @change="setFilter('language', it, !$event)"
                         >
                             <template #label>
                                 <span
@@ -88,8 +88,8 @@
                             </template>
                         </v-switch>
                         <NoItemsPlaceholder
-                            :text="$t('Common.Collection.NoItemsFound')"
                             v-if="availableLanguages.length === 0"
+                            :text="$t('Common.Collection.NoItemsFound')"
                         />
                     </v-tab-item>
                 </v-tabs-items>

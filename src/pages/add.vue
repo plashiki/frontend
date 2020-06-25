@@ -5,18 +5,18 @@
                 <ErrorAlert :error="error" />
 
                 <TranslationForm
+                    ref="formEl"
+                    v-model="valid"
                     :disabled="loading || sending"
                     :form="form"
                     :media="initMedia"
-                    ref="formEl"
-                    v-model="valid"
                 >
                     <v-btn
                         :disabled="!valid"
                         :loading="sending"
-                        @click="send"
                         color="primary"
                         rounded
+                        @click="send"
                     >
                         {{ $t('Common.Form.Send') }}
                     </v-btn>
@@ -25,8 +25,8 @@
         </v-card>
 
         <Recaptcha
-            :display-legal-notice="false"
             ref="captcha"
+            :display-legal-notice="false"
         />
 
         <v-card
@@ -44,8 +44,8 @@
                 </v-tab>
                 <v-spacer />
                 <v-btn
-                    @click="update"
                     icon
+                    @click="update"
                 >
                     <v-icon>
                         mdi-refresh
@@ -53,13 +53,13 @@
                 </v-btn>
             </v-tabs>
             <v-tabs-items
-                touchless
                 v-model="tab"
+                touchless
             >
                 <v-tab-item>
                     <TranslationsTable
-                        :medias="medias"
                         ref="translations"
+                        :medias="medias"
                     />
                 </v-tab-item>
                 <v-tab-item>

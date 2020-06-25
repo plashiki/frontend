@@ -1,8 +1,8 @@
 <template>
     <v-menu
+        v-model="visible"
         :close-on-content-click="false"
         top
-        v-model="visible"
     >
         <template #activator="{ on }">
             <slot :on="on" />
@@ -10,18 +10,18 @@
 
         <v-simple-card>
             <v-text-field
-                :label="$t('Pages.Moderation.DeclineReason')"
-                @keyup.enter="send"
-                dense
-                hide-details
                 ref="input"
                 v-model="reasonInput"
+                :label="$t('Pages.Moderation.DeclineReason')"
+                dense
+                hide-details
+                @keyup.enter="send"
             >
                 <template #prepend>
                     <v-btn
-                        @click="send"
                         icon
                         small
+                        @click="send"
                     >
                         <v-icon
                             color="success"

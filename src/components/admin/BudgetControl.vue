@@ -2,35 +2,35 @@
     <div>
         <h2>{{ $t('Pages.UsersAdmin.Budget') }}</h2>
         <TwoOptionSwitch
+            v-model="isDonation"
             :false-label="$t('Pages.UsersAdmin.Expense')"
             :true-label="$t('Pages.UsersAdmin.Donation')"
-            v-model="isDonation"
         />
         <v-number-field
+            v-model="amount"
             :label="$t('Pages.UsersAdmin.Amount')"
             :predicate="v => v > 0"
             :step="100"
             prefix="₽"
-            v-model="amount"
         />
         <v-text-field
-            :label="$t('Pages.UsersAdmin.ChangeTime')"
-            @click:append="now"
-            append-icon="mdi-calendar-today"
             v-model="date"
+            :label="$t('Pages.UsersAdmin.ChangeTime')"
+            append-icon="mdi-calendar-today"
+            @click:append="now"
         />
         <v-text-field
+            v-model="comment"
             :label="isDonation ? undefined : $t('Pages.UsersAdmin.Comment')"
             :prefix="isDonation ? $t('Pages.UsersAdmin.From') : undefined"
-            v-model="comment"
         />
         <div class="text-center">
             <v-btn
                 :loading="loading"
-                @click="create"
                 color="primary"
                 outlined
                 rounded
+                @click="create"
             >
                 {{ $t('Common.Form.Create') }}
             </v-btn>

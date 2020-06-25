@@ -17,10 +17,10 @@
             <TranslationForm
                 v-if="editableTranslation"
                 ref="form"
+                v-model="valid"
                 :disabled="loading"
                 :form="editableTranslation"
                 :show-meta="showMeta"
-                v-model="valid"
             >
                 <slot />
             </TranslationForm>
@@ -28,8 +28,8 @@
 
         <v-card-actions class="overflow-x-auto">
             <v-btn
-                @click="close"
                 text
+                @click="close"
             >
                 {{ $t('Common.Form.Cancel') }}
             </v-btn>
@@ -37,18 +37,18 @@
             <v-spacer />
 
             <v-btn
-                :disabled="loading"
-                @click="del"
-                icon
                 v-if="!hideDelete && !moderator"
+                :disabled="loading"
+                icon
+                @click="del"
             >
                 <v-icon>
                     mdi-delete
                 </v-icon>
             </v-btn>
             <DeclineReasonMenu
-                @send="decline"
                 v-if="moderator"
+                @send="decline"
             >
                 <template #default="{ on }">
                     <v-btn
@@ -62,19 +62,19 @@
             </DeclineReasonMenu>
 
             <v-btn
-                @click="discard"
+                v-if="reportId !== -1"
                 color="error"
                 text
-                v-if="reportId !== -1"
+                @click="discard"
             >
                 {{ $t('Items.Report.Discard') }}
             </v-btn>
 
             <v-btn
                 :disabled="loading || !valid"
-                @click="save"
                 color="success"
                 text
+                @click="save"
             >
                 {{ $t(moderator ? 'Pages.Moderation.Accept' : 'Common.Form.Save') }}
             </v-btn>

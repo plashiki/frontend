@@ -2,30 +2,30 @@
     <div>
         <transition-group name="basic-list-movement">
             <v-btn
+                v-for="tr in translations"
                 :key="tr.key"
                 :outlined="!itemActive(tr)"
-                @click="itemClicked(tr, $event)"
                 class="translation-chip basic-list-movement-item"
                 color="primary"
                 ripple
                 rounded
                 small
-                v-for="tr in translations"
+                @click="itemClicked(tr, $event)"
             >
                 <v-avatar
+                    v-if="tr.hq"
                     :color="itemActive(tr) ? 'white' : 'primary'"
                     class="mr-2"
                     size="8"
-                    v-if="tr.hq"
                 />
                 {{ tr.name }}
             </v-btn>
         </transition-group>
         <span
-            @click="showFull = true"
-            class="link-like grey--text caption text-no-wrap ml-2 no-dots"
             v-show="!showFull && invisibleItemsCount > 0"
             v-tooltip="invisibleItemsCountWithNames"
+            class="link-like grey--text caption text-no-wrap ml-2 no-dots"
+            @click="showFull = true"
         >
             {{ $tc('Pages.Viewer.NMoreLinks', invisibleItemsCount) }}
         </span>

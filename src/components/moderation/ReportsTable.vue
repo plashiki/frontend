@@ -2,17 +2,17 @@
     <div>
         <v-dialog v-model="editing">
             <TranslationEditDialog
+                v-if="editing"
                 :report-id="currentReport.id"
                 :translation-id="currentReport.translation_id"
                 show-meta
                 @close="editing = false"
                 @delete="update"
                 @update="update"
-                v-if="editing"
             >
                 <v-card
-                    outlined
                     v-if="currentReport.edit"
+                    outlined
                 >
                     <v-card-title>
                         {{ $t('Items.Report.ProposedEdit') }}
@@ -44,23 +44,23 @@
                     <td>
                         {{ $t('Common.Action.Deleting') }}
                     </td>
-                    <td :key="i" v-for="i in 3"></td>
+                    <td v-for="i in 3" :key="i"></td>
                 </tr>
                 <tr v-else>
                     <td>
                         <v-icon
-                            :color="item.status === 'pending' ? 'primary' : item.status === 'discarded' ? 'error' : 'success'"
                             v-if="item.status !== 'pending' || moderator"
-                            v-text="item.status === 'pending' ? 'mdi-clock-outline' : item.status === 'discarded' ? 'mdi-close' : 'mdi-check'"
                             v-tooltip="$t('Items.Report.Status.' + item.status)"
+                            :color="item.status === 'pending' ? 'primary' : item.status === 'discarded' ? 'error' : 'success'"
+                            v-text="item.status === 'pending' ? 'mdi-clock-outline' : item.status === 'discarded' ? 'mdi-close' : 'mdi-check'"
                         />
                         <v-btn
-                            :disabled="loading"
-                            @click="del(item)"
-                            icon
-                            small
                             v-else-if="!moderator"
                             v-tooltip="$t('Common.Form.Delete')"
+                            :disabled="loading"
+                            icon
+                            small
+                            @click="del(item)"
                         >
                             <v-icon small>
                                 mdi-delete
@@ -68,11 +68,11 @@
                         </v-btn>
                         <template v-if="item.status === 'pending' && moderator">
                             <v-btn
+                                v-tooltip="$t('Pages.Moderation.Consider')"
                                 :disabled="loading"
-                                @click="edit(item)"
                                 icon
                                 small
-                                v-tooltip="$t('Pages.Moderation.Consider')"
+                                @click="edit(item)"
                             >
                                 <v-icon small>
                                     mdi-eye
@@ -82,14 +82,14 @@
                     </td>
                     <td v-if="moderator">
                         <UserChip
+                            v-if="item.sender"
                             :user="item.sender"
                             control
                             small
-                            v-if="item.sender"
                         />
                         <b
-                            class="error--text"
                             v-else
+                            class="error--text"
                         >
                             {{ $t('Common.No') }}
                         </b>
@@ -110,8 +110,8 @@
                     </td>
                     <td>
                         <b
-                            class="error--text"
                             v-if="item.edit === null"
+                            class="error--text"
                         >
                             {{ $t('Common.No') }}
                         </b>

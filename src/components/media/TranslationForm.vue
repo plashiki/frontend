@@ -4,11 +4,11 @@
         v-model="formValid"
     >
         <TwoOptionSwitch
+            v-model="byId"
             :disabled="disabled"
             :false-label="$t('Items.Media.ByName')"
             :true-label="$t('Items.Media.ById')"
             persist="media-id-chooser"
-            v-model="byId"
         />
         <v-row
             align="center"
@@ -23,21 +23,21 @@
                 max-width="60"
             />
             <SearchFieldAutocomplete
+                v-if="!byId"
+                ref="idInput"
+                v-model="selectedMedia"
                 :disabled="disabled"
                 :media-type="mediaType"
                 :required="!allowEmpty"
-                ref="idInput"
-                v-if="!byId"
-                v-model="selectedMedia"
                 clearable
             />
             <MediaByIdField
+                v-else
+                ref="idInput"
+                v-model="selectedMedia"
                 :allow-empty="allowEmpty"
                 :disabled="disabled"
                 :media-type="mediaType"
-                ref="idInput"
-                v-else
-                v-model="selectedMedia"
                 clearable
             />
             <v-btn
@@ -61,6 +61,7 @@
                 md="4"
             >
                 <v-number-field
+                    v-model="proxyPart"
                     :allow-empty="allowEmpty"
                     :disabled="disabled"
                     :label="mediaType === 'anime' ? $t('Items.Media.Episode') : $t('Items.Media.Chapter')"
@@ -70,7 +71,6 @@
                     :predicate="v => v > 0"
                     :prefix="$t('Items.Media.PartPrefix')"
                     :validate-on-blur="!allowEmpty"
-                    v-model="proxyPart"
                 />
             </v-col>
             <v-col
@@ -80,11 +80,11 @@
                 md="4"
             >
                 <v-select
+                    v-model="form.lang"
                     :disabled="disabled"
                     :items="langs"
                     :label="$t('Items.Translation.LanguageName')"
                     :rules="[requiredField]"
-                    v-model="form.lang"
                     validate-on-blur
                 >
                     <template #item="{ item }">
@@ -102,23 +102,24 @@
                 md="4"
             >
                 <v-select
+                    v-model="form.kind"
                     :disabled="disabled"
                     :items="kinds"
                     :label="$t('Items.Translation.KindName')"
                     :rules="[requiredField]"
-                    v-model="form.kind"
                     validate-on-blur
                 />
             </v-col>
         </v-row>
         <v-checkbox
+            v-model="form.hq"
             :disabled="disabled"
             :label="$t('Items.Translation.IsHq')"
             class="mt-0"
             hide-details
-            v-model="form.hq"
         />
         <v-combobox
+            v-model="form.author"
             :disabled="disabled"
             :hint="form.author ? undefined : $t('Items.Translation.LeaveBlankIfUnknown')"
             :label="$t('Items.Translation.Author')"
@@ -129,15 +130,14 @@
             persistent-hint
             hide-no-data
             clearable
-            v-model="form.author"
             validate-on-blur
         />
         <v-text-field
+            v-model="inputUrl"
             :disabled="disabled || noUrl"
             :label="$t('Items.Translation.Url')"
             :rules="[requiredField, urlValidator]"
             autocomplete="off"
-            v-model="inputUrl"
             clearable
             validate-on-blur
         >
@@ -160,10 +160,10 @@
             justify="center"
         >
             <v-responsive
+                v-if="!noPreview && !!form.url"
                 :aspect-ratio="16/9"
                 class="elevation-3 ma-2"
                 style="max-width: 360px"
-                v-if="!noPreview && !!form.url"
             >
                 <iframe
                     :src="form.url"

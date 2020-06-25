@@ -7,43 +7,43 @@
             'vuedio-inactive': inactive && !paused,
             'vuedio-controls-locked': controlsLocked
         }"
+        tabindex="-1"
         @keyup="onKeyPress"
         @mousemove="notifyActive()"
         @touchend="notifyActive()"
         @touchstart="notifyActive(false)"
-        tabindex="-1"
     >
         <video
+            ref="tech"
+            class="vuedio-tech"
             @click="togglePause"
             @dblclick="fullscreen ? exitFullscreen() : enterFullscreen()"
             @mousewheel="onScroll"
-            class="vuedio-tech"
-            ref="tech"
         ></video>
         <canvas
-            class="vuedio-subtitles-canvas"
-            ref="subtitlesCanvas"
             v-show="subtitlesEnabled"
+            ref="subtitlesCanvas"
+            class="vuedio-subtitles-canvas"
         ></canvas>
         <div
-            class="vuedio-loading-wrap"
             v-show="loading"
+            class="vuedio-loading-wrap"
         >
             <div class="vuedio-loading">
                 <div class="vuedio-loading--spinner"></div>
             </div>
         </div>
         <div
+            ref="controlBar"
             :class="{ 'vuedio-control-bar-wrap': true, 'vuedio-control-bar-wrap--narrow': narrow }"
             @mouseenter="notifyActive(false)"
             @mouseleave="notifyActive()"
-            ref="controlBar"
         >
             <div class="vuedio-control-bar">
                 <button
-                    @click="togglePause"
-                    class="vuedio-button vuedio-play-pause-button"
                     v-ripple
+                    class="vuedio-button vuedio-play-pause-button"
+                    @click="togglePause"
                 >
                     <PlayPauseIcon
                         :state="paused ? 'play' : 'pause'"
@@ -65,36 +65,36 @@
                     {{ formatTime(totalDuration) }}
                 </span>
                 <div
-                    class="vuedio-spacer"
                     v-show="narrow"
+                    class="vuedio-spacer"
                 ></div>
                 <button
-                    :class="{ 'vuedio-button--disabled': !subtitlesEnabled }"
-                    @click="subtitlesEnabled = !subtitlesEnabled"
-                    class="vuedio-button vuedio-subtitles-button"
-                    v-ripple
                     v-show="subtitlesAvailable"
+                    v-ripple
+                    :class="{ 'vuedio-button--disabled': !subtitlesEnabled }"
+                    class="vuedio-button vuedio-subtitles-button"
+                    @click="subtitlesEnabled = !subtitlesEnabled"
                 >
                     <i class="mdi mdi-closed-caption"></i>
                 </button>
                 <div
-                    :class="{ 'vuedio-button--active': qualitiesMenu }"
-                    @click="qualitiesMenu = !qualitiesMenu"
-                    class="vuedio-button vuedio-qualities-button"
                     v-show="qualities.length > 1"
+                    :class="{ 'vuedio-button--active': qualitiesMenu }"
+                    class="vuedio-button vuedio-qualities-button"
+                    @click="qualitiesMenu = !qualitiesMenu"
                 >
                     <span class="vuedio-button--label">{{currentQuality ? currentQuality.name : ''}}</span>
                     <div
-                        class="vuedio-button--popup"
                         v-show="qualitiesMenu"
+                        class="vuedio-button--popup"
                     >
                         <ul>
                             <li
-                                :class="{ selected: it.selected }"
-                                :key="it.id"
-                                @click="it.callback"
                                 v-for="it in qualities"
+                                :key="it.id"
                                 v-ripple
+                                :class="{ selected: it.selected }"
+                                @click="it.callback"
                                 v-text="it.name"
                             />
                         </ul>
@@ -114,30 +114,30 @@
                     </span>
                     <div class="vuedio-button--popup">
                         <v-slider
+                            v-model="volume"
                             :max="1"
                             :min="0"
                             :step="0"
                             color="red"
-                            v-model="volume"
                             vertical
                         />
                     </div>
                 </div>
                 <button
-                    @click="inPip ? exitPip() : enterPip()"
-                    class="vuedio-button vuedio-pip-button"
-                    v-ripple
                     v-show="pipAvailable"
+                    v-ripple
+                    class="vuedio-button vuedio-pip-button"
+                    @click="inPip ? exitPip() : enterPip()"
                 >
                     <i
                         :class="'mdi ' + (inPip ? 'mdi-window-restore' : 'mdi-picture-in-picture-bottom-right')"
                     />
                 </button>
                 <button
-                    @click="fullscreen ? exitFullscreen() : enterFullscreen()"
-                    class="vuedio-button vuedio-fullscreen-button"
-                    v-ripple
                     v-show="fullscreenAvailable"
+                    v-ripple
+                    class="vuedio-button vuedio-fullscreen-button"
+                    @click="fullscreen ? exitFullscreen() : enterFullscreen()"
                 >
                     <i
                         :class="'mdi ' + (fullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen')"

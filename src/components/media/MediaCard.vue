@@ -18,14 +18,14 @@
             gradient="to bottom, rgba(0,0,0,0) 80%, rgba(0,0,0,.9) 100%"
         >
             <v-chip
-                class="release-type no-hover"
                 v-if="item.statusText2 !== undefined || item.releaseType !== undefined"
+                class="release-type no-hover"
             >
                 {{ item.statusText2 || $t('Items.Media.ReleaseType.' + item.releaseType) }}
             </v-chip>
             <v-chip
-                class="status-text no-hover"
                 v-if="!!item.statusText"
+                class="status-text no-hover"
             >
                 {{ item.statusText }}
             </v-chip>

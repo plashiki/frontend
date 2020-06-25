@@ -1,9 +1,9 @@
 <template>
     <smooth-slide-group
+        ref="slider"
         :show-buttons="$r12s.isDesktopByWidth"
         :height="height"
         :count="cols.length"
-        ref="slider"
     >
         <template
             v-if="items.length === 0 || loading"
@@ -16,15 +16,15 @@
                 justify="center"
             >
                 <v-progress-circular
+                    v-if="loading"
                     color="primary"
                     indeterminate
                     size="32"
-                    v-if="loading"
                     width="2"
                 />
                 <h3
-                    class="grey--text font-weight-bold"
                     v-else
+                    class="grey--text font-weight-bold"
                 >
                     {{ noItemsText }}
                 </h3>

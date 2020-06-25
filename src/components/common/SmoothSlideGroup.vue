@@ -15,8 +15,8 @@
             </v-btn>
         </div>
         <div
-            class="smooth-slide-group"
             ref="group"
+            class="smooth-slide-group"
         >
             <slot name="content">
                 <div class="smooth-slide-group--items">

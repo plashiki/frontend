@@ -16,17 +16,17 @@
             <v-tab-item>
                 <v-simple-card>
                     <TranslationsTable
+                        ref="translations"
                         :medias="medias"
                         moderator
-                        ref="translations"
                     />
                 </v-simple-card>
             </v-tab-item>
             <v-tab-item>
                 <v-simple-card>
                     <ReportsTable
-                        moderator
                         ref="reports"
+                        moderator
                     />
                 </v-simple-card>
             </v-tab-item>
@@ -40,12 +40,12 @@
 
                                     <v-btn
                                         :loading="statsLoading"
-                                        @click="loadStats"
                                         class="ml-2"
                                         color="primary"
                                         outlined
                                         rounded
                                         small
+                                        @click="loadStats"
                                     >
                                         {{ $t('Common.Load') }}
                                     </v-btn>
@@ -74,12 +74,12 @@
                                     sm="6"
                                 >
                                     <v-switch
+                                        ref="mod:tr"
                                         :disabled="subscriptionLoading !== false"
                                         :input-value="subscribed('mod:tr')"
                                         :loading="subscriptionLoading === 'mod:tr'"
-                                        @change="toggleSubscription('mod:tr', $event)"
                                         label="Новые переводы"
-                                        ref="mod:tr"
+                                        @change="toggleSubscription('mod:tr', $event)"
                                     />
                                 </v-col>
                                 <v-col
@@ -87,12 +87,12 @@
                                     sm="6"
                                 >
                                     <v-switch
+                                        ref="mod:rep"
                                         :disabled="subscriptionLoading !== false"
                                         :input-value="subscribed('mod:rep')"
                                         :loading="subscriptionLoading === 'mod:rep'"
-                                        @change="toggleSubscription('mod:rep', $event)"
                                         label="Новые жалобы"
-                                        ref="mod:rep"
+                                        @change="toggleSubscription('mod:rep', $event)"
                                     />
                                 </v-col>
                             </v-row>

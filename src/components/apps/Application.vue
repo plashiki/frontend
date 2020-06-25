@@ -16,8 +16,8 @@
             >
                 <AvatarView
                     :src="app.icon"
-                    no-edit
                     size="96"
+                    no-edit
                 />
             </v-col>
             <v-col
@@ -43,38 +43,38 @@
 
         <v-card-actions>
             <v-btn
+                v-if="context !== 'user'"
                 :disabled="loading"
-                @click="del"
                 icon
                 small
-                v-if="context !== 'user'"
+                @click="del"
             >
                 <v-icon small>
                     mdi-delete
                 </v-icon>
             </v-btn>
             <UserChip
+                v-if="'owner' in app && context !== 'owner'"
                 :control="context === 'admin'"
                 :user="app.owner"
                 chip-class="align-self-center"
                 small
-                v-if="'owner' in app && context !== 'owner'"
             />
             <v-spacer />
 
 
             <v-btn
-                :disabled="loading"
-                @click="revoke"
-                text
                 v-if="context === 'user'"
+                :disabled="loading"
+                text
+                @click="revoke"
             >
                 {{ $t('Pages.Applications.Revoke') }}
             </v-btn>
             <v-btn
-                @click="$emit('control')"
-                text
                 v-else
+                text
+                @click="$emit('control')"
             >
                 {{ $t('Common.Action.Control') }}
             </v-btn>

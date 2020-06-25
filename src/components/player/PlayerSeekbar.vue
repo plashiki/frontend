@@ -1,11 +1,11 @@
 <template>
     <div
+        class="vuedio-seek"
         @mousedown.left="mouseDown"
         @mousemove="updateHover"
         @mouseout="mouseOut"
         @mouseover="updateHover"
         @touchstart="mouseDown"
-        class="vuedio-seek"
     >
         <div class="vuedio-seek--back" />
         <div
@@ -23,9 +23,9 @@
             class="vuedio-seek--thumb"
         />
         <div
+            v-show="hoverValue >= 0 && duration >= 0"
             :style="{ left: hoverValue * 100 + '%' }"
             class="vuedio-seek--hovered"
-            v-show="hoverValue >= 0 && duration >= 0"
         >
             <div class="vuedio-seek--grip" />
             <div

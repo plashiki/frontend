@@ -3,11 +3,11 @@
         <component :is="layout">
             <router-view v-if="error === null" />
             <ErrorDisplay
+                v-else
                 :error="error[0]"
                 :info="error[2]"
                 :vm="error[1]"
                 fatal
-                v-else
             />
         </component>
     </div>

@@ -4,14 +4,14 @@
         &nbsp;
         <slot name="btn">
             <v-btn
+                v-show="showButton && (to || href)"
+                v-tooltip="tooltip"
                 :href="href"
                 :target="href !== undefined ? '_blank' : ''"
                 :to="to"
                 class="ml-1"
                 icon
                 small
-                v-show="showButton && (to || href)"
-                v-tooltip="tooltip"
             >
                 <v-icon small>
                     {{ icon }}

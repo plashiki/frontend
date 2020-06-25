@@ -12,13 +12,13 @@
                     style="max-width: 72%"
                 >
                     <v-chip
+                        v-for="it in presets"
+                        :key="it.uid"
                         :class="currentPreset && currentPreset.uid === it.uid ? 'primary--text v-chip--active' : ''"
                         :close="!it.default"
-                        :key="it.uid"
+                        ripple
                         @click="loadPreset(it)"
                         @click:close="removePreset(it)"
-                        ripple
-                        v-for="it in presets"
                     >
                         {{ it.$t ? $t(it.name) : it.name }}
                     </v-chip>
@@ -27,18 +27,18 @@
 
             <template #append>
                 <v-progress-linear
+                    v-if="hasMore"
+                    ref="loader"
+                    v-intersect="(_, __, v) => v && endReached()"
                     class="mt-2"
                     indeterminate
-                    ref="loader"
-                    v-if="hasMore"
-                    v-intersect="(_, __, v) => v && endReached()"
                 />
 
                 <ErrorAlert :error="error">
                     &nbsp;
                     <span
-                        @click.prevent="retry"
                         class="link-like primary--text"
+                        @click.prevent="retry"
                         v-text="$t('Common.Action.TryAgain')"
                     />
                 </ErrorAlert>
@@ -46,10 +46,10 @@
         </MediaList>
 
         <v-bottom-sheet
+            v-model="filtersVisible"
             eager
             inset
             scrollable
-            v-model="filtersVisible"
         >
             <template #activator="{ on }">
                 <v-btn
@@ -72,18 +72,18 @@
                     <v-spacer />
 
                     <span
-                        class="mx-2 body-2"
                         v-if="currentPreset !== null"
+                        class="mx-2 body-2"
                     >
                         {{ currentPreset.$t ? $t(currentPreset.name) : currentPreset.name }}
                     </span>
 
                     <v-menu
+                        v-else
+                        v-model="savePopup"
                         :close-on-content-click="false"
                         left
                         top
-                        v-else
-                        v-model="savePopup"
                     >
                         <template #activator="{ on }">
                             <v-btn
@@ -100,24 +100,24 @@
                         <v-card>
                             <v-card-text>
                                 <v-text-field
+                                    v-model="presetName"
                                     :label="$t('Pages.Search.FilterName')"
-                                    @click:append-outer="savePreset"
-                                    @keyup.enter="savePreset"
                                     append-outer-icon="mdi-check"
                                     dense
                                     hide-details
                                     outlined
-                                    v-model="presetName"
+                                    @click:append-outer="savePreset"
+                                    @keyup.enter="savePreset"
                                 />
                             </v-card-text>
                         </v-card>
                     </v-menu>
 
                     <v-btn
-                        :disabled="currentPreset ? currentPreset.uid === defaultPresets[0].uid : false"
-                        @click="resetFilters"
-                        icon
                         v-tooltip="$t('Pages.Viewer.ResetFilters')"
+                        :disabled="currentPreset ? currentPreset.uid === defaultPresets[0].uid : false"
+                        icon
+                        @click="resetFilters"
                     >
                         <v-icon>
                             mdi-backup-restore
@@ -129,16 +129,16 @@
                 <v-card-text class="overflow-y-auto card-layout-bg">
                     <component
                         :is="filterComponent"
-                        @update="filtersUpdated"
-                        ref="filters"
                         v-if="filterComponent !== null"
+                        ref="filters"
+                        @update="filtersUpdated"
                     />
                     <v-row
+                        v-else
                         align="center"
                         class="grey--text body-2 font-weight-bold"
                         justify="center"
                         style="height: 150px"
-                        v-else
                     >
                         {{ $t('Pages.Search.NoFilters') }}
                     </v-row>
@@ -147,20 +147,20 @@
                 <v-divider />
                 <v-card-actions>
                     <v-select
+                        v-model="sortMode"
                         :items="sorters"
                         dense
                         hide-details
                         outlined
-                        v-model="sortMode"
                     >
                         <template #append>
                             <v-icon>mdi-sort-variant</v-icon>
                         </template>
                         <template #item="{ item }">
                             <v-list-item-avatar
+                                v-if="item.icon"
                                 size="24"
                                 tile
-                                v-if="item.icon"
                             >
                                 <v-icon>
                                     {{ item.icon }}
@@ -178,11 +178,11 @@
                         </template>
                     </v-select>
                     <v-btn
-                        @click="filtersVisible = false"
                         class="ml-2"
                         color="primary"
                         depressed
                         height="40"
+                        @click="filtersVisible = false"
                     >
                         {{ $t('Common.Form.Apply') }}
                     </v-btn>

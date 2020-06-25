@@ -16,18 +16,18 @@
 
         <v-card-text>
             <TranslationForm
+                v-if="editable !== null"
+                v-model="valid"
                 :form="editable"
                 :no-url="!single"
                 allow-empty
-                v-if="editable !== null"
-                v-model="valid"
             />
         </v-card-text>
 
         <v-card-actions>
             <v-btn
-                @click="close"
                 text
+                @click="close"
             >
                 {{ $t('Common.Form.Cancel') }}
             </v-btn>
@@ -36,9 +36,9 @@
 
             <v-btn
                 :disabled="loading || !valid"
-                @click="save"
                 color="success"
                 text
+                @click="save"
             >
                 {{ $t('Common.Form.Save') }}
             </v-btn>

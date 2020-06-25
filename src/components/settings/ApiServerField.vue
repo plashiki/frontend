@@ -1,26 +1,26 @@
 <template>
     <v-text-field
+        v-model="vmodel"
         :label="service ? $t('Pages.Settings.ApiServer', { service: $t('Services.' + service) }) : undefined"
         v-bind="$attrs"
-        v-model="vmodel"
     >
         <template #append>
             <v-btn
-                @click="vmodel = reset"
+                v-tooltip="$t('Common.Action.Reset')"
                 icon
                 small
-                v-tooltip="$t('Common.Action.Reset')"
+                @click="vmodel = reset"
             >
                 <v-icon small>
                     mdi-backup-restore
                 </v-icon>
             </v-btn>
             <v-btn
-                @click="vmodel = proxy"
-                icon
-                small
                 v-if="proxy"
                 v-tooltip="$t('Pages.Settings.EnableProxy')"
+                icon
+                small
+                @click="vmodel = proxy"
             >
                 <v-icon small>
                     mdi-server-network

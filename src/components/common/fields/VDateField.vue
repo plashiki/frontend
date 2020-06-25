@@ -1,8 +1,8 @@
 <template>
     <v-text-field
+        v-model="internalValue"
         readonly
         v-bind="$attrs"
-        v-model="internalValue"
         v-on="listeners"
     >
         <template #append>
@@ -22,8 +22,8 @@
                 </template>
 
                 <v-date-picker
-                    v-bind="pickerProps"
                     v-model="internalValue"
+                    v-bind="pickerProps"
                 />
             </v-menu>
         </template>

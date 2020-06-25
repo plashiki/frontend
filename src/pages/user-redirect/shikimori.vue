@@ -2,8 +2,8 @@
     <div class="flex-grow-1">
         <ErrorAlert :error="error">
             <span
-                @click.prevent="load"
                 class="link-like primary--text"
+                @click.prevent="load"
                 v-text="$t('Common.Action.TryAgain')"
             />
         </ErrorAlert>

@@ -1,7 +1,7 @@
 <template>
     <NoItemsPlaceholder
-        :text="$t('Common.NeedAuth')"
         v-if="!authenticated"
+        :text="$t('Common.NeedAuth')"
     />
     <div v-else>
         <v-row>
@@ -37,10 +37,10 @@
                         <h3 class="d-block">
                             {{ user.nickname }}
                             <v-btn
-                                @click="editNickname"
+                                v-tooltip="$t('Pages.Settings.ChangeNickname')"
                                 icon
                                 small
-                                v-tooltip="$t('Pages.Settings.ChangeNickname')"
+                                @click="editNickname"
                             >
                                 <v-icon small>
                                     mdi-pencil
@@ -49,28 +49,28 @@
                         </h3>
                     </div>
                     <v-text-field
-                        :disabled="nicknameLoading"
-                        :label="$t('Items.User.Nickname')"
                         v-else
                         v-model="nicknameInput"
+                        :disabled="nicknameLoading"
+                        :label="$t('Items.User.Nickname')"
                     >
                         <template #append-outer>
                             <v-btn
+                                v-tooltip="$t('Common.Form.Cancel')"
                                 :disabled="nicknameLoading"
-                                @click="editingNickname = false"
                                 color="error"
                                 icon
-                                v-tooltip="$t('Common.Form.Cancel')"
+                                @click="editingNickname = false"
                             >
                                 <v-icon>
                                     mdi-close
                                 </v-icon>
                             </v-btn>
                             <v-btn
-                                :loading="nicknameLoading"
-                                @click="saveNickname"
-                                icon
                                 v-tooltip="$t('Common.Form.Save')"
+                                :loading="nicknameLoading"
+                                icon
+                                @click="saveNickname"
                             >
                                 <v-icon>
                                     mdi-content-save
@@ -93,11 +93,11 @@
         />
         <v-row>
             <v-col
+                v-for="s in services"
                 :key="s.id"
                 cols="12"
                 md="4"
                 sm="6"
-                v-for="s in services"
             >
                 <v-simple-card
                     class="v-card--outlined fill-height"
@@ -106,13 +106,13 @@
                     <div class="d-flex flex-row fill-width align-center justify-center">
                         <component :is="s.icon" class="connectable-service-icon ml-10" />
                         <v-btn
+                            v-tooltip="$t(user.service === s.id ? 'Pages.Settings.PrimaryService' : 'Pages.Settings.MakePrimaryService')"
                             :class="{ 'v-btn--active primary--text': user.service === s.id }"
                             :disabled="primaryLoading !== null || !connected(s.id)"
                             :loading="primaryLoading === s.id"
-                            @click="makePrimary(s.id)"
                             class="ml-2"
                             icon
-                            v-tooltip="$t(user.service === s.id ? 'Pages.Settings.PrimaryService' : 'Pages.Settings.MakePrimaryService')"
+                            @click="makePrimary(s.id)"
                         >
                             <v-icon>
                                 {{ user.service === s.id ? 'mdi-star' : 'mdi-star-outline' }}
@@ -138,18 +138,18 @@
                             <v-btn
                                 :disabled="!canDisconnect || disconnecting !== null"
                                 :loading="disconnecting === s.id"
-                                @click="disconnect(s.id)"
                                 block
                                 class="my-1"
                                 color="secondary"
+                                @click="disconnect(s.id)"
                                 v-text="$t('Pages.Settings.Disconnect')"
                             />
                         </template>
                         <v-btn
-                            :disabled="disconnecting !== null"
-                            @click="loginVia(s.serviceName)"
-                            color="primary"
                             v-else
+                            :disabled="disconnecting !== null"
+                            color="primary"
+                            @click="loginVia(s.serviceName)"
                             v-text="$t('Pages.Settings.Connect')"
                         />
                     </div>

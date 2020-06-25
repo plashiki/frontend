@@ -4,8 +4,8 @@
 
         <div class="d-flex flex-row justify-end">
             <v-btn
-                @click="update"
                 icon
+                @click="update"
             >
                 <v-icon>
                     mdi-refresh

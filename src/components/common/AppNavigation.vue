@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer
-        app
         v-model="isVisible"
+        app
     >
         <template #prepend>
             <v-list dense>
@@ -13,11 +13,11 @@
                         >
                     </v-list-item-avatar>
                     <v-icon
-                        :color="galo4ka.color || 'primary'"
-                        :key="i"
-                        small
                         v-for="(galo4ka, i) in userGalo4ki"
+                        :key="i"
                         v-tooltip="$t(galo4ka.info)"
+                        :color="galo4ka.color || 'primary'"
+                        small
                     >
                         {{ galo4ka.icon }}
                     </v-icon>
@@ -25,10 +25,10 @@
                     <v-list-item-action>
                         <v-row>
                             <v-btn
-                                @click="toggleDark"
+                                v-tooltip="$t(isDark ? 'Pages.Settings.DisableDarkMode' : 'Pages.Settings.EnableDarkMode')"
                                 class="mx-2"
                                 icon
-                                v-tooltip="$t(isDark ? 'Pages.Settings.DisableDarkMode' : 'Pages.Settings.EnableDarkMode')"
+                                @click="toggleDark"
                             >
                                 <v-fade-transition>
                                     <v-icon v-if="isDark">
@@ -43,22 +43,22 @@
                             <SettingsDialog v-if="$r12s.screenWidth >= 768">
                                 <template #default="{ on }">
                                     <v-btn
+                                        v-tooltip="$t('Pages.Settings.Name')"
                                         class="mr-2"
                                         icon
                                         v-on="on"
-                                        v-tooltip="$t('Pages.Settings.Name')"
                                     >
                                         <v-icon>mdi-cog</v-icon>
                                     </v-btn>
                                 </template>
                             </SettingsDialog>
                             <v-btn
+                                v-else
+                                v-tooltip="$t('Pages.Settings.Name')"
                                 active-class="primary--text"
                                 class="mr-2"
                                 icon
                                 to="/settings"
-                                v-else
-                                v-tooltip="$t('Pages.Settings.Name')"
                             >
                                 <v-icon>mdi-cog</v-icon>
                             </v-btn>
@@ -75,10 +75,10 @@
                     </template>
 
                     <VListItemIconText
-                        :title="$t('Pages.Login.Logout')"
-                        @click="logout"
-                        icon="mdi-logout"
                         v-if="userAuthenticated"
+                        :title="$t('Pages.Login.Logout')"
+                        icon="mdi-logout"
+                        @click="logout"
                     />
 
                     <template v-else>
@@ -126,9 +126,9 @@
             </template>
 
             <v-list-group
+                v-if="userAdmin"
                 :value="$route.meta.admin === true"
                 prepend-icon="mdi-wrench"
-                v-if="userAdmin"
             >
                 <template #activator>
                     <v-list-item-title>
@@ -137,23 +137,23 @@
                 </template>
 
                 <VListItemIconText
-                    :icon="item.icon"
+                    v-for="(item, i) in adminGroup"
                     :key="i"
+                    :icon="item.icon"
                     :title="$t(item.name)"
                     :to="item.path"
                     active-class="primary--text"
                     class="pl-8"
-                    v-for="(item, i) in adminGroup"
                 />
             </v-list-group>
 
             <VListItemIconText
-                :icon="item.icon"
+                v-for="(item, i) in visibleNavigation"
                 :key="i"
+                :icon="item.icon"
                 :title="item.name === '$current' ? currentTitle || $t(item.nameFallback) : $t(item.name)"
                 :to="item.path === '$current' ? $route.path : item.path"
                 active-class="primary--text"
-                v-for="(item, i) in visibleNavigation"
             />
         </v-list>
 

@@ -10,10 +10,10 @@
             v-html="falseLabel"
         ></span>
         <v-switch
+            v-model="vmodel"
             :disabled="disabled"
             class="mx-3 mt-0 pt-0"
             hide-details
-            v-model="vmodel"
         />
         <span
             :class="['body-2 two-option-switch--label', vmodel ? 'text--primary' : 'grey--text']"

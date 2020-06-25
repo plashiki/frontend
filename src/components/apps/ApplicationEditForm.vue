@@ -4,8 +4,8 @@
             {{ isNew ? $t('Common.Form.Create') : $t('Common.Action.Control') }}
             <v-spacer />
             <v-btn
-                @click="$emit('close')"
                 icon
+                @click="$emit('close')"
             >
                 <v-icon>
                     mdi-close
@@ -20,8 +20,8 @@
 
         <v-card-text class="py-2">
             <NoItemsPlaceholder
-                :text="$t('Common.Loading')"
                 v-if="fullApp === null"
+                :text="$t('Common.Loading')"
             />
             <template v-else>
                 <div class="text-center">
@@ -41,37 +41,37 @@
                 </div>
 
                 <v-text-field
+                    v-model="fullApp.name"
                     :disabled="loading"
                     :label="$t('Common.ItemName')"
                     hide-details
-                    v-model="fullApp.name"
                 />
                 <v-text-field
+                    v-model="fullApp.description"
                     :disabled="loading"
                     :label="$t('Common.Description')"
-                    v-model="fullApp.description"
                 />
 
                 <template v-if="fullApp.client_id">
                     <TokenField
                         :disabled="loading"
                         :value="fullApp.client_id"
-                        @revoke="revoke('id')"
                         label="client_id"
+                        @revoke="revoke('id')"
                     />
                     <TokenField
                         :disabled="loading"
                         :value="fullApp.client_secret"
-                        @revoke="revoke('secret')"
                         label="client_secret"
+                        @revoke="revoke('secret')"
                     />
                 </template>
 
                 <v-text-field
+                    v-model="fullApp.redirect_uri"
                     :disabled="loading"
                     class="text--monospace"
                     label="redirect_uri"
-                    v-model="fullApp.redirect_uri"
                 />
 
                 <template v-if="!isNew">
@@ -84,12 +84,12 @@
                         />
                     </p>
                     <v-text-field
+                        v-else
+                        v-model="serverScopeProxy"
                         :disabled="loading"
                         :hint="$t('Pages.Applications.ServerScopeFmt')"
                         :label="$t('Pages.Applications.ServerScope')"
                         persistent-hint
-                        v-else
-                        v-model="serverScopeProxy"
                     />
                 </template>
             </template>
@@ -100,9 +100,9 @@
             <v-spacer />
             <v-btn
                 :disabled="loading"
-                @click="save"
                 color="success"
                 text
+                @click="save"
             >
                 {{ isNew ? $t('Common.Form.Create') : $t('Common.Form.Save') }}
             </v-btn>

@@ -52,8 +52,8 @@
                 <ErrorAlert :error="error" />
 
                 <v-tabs
-                    class="mb-2"
                     v-model="tab"
+                    class="mb-2"
                 >
                     <v-tab>{{ $t('Pages.Donate.History') }}</v-tab>
                     <v-tab>{{ $t('Pages.Donate.Top') }}</v-tab>
@@ -73,9 +73,9 @@
 
                         <v-timeline dense>
                             <v-timeline-item
-                                :color="(it.sign === '+' ? 'green' : 'red') + ' darken-2'"
-                                :key="i"
                                 v-for="(it, i) in timeline"
+                                :key="i"
+                                :color="(it.sign === '+' ? 'green' : 'red') + ' darken-2'"
                             >
                                 <template #icon>
                                     <span
@@ -105,8 +105,8 @@
                     <v-tab-item>
                         <v-list>
                             <v-list-item
-                                :key="i"
                                 v-for="(u, i) in top"
+                                :key="i"
                             >
                                 <v-list-item-avatar
                                     :color="i === 0 ? 'yellow darken-2' : i === 1 ? 'grey lighten-3' : i === 2 ? 'deep-orange darken-2' : 'transparent'"
@@ -123,8 +123,8 @@
                             </v-list-item>
 
                             <NoItemsPlaceholder
-                                :text="$t('Common.Collection.NoItemsFound')"
                                 v-if="top.length === 0"
+                                :text="$t('Common.Collection.NoItemsFound')"
                             />
                         </v-list>
                     </v-tab-item>

@@ -7,9 +7,9 @@
         >
             <div v-if="items.length > 0">
                 <v-card
+                    v-for="day in days"
                     :key="day.name"
                     class="my-2"
-                    v-for="day in days"
                 >
                     <v-card-title>
                         {{ day.name }}
@@ -24,9 +24,9 @@
 
             <div v-else-if="loading">
                 <v-card
+                    v-for="i in 5"
                     :key="i"
                     class="my-2"
-                    v-for="i in 5"
                 >
                     <v-card-text>
                         <v-skeleton-loader
@@ -42,8 +42,8 @@
         </v-fade-transition>
 
         <v-card
-            class="py-10 align-center"
             v-show="!loading && items.length === 0"
+            class="py-10 align-center"
         >
             <v-card-text>
                 <v-row

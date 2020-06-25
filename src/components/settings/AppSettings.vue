@@ -4,12 +4,12 @@
             :class="{'v-card--outlined': flat, 'mb-2': true }"
         >
             <v-tabs
-                :show-arrows="$r12s.screenWidth >= 480"
                 v-model="tab"
+                :show-arrows="$r12s.screenWidth >= 480"
             >
                 <v-tab
-                    :key="i"
                     v-for="(tab, i) in tabs"
+                    :key="i"
                     v-text="$t('Pages.Settings.' + tab[1])"
                 />
             </v-tabs>
@@ -17,8 +17,8 @@
 
         <v-tabs-items v-model="tab">
             <v-tab-item
-                :key="i"
                 v-for="(tab, i) in tabs"
+                :key="i"
             >
                 <v-simple-card>
                     <component :is="tab[0]" />

@@ -1,6 +1,7 @@
 <template>
     <v-slide-x-reverse-transition>
         <v-card
+            v-if="shouldShow"
             :class="{ 'notification__absolute': absolute }"
             :elevation="absolute ? 6 : 0"
             :href="!internal ? url : undefined"
@@ -10,7 +11,6 @@
             :to="internal ? url : undefined"
             class="overflow-hidden"
             v-bind="{ height: 150, ...$attrs }"
-            v-if="shouldShow"
             v-on="$listeners"
         >
             <v-layout
@@ -18,18 +18,18 @@
                 flex-nowrap
             >
                 <v-progress-linear
+                    v-if="item.progress !== undefined"
                     :active="item.progress !== 1"
                     :indeterminate="item.progress === -1"
                     :value="item.progress * 100"
                     absolute
                     top
-                    v-if="item.progress !== undefined"
                 />
                 <v-img
+                    v-if="!!item.payload.image"
                     :lazy-src="item.payload.smallImage"
                     :src="item.payload.image"
                     height="150"
-                    v-if="!!item.payload.image"
                     width="100"
                 />
                 <v-avatar v-if="icon !== null">
@@ -50,10 +50,10 @@
                             {{ title }}
                         </h4>
                         <v-btn
-                            @click.stop.prevent="$emit('close')"
                             class="flex-shrink-1"
                             icon
                             small
+                            @click.stop.prevent="$emit('close')"
                         >
                             <v-icon small>
                                 mdi-close

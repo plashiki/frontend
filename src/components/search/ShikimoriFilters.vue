@@ -9,22 +9,22 @@
                 <v-card class="fill-height">
                     <v-card-text>
                         <v-autocomplete
+                            v-model="filters.genre"
                             :items="genres"
                             :label="$t('Pages.Search.Genres')"
                             hide-details
                             multiple
-                            v-model="filters.genre"
                         >
                             <template #selection="{ item, index }">
                                 <v-chip
-                                    small
                                     v-if="index <= 1"
+                                    small
                                 >
                                     {{ $t(item.text) }}
                                 </v-chip>
                                 <span
-                                    class="grey--text caption"
                                     v-if="index === 2"
+                                    class="grey--text caption"
                                 >
                                     {{ $tc('Common.Form.PlusNOther', filters.genre.length - 2)  }}
                                 </span>
@@ -37,8 +37,8 @@
                                     v-on="on"
                                 >
                                     <v-list-item-content
-                                        class="grey--text subtitle-2"
                                         v-if="!!item.group"
+                                        class="grey--text subtitle-2"
                                     >
                                         {{ $t(item.group) }}
                                     </v-list-item-content>
@@ -67,18 +67,18 @@
                             justify="center"
                         >
                             <v-rating
+                                v-model="filters.score"
                                 class="rating-smaller-gap text-center"
                                 half-icon="mdi-star-half-full"
                                 half-increments
                                 hover
-                                v-model="filters.score"
                             />
                             <v-btn
-                                @click="filters.score = 0"
+                                v-tooltip="$t('Common.Action.Reset')"
                                 class="ml-2"
                                 icon
                                 small
-                                v-tooltip="$t('Common.Action.Reset')"
+                                @click="filters.score = 0"
                             >
                                 <v-icon small>
                                     mdi-block-helper
@@ -89,11 +89,11 @@
                 </v-card>
             </v-col>
             <v-col
+                v-for="(f, i) in ui"
                 :key="i"
                 cols="12"
                 lg="4"
                 md="6"
-                v-for="(f, i) in ui"
             >
                 <v-card class="fill-height">
                     <v-card-title>
@@ -101,9 +101,9 @@
                         <v-spacer />
                         <v-fade-transition>
                             <v-btn
-                                @click="filters[f.storage] = []"
-                                icon
                                 v-show="filters[f.storage].length > 0"
+                                icon
+                                @click="filters[f.storage] = []"
                             >
                                 <v-icon>
                                     mdi-delete-sweep
@@ -114,14 +114,14 @@
 
                     <v-card-text>
                         <FilterChip
-                            :disabled="f.auth ? !authenticated : false"
+                            v-for="(it, j) in f.list"
                             :key="j"
+                            :disabled="f.auth ? !authenticated : false"
                             :negotiator="i => '!' + i"
                             :storage="filters[f.storage]"
                             :text="typeof it.text === 'string' ? $t(it.text) : $t(it.text[0], it.text[1])"
                             :value="it.value"
                             class="ma-1"
-                            v-for="(it, j) in f.list"
                         />
                     </v-card-text>
                 </v-card>

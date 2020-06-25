@@ -2,11 +2,11 @@
     <v-chip
         :filter-icon="icon"
         :input-value="active"
-        @click="clicked"
         filter
         outlined
         ripple
         v-bind="$attrs"
+        @click="clicked"
     >
         {{ text }}
     </v-chip>

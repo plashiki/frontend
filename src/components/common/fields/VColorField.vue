@@ -1,8 +1,8 @@
 <template>
     <v-text-field
+        v-model="internalValue"
         readonly
         v-bind="$attrs"
-        v-model="internalValue"
         v-on="listeners"
     >
         <template #prepend>
@@ -28,8 +28,8 @@
                 </template>
 
                 <v-color-picker
-                    v-bind="pickerProps"
                     v-model="internalValue"
+                    v-bind="pickerProps"
                 />
             </v-menu>
         </template>

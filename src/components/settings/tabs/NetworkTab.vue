@@ -1,10 +1,10 @@
 <template>
     <div>
         <v-number-field
+            v-model="apiTimeout"
             :label="$t('Pages.Settings.RequestTimeout')"
             :min="0"
             :step="1000"
-            v-model="apiTimeout"
         />
         <p
             class="caption text--secondary"
@@ -12,17 +12,17 @@
         />
 
         <v-switch
-            :label="$t('Pages.Settings.ConnectionIndicatorAlwaysVisible')"
             v-model="connectionIndicator"
+            :label="$t('Pages.Settings.ConnectionIndicatorAlwaysVisible')"
         />
 
         <v-divider class="mb-4" />
 
         <ApiServerField
+            v-model="shikimoriApiEndpoint"
             :proxy="shikimoriProxy"
             :reset="defaultShikimori"
             service="Shikimori"
-            v-model="shikimoriApiEndpoint"
         />
         <p
             class="caption text--secondary"

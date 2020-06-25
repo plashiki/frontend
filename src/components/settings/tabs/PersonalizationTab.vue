@@ -6,8 +6,8 @@
                 sm="6"
             >
                 <v-color-field
-                    :label="$t('Pages.Settings.PrimaryColor')"
                     v-model="primaryColor"
+                    :label="$t('Pages.Settings.PrimaryColor')"
                 />
             </v-col>
             <v-col
@@ -15,15 +15,15 @@
                 sm="6"
             >
                 <v-color-field
-                    :label="$t('Pages.Settings.AccentColor')"
                     v-model="accentColor"
+                    :label="$t('Pages.Settings.AccentColor')"
                 />
             </v-col>
         </v-row>
         <v-select
+            v-model="preferredNameLanguage"
             :items="nameLanguageItems"
             :label="$t('Pages.Settings.PreferredNameLanguage')"
-            v-model="preferredNameLanguage"
         />
         <p
             v-if="provider === 'shikimori'"
@@ -32,14 +32,14 @@
         />
         
         <v-switch
-            :label="$t('Pages.Settings.ExpandAllAuthors')"
             v-model="expandAllViewer"
+            :label="$t('Pages.Settings.ExpandAllAuthors')"
             hide-details
         />
 
         <v-switch
-            :label="$t('Pages.Settings.OnlyOngoingsInRecent')"
             v-model="onlyOngoingsInRecent"
+            :label="$t('Pages.Settings.OnlyOngoingsInRecent')"
         />
         <p
             class="caption text--secondary"
@@ -51,8 +51,8 @@
             v-html="$t('Pages.Settings.TranslationPreferenceOrder')"
         />
         <reorder-list
-            dense
             v-model="translationPreferenceOrder"
+            dense
         />
     </div>
 </template>

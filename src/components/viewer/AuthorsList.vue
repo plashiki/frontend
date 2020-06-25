@@ -1,10 +1,10 @@
 <template>
     <v-simple-card>
         <v-tabs
-            background-color="transparent"
-            class="kinds-tabs mb-5"
             ref="tabs"
             v-model="currentTab"
+            background-color="transparent"
+            class="kinds-tabs mb-5"
         >
             <div style="display: flex; align-items: center">
                 <slot name="left" />
@@ -40,18 +40,18 @@
                     name="authors-list"
                 >
                     <div
+                        v-for="author in authors"
                         :key="author.key"
                         class="authors-list-item my-3"
-                        v-for="author in authors"
                     >
                         <v-row
-                            @click="toggleExpanded(author.key)"
                             class="ma-0"
+                            @click="toggleExpanded(author.key)"
                         >
                             <p class="mb-0 cursor-pointer flex-fill text-truncate text--primary">
                                 <span
-                                    :class="'no-dots mr-2 flag-' + author.lang"
                                     v-tooltip="$t('Items.Translation.Language.' + author.lang + author.kind)"
+                                    :class="'no-dots mr-2 flag-' + author.lang"
                                 >
                                     <v-icon class="author-kind-icon icon-mid-size">
                                         {{
@@ -64,8 +64,8 @@
                                 {{ author.name || $t('Items.Translation.UnknownAuthor') }}
                                 <v-fade-transition>
                                     <span
-                                        class="grey--text caption ml-2 text-truncate"
                                         v-if="!expanded[author.key] && !expandAll"
+                                        class="grey--text caption ml-2 text-truncate"
                                     >
                                         {{ playerNames(author) }}
                                     </span>
@@ -74,25 +74,25 @@
                         </v-row>
                         <v-expand-transition>
                             <TranslationsList
+                                v-if="expandAll || expanded[author.key] === true"
                                 :data="author.translations"
                                 :key-prefix="author.key"
                                 :selected-translations="selectedTranslations"
                                 :translation-selection-mode="translationSelectionMode"
                                 :translation.sync="selectedTranslation"
                                 :authors="authors"
-                                v-if="expandAll || expanded[author.key] === true"
                             />
                         </v-expand-transition>
                     </div>
                 </transition-group>
             </template>
             <v-skeleton-loader
-                type="list-item-two-line, list-item, list-item, list-item, list-item"
                 v-else-if="data === null && loading"
+                type="list-item-two-line, list-item, list-item, list-item, list-item"
             />
             <NoItemsPlaceholder
-                :text="$t('Pages.Viewer.NoTranslationsAvailable')"
                 v-else-if="data !== null && authors.length === 0"
+                :text="$t('Pages.Viewer.NoTranslationsAvailable')"
             />
         </transition>
     </v-simple-card>

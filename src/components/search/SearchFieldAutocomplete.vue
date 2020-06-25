@@ -1,31 +1,31 @@
 <template>
     <v-autocomplete
+        ref="field"
+        v-model="selected"
         :items="items"
         :label="$t('Pages.Search.Name')"
         :loading="loading"
         :rules="required ? [requiredField] : undefined"
         :search-input.sync="input"
-        @keyup.enter="links && openSearch()"
-        append-icon=""
 
+        append-icon=""
         autocomplete="off"
         class="search-field-autocomplete"
         hide-no-data
         item-value="id"
         no-filter
-        ref="field"
         v-bind="$attrs"
-        v-model="selected"
+        @keyup.enter="links && openSearch()"
     >
         <template
-            #selection
             v-if="links"
+            #selection
         >
             <!-- nop -->
         </template>
         <template
-            #selection="{ item }"
             v-else
+            #selection="{ item }"
         >
             <v-chip small>
                 {{ name(item) }}

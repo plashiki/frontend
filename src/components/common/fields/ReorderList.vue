@@ -3,8 +3,8 @@
         <div class="d-flex flex-column flex-shrink-1">
             <v-btn
                 :disabled="selected == null || selected === 0"
-                @click="moveAbsolute(0)"
                 icon
+                @click="moveAbsolute(0)"
             >
                 <v-icon>
                     mdi-chevron-double-up
@@ -12,8 +12,8 @@
             </v-btn>
             <v-btn
                 :disabled="selected == null || selected === 0"
-                @click="moveRelative(-1)"
                 icon
+                @click="moveRelative(-1)"
             >
                 <v-icon>
                     mdi-chevron-up
@@ -21,8 +21,8 @@
             </v-btn>
             <v-btn
                 :disabled="selected == null || selected === internalValue.length - 1"
-                @click="moveRelative(1)"
                 icon
+                @click="moveRelative(1)"
             >
                 <v-icon>
                     mdi-chevron-down
@@ -30,8 +30,8 @@
             </v-btn>
             <v-btn
                 :disabled="selected == null || selected === internalValue.length - 1"
-                @click="moveAbsolute(-1)"
                 icon
+                @click="moveAbsolute(-1)"
             >
                 <v-icon>
                     mdi-chevron-double-down
@@ -46,8 +46,8 @@
                 v-model="selected"
             >
                 <div
-                    :key="i"
                     v-for="(it, i) in internalValue"
+                    :key="i"
                 >
                     <slot
                         :index="i"

@@ -12,21 +12,21 @@
                         icon="mdi-open-in-new"
                     />
                     <v-chip-group
-                        :show-arrows="$r12s.isDesktopByWidth"
                         v-if="media.genres !== undefined"
+                        :show-arrows="$r12s.isDesktopByWidth"
                     >
                         <v-chip
-                            :href="genreLink(genre)"
-                            :key="genre.id"
                             v-for="genre in media.genres"
+                            :key="genre.id"
+                            :href="genreLink(genre)"
                         >
                             {{ $t(genre.name) }}
                         </v-chip>
                     </v-chip-group>
                 </div>
                 <v-skeleton-loader
-                    type="list-item-two-line"
                     v-else-if="loading"
+                    type="list-item-two-line"
                 />
             </transition>
         </v-simple-card>
@@ -39,12 +39,12 @@
                         class="viewer-frame--wrap"
                     >
                         <iframe
+                            ref="iframe"
                             :src="iframeUrl"
-                            @load="onIframeLoad"
                             allowfullscreen
                             allow="autoplay, encrypted-media, fullscreen"
                             class="viewer-iframe"
-                            ref="iframe"
+                            @load="onIframeLoad"
                         />
                         <v-layout
                             class="viewer-iframe__overlay"
@@ -60,8 +60,8 @@
                 </v-simple-card>
             </v-col>
             <v-col
-                class="viewer-poster text-center ml-2 d-flex flex-column"
                 v-if="posterVisible && !mobileDisplay"
+                class="viewer-poster text-center ml-2 d-flex flex-column"
             >
                 <v-simple-card class="fill-height">
                     <v-img
@@ -70,12 +70,12 @@
                         :src="fullImage"
                     />
                     <v-rating
+                        v-if="media && media.score != null"
                         :value="media.score / 2"
                         class="rating-smaller-gap mt-2"
                         half-icon="mdi-star-half-full"
                         half-increments
                         readonly
-                        v-if="media && media.score != null"
                     />
                     <v-spacer />
                 </v-simple-card>
@@ -108,28 +108,29 @@
             class="row"
         >
             <v-col
+                v-if="!mobileDisplay || mobilePage === 'parts'"
+                key="1"
                 :class="{ 'px-0': mobileDisplay }"
                 :cols="mobileDisplay ? 12 : 6"
-                key="1"
-                v-if="!mobileDisplay || mobilePage === 'parts'"
             >
                 <PartsList
+                    ref="parts"
                     :data="data"
                     :loading="loading"
                     :media-type="mediaType"
                     :part.sync="partNumber"
                     :user-rate="userRate"
                     @item-click="mobilePage = 'authors'"
-                    ref="parts"
                 />
             </v-col>
             <v-col
+                v-if="!mobileDisplay || mobilePage === 'authors'"
+                key="2"
                 :class="{ 'px-0': mobileDisplay }"
                 :cols="mobileDisplay ? 12 : 6"
-                key="2"
-                v-if="!mobileDisplay || mobilePage === 'authors'"
             >
                 <AuthorsList
+                    ref="authors"
                     :data="data && data[partNumber] && data[partNumber].authors"
                     :loading="loading"
                     :media-type="mediaType"
@@ -137,15 +138,14 @@
                     :translation-selection-mode="translationSelectionMode"
                     :translation.sync="translationId"
                     :translations-index="translationsIndex"
-                    ref="authors"
                 >
                     <template #left>
                         <v-btn
+                            v-show="mobileDisplay"
                             :icon="$r12s.screenWidth <= 500"
                             :text="$r12s.screenWidth > 500"
-                            @click="mobilePage = 'parts'"
                             rounded
-                            v-show="mobileDisplay"
+                            @click="mobilePage = 'parts'"
                         >
                             <v-icon :left="$r12s.screenWidth > 500">
                                 mdi-arrow-left

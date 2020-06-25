@@ -1,20 +1,20 @@
 <template>
     <v-app :dark="isDark">
         <AppNavigation
+            v-if="showAppBar && showNavBar"
             :current-title="navTitle"
             :visible.sync="navigationVisible"
-            v-if="showAppBar && showNavBar"
         />
 
         <v-app-bar
+            v-if="showAppBar"
             app
             :dark="isDark"
-            v-if="showAppBar"
         >
             <v-app-bar-nav-icon
-                @click="navigationVisible = !navigationVisible"
-                class="mr-1"
                 v-if="showNavBar"
+                class="mr-1"
+                @click="navigationVisible = !navigationVisible"
             />
             <v-toolbar-title v-if="!showSearch">
                 {{ innerTitle }}
@@ -23,6 +23,7 @@
             <v-spacer />
 
             <v-text-field
+                v-if="showSearch"
                 v-model="searchInput"
                 :label="$t('Pages.Search.Name')"
                 :solo-inverted="isDark"
@@ -31,7 +32,6 @@
                 append-icon="mdi-magnify"
                 flat
                 hide-details
-                v-if="showSearch"
                 @blur="$route.name === 'search' && doSearch()"
                 @click:append="doSearch"
                 @keyup.enter="doSearch"
@@ -40,12 +40,12 @@
             <v-spacer />
 
             <v-btn
-                @click="webSocketStatus.state !== 0 && forceReconnection()"
+                v-show="!webSocketStatus.isOnline || connectionIndicator"
+                v-tooltip="{ content: webSocketStatusTooltip, hideOnTargetClick: false, trigger: 'hover click focus' }"
                 class="ml-1"
                 icon
                 small
-                v-show="!webSocketStatus.isOnline || connectionIndicator"
-                v-tooltip="{ content: webSocketStatusTooltip, hideOnTargetClick: false, trigger: 'hover click focus' }"
+                @click="webSocketStatus.state !== 0 && forceReconnection()"
             >
                 <v-avatar
                     :color="webSocketStatus.isOnline ? 'green' : 'transparent'"
@@ -53,9 +53,9 @@
                 >
                     <v-fade-transition>
                         <v-progress-circular
+                            v-show="!webSocketStatus.isOnline"
                             indeterminate
                             size="12"
-                            v-show="!webSocketStatus.isOnline"
                             width="2"
                         />
                     </v-fade-transition>
@@ -63,22 +63,22 @@
             </v-btn>
 
             <v-btn
-                :disabled="loading === true || updateDisabled"
-                @click="updateClicked"
-                class="ml-1"
-                icon
                 v-show="showUpdateButton"
                 v-tooltip="$t('Common.Action.Update')"
+                :disabled="loading === true || updateDisabled"
+                class="ml-1"
+                icon
+                @click="updateClicked"
             >
                 <v-icon>mdi-refresh</v-icon>
             </v-btn>
             <NotificationsDialog>
                 <template #default="{ on }">
                     <v-btn
+                        v-tooltip="$t('Items.Notification.NamePlural')"
                         class="ml-1 mr-n3"
                         icon
                         v-on="on"
-                        v-tooltip="$t('Items.Notification.NamePlural')"
                     >
                         <v-icon>mdi-bell</v-icon>
                     </v-btn>
@@ -100,9 +100,9 @@
 
         <Notification
             :item="currentNotification"
+            absolute
             @click="onCurrentNotificationClick"
             @close="onCurrentNotificationClick"
-            absolute
         />
     </v-app>
 </template>

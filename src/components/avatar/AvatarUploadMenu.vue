@@ -1,9 +1,9 @@
 <template>
     <v-menu
+        v-model="visible"
         :close-on-click="fileUploading === -1"
         :close-on-content-click="false"
         v-bind="$attrs"
-        v-model="visible"
         v-on="$listeners"
     >
         <template #activator="{ on }">
@@ -23,10 +23,10 @@
                 >
                     <AvatarView
                         :src="currentSrc"
-                        @error="imageLoadError"
                         class="my-2 my-sm-0"
                         no-edit
                         size="96"
+                        @error="imageLoadError"
                     />
                 </v-col>
                 <v-col
@@ -34,8 +34,8 @@
                     sm="8"
                 >
                     <v-tabs
-                        grow
                         v-model="tab"
+                        grow
                     >
                         <v-tab :disabled="fileUploading !== -1">
                             {{ $t('Pages.Image.ImgurTab') }}
@@ -51,13 +51,13 @@
                             <v-tab-item>
                                 <ErrorAlert :error="uploadError" />
                                 <v-file-input
+                                    v-model="fileInput"
                                     :disabled="fileUploading !== -1"
                                     :label="$t('Common.Form.SelectFile')"
                                     :loading="fileUploading !== -1"
                                     :rules="[validateFile]"
                                     accept="image/jpeg,image/png,image/gif,image/tiff"
                                     class="small-input-text"
-                                    v-model="fileInput"
                                     validate-on-blur
                                 >
                                     <template #progress>
@@ -72,9 +72,9 @@
                                     <template #append-outer>
                                         <v-btn
                                             :disabled="!valid"
-                                            @click="startUpload"
                                             icon
                                             small
+                                            @click="startUpload"
                                         >
                                             <v-icon>
                                                 mdi-upload
@@ -85,11 +85,11 @@
                             </v-tab-item>
                             <v-tab-item>
                                 <v-text-field
+                                    v-model="urlInput"
                                     :label="$t('Pages.Image.UrlLabel')"
                                     :rules="[urlValidator]"
-                                    @blur="urlLostFocus"
                                     class="small-input-text"
-                                    v-model="urlInput"
+                                    @blur="urlLostFocus"
                                 />
                             </v-tab-item>
                         </div>
@@ -105,16 +105,16 @@
                     >
                         <v-btn
                             :disabled="fileUploading !== -1"
-                            @click="visible = false"
                             text
+                            @click="visible = false"
                         >
                             {{ $t('Common.Form.Cancel') }}
                         </v-btn>
                         <v-btn
                             :disabled="fileUploading !== -1"
-                            @click="save"
                             color="success"
                             text
+                            @click="save"
                         >
                             {{ $t('Common.Form.Save') }}
                         </v-btn>

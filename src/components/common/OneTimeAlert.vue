@@ -1,8 +1,8 @@
 <template>
     <v-alert
+        v-model="vmodel"
         dismissible
         v-bind="$attrs"
-        v-model="vmodel"
         v-on="$listeners"
     >
         <slot />

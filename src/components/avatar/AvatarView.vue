@@ -5,8 +5,8 @@
     >
         <transition transition="fade-transition">
             <div
-                class="blue-grey lighten-5 avatar-view--placeholder"
                 v-if="src == null"
+                class="blue-grey lighten-5 avatar-view--placeholder"
             >
                 <v-icon
                     color="blue-grey darken-4"
@@ -14,18 +14,18 @@
                 />
             </div>
             <v-img
-                :src="src"
-                @error="$emit('error', $event)"
-                v-bind="imgProps"
                 v-else
+                :src="src"
+                v-bind="imgProps"
+                @error="$emit('error', $event)"
             />
         </transition>
 
         <div
-            class="avatar-view--overlay"
             v-if="!noEdit && !loading"
-            v-on="$listeners.click ? { click: $listeners.click } : {}"
             v-ripple
+            class="avatar-view--overlay"
+            v-on="$listeners.click ? { click: $listeners.click } : {}"
         >
             <v-icon
                 color="white"
@@ -37,8 +37,8 @@
 
         <transition name="fade-transition">
             <div
-                class="avatar-view--loading"
                 v-if="loading"
+                class="avatar-view--loading"
             >
                 <v-progress-circular
                     color="white"

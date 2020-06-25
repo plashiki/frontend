@@ -5,33 +5,33 @@
                 <v-simple-card class="fill-height">
                     <div>
                         <v-text-field
+                            v-model="searchInput"
                             :label="$t('Pages.Search.Name')"
                             :loading="userLoading"
                             :readonly="userLoading"
-                            v-model="searchInput"
                         />
                         {{ $t('Pages.UsersAdmin.FindBy') }}
                         <a
-                            @click="search('id')"
                             href="#"
+                            @click="search('id')"
                             v-text="$t('Items.User.ID')"
                         />,
                         <a
-                            @click="search('shikiId')"
                             href="#"
+                            @click="search('shikiId')"
                             v-text="$t('Services.Shikimori')"
                         />,
                         <a
-                            @click="search('nickname')"
                             href="#"
+                            @click="search('nickname')"
                             v-text="$t('Items.User.Nickname')"
                         />
                     </div>
                     <UserChip
+                        v-if="foundUser"
                         :user="foundUser"
                         control
                         full
-                        v-if="foundUser"
                     />
                 </v-simple-card>
             </v-col>

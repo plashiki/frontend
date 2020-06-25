@@ -1,27 +1,27 @@
 <template>
     <v-text-field
+        ref="field"
         class="text--monospace"
         hide-details
         readonly
-        ref="field"
         v-bind="$attrs"
         v-on="$listeners"
     >
         <template #append-outer>
             <v-btn
                 :disabled="disabled"
-                @click="copy"
                 icon
+                @click="copy"
             >
                 <v-icon>
                     mdi-content-copy
                 </v-icon>
             </v-btn>
             <v-btn
-                :disabled="disabled"
-                @click="$emit('revoke')"
-                icon
                 v-tooltip="$t('Pages.Applications.Revoke')"
+                :disabled="disabled"
+                icon
+                @click="$emit('revoke')"
             >
                 <v-icon>
                     mdi-key-remove

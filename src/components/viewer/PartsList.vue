@@ -41,12 +41,12 @@
                 >
                     <transition-group name="basic-list-movement">
                         <v-list-item
-                            :class="{ 'primary--text v-list-item--active': selectedPart === partN }"
+                            v-for="partN in parts"
                             :key="partN"
                             :ref="'part-' + partN"
+                            :class="{ 'primary--text v-list-item--active': selectedPart === partN }"
                             class="basic-list-movement-item"
                             @click="onItemClicked(partN)"
-                            v-for="partN in parts"
                         >
                             <v-list-item-content>
                                 <v-list-item-title>
@@ -56,7 +56,7 @@
                                     {{ data[partN].players.join(', ') }}
                                 </v-list-item-subtitle>
                             </v-list-item-content>
-                            <v-list-item-avatar size="30" v-if="userRate && partN <= userRate.parts">
+                            <v-list-item-avatar v-if="userRate && partN <= userRate.parts" size="30">
                                 <v-icon color="success">
                                     mdi-check
                                 </v-icon>
@@ -66,12 +66,12 @@
                 </v-list>
             </div>
             <v-skeleton-loader
-                type="list-item-two-line, list-item-two-line, list-item-two-line, list-item-two-line, list-item-two-line"
                 v-else-if="data === null && loading"
+                type="list-item-two-line, list-item-two-line, list-item-two-line, list-item-two-line, list-item-two-line"
             />
             <NoItemsPlaceholder
-                :text="$t('Pages.Viewer.NoTranslationsAvailable')"
                 v-else-if="data !== null && parts.length === 0"
+                :text="$t('Pages.Viewer.NoTranslationsAvailable')"
             />
         </transition>
     </v-simple-card>

@@ -1,13 +1,13 @@
 <template>
     <svg
+        ref="svg"
         class="play-pause-icon"
         height="100%"
-        ref="svg"
         viewBox="0 0 24 24"
         width="100%"
     >
-        <path d="" ref="path1"></path>
-        <path d="" ref="path2"></path>
+        <path ref="path1" d=""></path>
+        <path ref="path2" d=""></path>
     </svg>
 </template>
 

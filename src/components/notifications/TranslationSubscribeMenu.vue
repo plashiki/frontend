@@ -12,21 +12,21 @@
                 v-text="$t('Pages.Viewer.NotificationsTitle')"
             />
             <v-list-item
+                v-for="(it, i) in topics"
                 :key="i"
                 class="d-flex flex-row"
-                v-for="(it, i) in topics"
             >
                 <v-list-item-title
                     v-text="it.name"
                 />
                 <v-spacer />
                 <v-switch
+                    :ref="it.topic"
                     :disabled="loading !== false"
                     :input-value="subscribed(it.topic)"
                     :loading="loading === it.topic"
-                    :ref="it.topic"
-                    @change="toggle(it.topic, $event)"
                     class="ml-2"
+                    @change="toggle(it.topic, $event)"
                 />
             </v-list-item>
         </v-list>

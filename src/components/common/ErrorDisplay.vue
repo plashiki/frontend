@@ -16,8 +16,8 @@
             v-text="message"
         />
         <pre
-            class="overflow-x-auto"
             v-if="stack !== undefined"
+            class="overflow-x-auto"
             v-text="stack"
         />
 
@@ -27,10 +27,10 @@
             justify="center"
         >
             <v-btn
-                @click="reload"
+                v-show="fatal"
                 outlined
                 rounded
-                v-show="fatal"
+                @click="reload"
             >
                 <v-icon left>
                     mdi-refresh

@@ -1,8 +1,8 @@
 <template>
     <v-dialog
+        v-model="visible"
         max-width="800"
         scrollable
-        v-model="visible"
     >
         <template #activator="bind">
             <slot v-bind="bind" />
@@ -13,8 +13,8 @@
                 <h4>{{ $t('Pages.Settings.Name') }}</h4>
                 <v-spacer />
                 <v-btn
-                    @click="visible = false"
                     icon
+                    @click="visible = false"
                 >
                     <v-icon>mdi-close</v-icon>
                 </v-btn>

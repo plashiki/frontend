@@ -49,6 +49,13 @@ module.exports = {
             .loader(join(__dirname, 'build/yml-locale-loader'))
             .end()
 
+        config.module
+            .rule('authors')
+            .test(/authors\.txt$/)
+            .use('authors-loader')
+            .loader(join(__dirname, 'build/authors-loader'))
+            .end()
+
         const svgRule = config.module.rule('svg')
 
         svgRule.uses.clear()

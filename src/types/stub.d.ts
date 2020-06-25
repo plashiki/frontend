@@ -45,6 +45,9 @@ declare module '*.yml' {
     }
 }
 
+declare module '@/assets/authors.txt' {
+    export const authors: string[]
+}
 
 declare module '*.svg' {
     import Vue from 'vue'

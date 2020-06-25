@@ -99,12 +99,16 @@
             hide-details
             v-model="form.hq"
         />
-        <v-text-field
+        <v-combobox
             :disabled="disabled"
             :hint="form.author ? undefined : $t('Items.Translation.LeaveBlankIfUnknown')"
             :label="$t('Items.Translation.Author')"
+            :items="authorSearch && commonAuthors.indexOf(authorSearch) === -1 ? commonAuthors : []"
+            :search-input.sync="authorSearch"
+            :filter="(_, input, text) => input.length < 2 ? false : text.toLowerCase().indexOf(input.toLowerCase()) > -1"
             autocomplete="off"
             persistent-hint
+            hide-no-data
             v-model="form.author"
             validate-on-blur
         />
@@ -150,7 +154,7 @@
                 justify-center
                 ma-0
                 row
-                wrap
+                wrapa
             >
                 <slot />
                 <template v-if="showMeta">
@@ -209,6 +213,7 @@ import VSimpleCard from '@/components/common/VSimpleCard.vue'
 import { PlayerMeta } from '@/types/moderation'
 import { getPlayerMeta } from '@/api/moderation'
 import { iziToastError } from '@/plugins/izitoast'
+import { authors as commonAuthors } from '@/assets/authors.txt'
 
 const formDefaults = {
     author: '',
@@ -233,9 +238,13 @@ export default class TranslationForm extends Vue {
     @Prop({ type: Boolean, default: false }) showMeta!: boolean
     @Prop({ type: Boolean, default: false }) allowEmpty!: boolean
 
-    byId = false
     urlValidator = urlValidator
+    commonAuthors = commonAuthors
+
+    byId = false
     valid = false
+
+    authorSearch = null
 
     formValid = false
     malLookupError: ApiException | null = null
@@ -280,11 +289,13 @@ export default class TranslationForm extends Vue {
     }
 
     fixValidation (): void {
-        (this.$refs.form as any).inputs.forEach((it: any) => {
-            if (it.internalValue) {
-                it.valid = it.validate()
-            }
-        })
+        if (this.$refs.form) {
+            (this.$refs.form as any).inputs.forEach((it: any) => {
+                if (it.internalValue) {
+                    it.valid = it.validate()
+                }
+            })
+        } else setTimeout(this.fixValidation, 10)
     }
 
     @Watch('inputUrl')

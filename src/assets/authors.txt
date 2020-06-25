@@ -1,0 +1,352 @@
+### ABOUT THIS FILE
+# This file contains authors list to be used for auto-completing user input
+# when submitting translations.
+### SYNTAX
+# - Each line contains a single studio name or author name
+# - Lines are sorted by alphabet in ascending order to prevent merge conflicts
+# - Empty lines and lines starting with # (number sign) are ignored
+# - English names are preferred over non-english.
+### CONTRIBUTING
+# You are welcome to contribute to this list.
+# Please follow syntax rules though.
+
+1F Entertainment
+2nd Division
+2nd life
+2x2
+3df voice
+4Anime
+4MINUTE’S WORLD
+7 Чудес света
+7Dub
+9anime
+AG-DUB
+ALPHA Alliance
+ALTER Team
+ANI FOKUS
+ANIvoice
+AOS
+Ad acta
+Akari GROUP
+Akashi
+Aki Team Dub
+Akira
+AlFair Project
+AlFair Studio
+Alex
+Alliance Project
+AllianceSS
+Alpha Team
+Alternative Media Voice
+Alvakarp
+Amazing Dubbing
+Amber
+Ame no Violinist
+Ani-Mania
+Ani.Joker
+Ani4an
+AniBand
+AniBoom
+AniBreeze
+AniChaos
+AniDUB
+AniDark
+AniDate
+AniDeshka
+AniFame
+AniFancy TV
+AniFilm
+AniFreeze
+AniGalaxy
+AniKawa-TV
+AniKeit
+AniKotyatnik Production
+AniLibria
+AniLife TV
+AniMIX
+AniMania
+AniMaunt
+AniMedia
+AniMira
+AniMoon
+AniMur
+AniMy
+AniNya
+AniPanic
+AniPast
+AniPie
+AniPlague
+AniPlay
+AniRaccoon
+AniRai
+AniRaicon-Studio
+AniRay
+AniRecords
+AniRigin
+AniRise
+AniRose
+AniRyu-Project
+AniSense
+AniSound
+AniSoundDub
+AniSpace-Project
+AniStar
+AniStart
+AniTeam
+AniTime
+AniTime.TV
+AniTrevell
+AniUA
+AniUchi
+AniUnion Project
+AniVis Group
+AniWave
+AniWayt
+AniWorld
+AniZone
+AnigaKuDub
+Anilife Project
+Anime Planet
+AnimeJet
+AnimeJoy
+AnimeMovie
+AnimeReactor
+AnimeRip
+AnimeSpace
+AnimeVost
+AnimeVostorg
+Aniwell Studio
+Anku
+Antravoco
+Anything Group
+Aragami Fansub Group
+Arasi Project
+AreaDub
+ArtVoice
+BADBADNOTGOOD
+BLACK SHOW
+Bad Unicorns
+Baioretto Usagi
+Bamboo
+Ban
+BananaTeam
+BarDubber's
+Bastion Studio
+Bazaar Zetsubou
+Bears
+BeatTeam
+Beloved Onnies
+BeyBeast project
+Big Boss
+Black Cat
+Black pearl
+BlackSailsProject
+Bliss
+Bondorin
+BukeDub
+CACTUS TEAM
+CARDINALS
+COWABUNGA STUDIO
+CherryBlossom
+Cinema Group Info
+Clan Kaizoku
+ClubFate
+Coffee Translate
+ColibriTeam
+Constantia Project
+Crows'Crowds
+Crunchyroll
+DVMedia
+D'n'T FunDab
+Dark Side Group
+DeVa
+DeadLine Studio
+Diaton
+EC Media
+Ebalai Official
+Elistern
+EnFamilySubs
+Enso Studio
+Erai-raws
+Evolution Studio
+ExtraordinarySubs
+FURAIMU
+FairPozitive
+Fairy01
+FinalVoice
+FireDUB Project
+FireDub
+Firegorn Team
+Flarrow Films
+Free Flight
+FreeDom On-Line Team
+FreeDub
+Fronda
+FunDUB
+FuruiAnime
+GamesVoice
+Get Smart Group
+Gezell Studio
+GhostDubbers
+Gold Cinema
+Gromder Studio
+Gutsu Kitten Band
+HARDSUB TEAM
+HDRezka Studio
+Hanabi no Kyoku
+HanamiDub
+Hardcore категории D
+HaronMedia
+HaruVoice
+HiromiTV
+HomeDub
+HorribleSubs
+I.D.A.
+INFINITY Studio
+INTramedia
+IST - media
+InVite Studio
+InariDub
+Indie Dub
+Interdub
+Internet Hate Machine
+IsekaiCamp
+Izakaya
+J&N Union
+J-Lyrics
+JART
+JWA Project
+Jade
+Jam
+Jisedai
+Judas
+Julia
+K Studio
+KBK
+KMEDIA
+KR-team
+KRT
+KaWai
+Kansai Studio
+Katana Sound
+KitsuneBox
+KoeDub
+LE-Production
+LOVELYVOX
+LampTV
+LapkiDub-Studio
+LeDi-MaHo Team
+LegitSub
+LiRa
+Liberal Project
+Linad
+ListenVoice
+LiteSound
+LiveDub
+MC Entertainment
+MMstudio
+MOSCOW CITY ANIMEGROUP
+Восторг
+MediaDub
+MedusaSub
+Men in Sub
+Milvus
+MiraiDuB
+Miriad Works
+MontralfiveStudio
+N-Team
+NK Studio
+NVOICEMEDIA
+NWP
+Naruto-Base
+NekoDUB
+NekoSubs
+Neon Films
+New Dawn Studio
+NewComers
+NewMotion Studio
+NiKiStudio
+NikoWorks
+Nippa Team
+NyaMedia
+ORA-ORA Project
+OSC Project
+Ohys-Raws
+OldFQ
+OniFox
+Onibaku Group
+Onsei Project
+OpenDub
+Otakudo
+Paradox
+Phenomenon
+Phoenix Project
+PhysKids
+QualiDub
+R.G. AnimEx
+R.O.A.R Voices
+RG Genshiken
+Raburi studio
+RainDub
+RavenStudio
+Reagent Media
+Reality Marble Team
+RebelProject
+RinneSubs
+Risens Team
+RoStudio
+SFI
+SHIFT Subs
+SHIZA Project
+SNK-TV
+SUBOne
+Sakura
+SeregaAnkord2005
+Serick
+Shachiburi
+Shanteau Store
+Sherman
+ShinkaDan
+Shirome
+SovetRomantica
+SubSwaY
+SugoiSubs
+TAKEOVER Project
+TLANIME
+TPOUHUKxAniPeptun
+TapkiSubs
+Team Wolf
+Teisoku
+Timecraft
+Too U
+Tori no Yume
+TrueTransLate
+Unravel
+Uta no yousei
+VodkaSubs
+WAT Studio
+Wakanim
+Whiscuss
+YRsub
+YakuSub Studio
+Yellow Tree Translators
+Zeon Orchestra
+Zero
+Ziggy Team
+ZouSub
+aZia Town
+ekb dub
+mutagenb
+pro100Dubbers
+youmiteru
+АЗАЛИИ
+Альянс
+Гараж Дубляж
+Лолечка
+МАНИЯ
+Мега-Аниме
+Рай Отаку
+СВ-дубль
+Студия перевода БКиС
+Телеканал MTV
+Японская Таверна

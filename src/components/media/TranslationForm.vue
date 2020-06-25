@@ -16,6 +16,7 @@
             justify="center"
         >
             <v-img
+                v-if="$r12s.isDesktopByWidth"
                 :aspect-ratio="2/3"
                 :src="posterSrc"
                 class="mr-2"
@@ -53,20 +54,31 @@
         <ErrorAlert
             :error="malLookupError"
         />
-        <v-number-field
-            :allow-empty="allowEmpty"
-            :disabled="disabled"
-            :label="mediaType === 'anime' ? $t('Items.Media.Episode') : $t('Items.Media.Chapter')"
-            :messages="proxyPart && selectedMedia && selectedMedia.partsCount !== 0 && proxyPart > selectedMedia.partsCount ?
-                $tc(mediaType === 'anime' ? 'Items.Media.OnlyNEpisodes'
-                    : 'Items.Media.OnlyNChapters', selectedMedia.partsCount) : undefined"
-            :predicate="v => v > 0"
-            :prefix="$t('Items.Media.PartPrefix')"
-            :validate-on-blur="!allowEmpty"
-            v-model="proxyPart"
-        />
         <v-row>
-            <v-col class="py-0">
+            <v-col
+                class="py-0"
+                cols="12"
+                md="4"
+            >
+                <v-number-field
+                    :allow-empty="allowEmpty"
+                    :disabled="disabled"
+                    :label="mediaType === 'anime' ? $t('Items.Media.Episode') : $t('Items.Media.Chapter')"
+                    :messages="proxyPart && selectedMedia && selectedMedia.partsCount !== 0 && proxyPart > selectedMedia.partsCount ?
+                        $tc(mediaType === 'anime' ? 'Items.Media.OnlyNEpisodes'
+                            : 'Items.Media.OnlyNChapters', selectedMedia.partsCount) : undefined"
+                    :predicate="v => v > 0"
+                    :prefix="$t('Items.Media.PartPrefix')"
+                    :validate-on-blur="!allowEmpty"
+                    v-model="proxyPart"
+                />
+            </v-col>
+            <v-col
+                class="py-0"
+                cols="12"
+                sm="6"
+                md="4"
+            >
                 <v-select
                     :disabled="disabled"
                     :items="langs"
@@ -83,7 +95,12 @@
                     </template>
                 </v-select>
             </v-col>
-            <v-col class="py-0">
+            <v-col
+                class="py-0"
+                cols="12"
+                sm="6"
+                md="4"
+            >
                 <v-select
                     :disabled="disabled"
                     :items="kinds"

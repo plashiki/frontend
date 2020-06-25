@@ -148,7 +148,9 @@
                     :disabled="inputUrl === ''"
                     target="_blank"
                 >
-                    <v-icon>mdi-open-in-new</v-icon>
+                    <v-icon small>
+                        mdi-open-in-new
+                    </v-icon>
                 </v-btn>
             </template>
         </v-text-field>

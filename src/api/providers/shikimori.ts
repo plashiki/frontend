@@ -272,10 +272,11 @@ export function shikimoriGetCalendar (): Promise<ShikimoriCalendarEntry[]> {
 }
 
 export function shikimoriGetMediaInList (status: UserRateStatus, type: MediaType, pagination: Pagination): Promise<(ShikimoriBriefAnime | ShikimoriBriefManga)[]> {
-    return shikimoriGetMediasWithParams({
-        mylist: UserRateToShikimoriStatusAdapter[status],
-        ...(shikimoriPaginationAdapter(pagination))
-    }, type, true)
+    return getUserRates({
+        status,
+        target_type: type,
+        ...pagination
+    }).then((res) => shikimoriGetMedias(res.map(i => i.target_id), type))
 }
 
 export function shikimoriGetMediaUpdates (type: MediaType): Promise<MediaUpdate[]> {

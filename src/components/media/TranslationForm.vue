@@ -28,6 +28,7 @@
                 ref="idInput"
                 v-if="!byId"
                 v-model="selectedMedia"
+                clearable
             />
             <MediaByIdField
                 :allow-empty="allowEmpty"
@@ -36,6 +37,7 @@
                 ref="idInput"
                 v-else
                 v-model="selectedMedia"
+                clearable
             />
             <v-btn
                 :disabled="!selectedMedia || disabled"
@@ -109,6 +111,7 @@
             autocomplete="off"
             persistent-hint
             hide-no-data
+            clearable
             v-model="form.author"
             validate-on-blur
         />
@@ -118,6 +121,7 @@
             :rules="[requiredField, urlValidator]"
             autocomplete="off"
             v-model="inputUrl"
+            clearable
             validate-on-blur
         >
             <template #append-outer>
@@ -300,14 +304,16 @@ export default class TranslationForm extends Vue {
 
     @Watch('inputUrl')
     urlChanged (val: string): void {
-        let m = val.match(/^\s*<iframe[^>]*?src=['"](.*?)['"][^>]*?>/i)
-        if (m) {
-            let val = m[1]
-            if (val.startsWith('//')) val = 'https:' + val
-            this.inputUrl = val.replace(/&amp;/ig, '&')
-            return
+        if (val) {
+            let m = val.match(/^\s*<iframe[^>]*?src=['"](.*?)['"][^>]*?>/i)
+            if (m) {
+                let val = m[1]
+                if (val.startsWith('//')) val = 'https:' + val
+                this.inputUrl = val.replace(/&amp;/ig, '&')
+                return
+            }
         }
-        let valid = val !== '' && urlValidator(val) === true
+        let valid = val && urlValidator(val) === true
         this.form.url = valid ? val : null
     }
 

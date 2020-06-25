@@ -139,7 +139,7 @@
                             <VListItemIconText
                                 :disabled="selectedTranslations.length === 0"
                                 :title="$t('Common.Form.Delete')"
-                                @click="deleteMultiple"
+                                @click="deleteSelected"
                                 icon="mdi-delete"
                             />
                         </template>
@@ -259,18 +259,20 @@
 
                 <v-btn
                     v-tooltip="$t('Items.Translation.Delete')"
-                    v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth >= 570"
+                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    :disabled="translationSelectionMode && selectedTranslations.length === 0"
                     icon
-                    @click="deleteCurrent"
+                    @click="translationSelectionMode ? deleteSelected() : deleteCurrent()"
                 >
                     <v-icon>mdi-delete</v-icon>
                 </v-btn>
 
                 <v-btn
                     v-tooltip="$t('Items.Translation.Edit')"
-                    v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth >= 570"
+                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    :disabled="translationSelectionMode && selectedTranslations.length === 0"
                     icon
-                    @click="editDialog = true"
+                    @click="() => { if (translationSelectionMode) { editMultipleDialog = true } else { editDialog = true } }"
                 >
                     <v-icon>mdi-pencil</v-icon>
                 </v-btn>
@@ -414,7 +416,7 @@ export default class ViewerControls extends Vue {
         }).catch(iziToastError)
     }
 
-    deleteMultiple (): void {
+    deleteSelected (): void {
         let ids = [...this.selectedTranslations]
         this.translationSelectionMode = false
         deleteMultipleTranslations(ids).then(() => {

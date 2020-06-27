@@ -38,6 +38,7 @@
                     :class="{ 'from-all': prevTab === 0, 'to-all': currentTab === 0 }"
                     class="authors-list"
                     name="authors-list"
+                    tag="div"
                 >
                     <div
                         v-for="author in authors"
@@ -231,6 +232,13 @@ export default class AuthorsList extends Vue {
 }
 
 .authors-list {
+    overflow-y: auto;
+    max-height: 800px;
+
+    @media (max-width: 730px) {
+        max-height: 500px;
+    }
+
     &-item {
         z-index: 1;
     }

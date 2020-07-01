@@ -228,7 +228,7 @@ export default class DefaultLayout extends Vue {
         if (!this.currentNotification) return
 
         notificationsStore.updateNotification({
-            id: this.currentNotification.id,
+            $id: this.currentNotification.id,
             new: false
         })
         this.currentNotification = null

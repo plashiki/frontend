@@ -1,7 +1,7 @@
 import { LocalSharedMutation, VLocalModule } from '@/utils/vuex-sugar'
 import { VuexModule } from 'vuex-module-decorators'
 import { storedNotificationsLimit } from '@/config'
-import { indexOfBy, merge } from '@/utils/object-utils'
+import { createIndex, indexOfBy, merge } from '@/utils/object-utils'
 import { ApiNotification } from '@/types/notification'
 
 @VLocalModule('NotificationsModule')
@@ -25,18 +25,24 @@ export default class NotificationsModule extends VuexModule {
     }
 
     @LocalSharedMutation()
-    updateNotification (data: Partial<ApiNotification>): void {
+    updateNotification (data: { $id: number | number[] } & Partial<ApiNotification>): void {
+        let index = createIndex(Array.isArray(data.$id) ? data.$id : [data.$id], i => i)
         this.items.forEach(it => {
-            if (it.id === data.id) {
+            if (it.id in index) {
                 merge(it, data)
             }
         })
     }
 
     @LocalSharedMutation()
-    removeNotification (id: number): void {
-        const index = indexOfBy(this.items, it => it.id === id)
-        if (index !== -1) this.items.splice(index, 1)
+    removeNotification (ids: number | number[]): void {
+        if (!Array.isArray(ids)) {
+            ids = [ids]
+        }
+        ids.forEach((id) => {
+            const index = indexOfBy(this.items, it => it.id === id)
+            if (index !== -1) this.items.splice(index, 1)
+        })
     }
 
     @LocalSharedMutation()

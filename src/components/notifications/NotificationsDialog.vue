@@ -165,7 +165,7 @@ export default class NotificationsDialog extends Vue {
     onNotificationVisible (item?: ApiNotification<any>, visible?: boolean): void {
         if (item?.new && visible && this.visible) {
             notificationsStore.updateNotification({
-                id: item.id,
+                $id: item.id,
                 new: false
             })
         }

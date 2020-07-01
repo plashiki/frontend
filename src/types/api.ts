@@ -64,7 +64,7 @@ export type WebSocketRPCOut = {
 
 export interface WebSocketRPCIn {
     act: 'push'
-    id: number
+    id: number | number[]
     type: 'C' | 'U' | 'D'
     topics?: string[]
     progress?: number

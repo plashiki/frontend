@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { DEBUG } from '@/utils/debug'
 import axios, { AxiosResponse } from 'axios'
 import { BroadcastChannel, createLeaderElection } from 'broadcast-channel'
-import { merge } from '@/utils/object-utils'
+import { createIndex, merge } from '@/utils/object-utils'
 import { authStore, configStore, notificationsStore, onceStoreReady } from '@/store'
 import { getCurrentUser } from '@/api/user'
 import { getMissedNotifications, registerFirebaseToken, unregisterFirebaseToken } from '@/api/notifications'
@@ -165,7 +165,7 @@ export function makeApiRequest<T> (options: MakeApiRequestOptions): Promise<T> {
     })
 }
 
-function handleWebsocketResponse (data: ApiEnvelope<any> | WebSocketRPCIn): void {
+function handleWebsocketResponse (data: ApiEnvelope<any>): void {
     if (webSocketRequestMap[data.id!] !== undefined) {
         const [resolve, , timeout, start] = webSocketRequestMap[data.id!]
         clearTimeout(timeout)
@@ -184,10 +184,11 @@ async function handleWebsocketMessage (data: WebSocketRPCIn): Promise<void> {
 
         if (data.type === 'C') {
             notif = await prepareNotification({
-                id: data.id!,
+                id: data.id as number,
                 topics: data.topics!,
                 progress: data.progress!,
                 payload: data.data!,
+                deleted: false,
                 time: new Date().toISOString(),
                 new: true
             })
@@ -198,10 +199,10 @@ async function handleWebsocketMessage (data: WebSocketRPCIn): Promise<void> {
             if (data.type === 'C') {
                 notificationsStore.addNotifications(notif)
             } else if (data.type === 'D') {
-                notificationsStore.removeNotification(data.id!)
+                notificationsStore.removeNotification(data.id)
             } else if (data.type === 'U') {
                 notificationsStore.updateNotification({
-                    id: data.id!,
+                    $id: data.id,
                     progress: data.progress,
                     payload: data.data
                 })
@@ -360,14 +361,32 @@ export function updateInitData (retry = false): void {
         }))
 
         getMissedNotifications(notificationsStore.lastSyncTime).then((items) => {
-            Promise.all(items.map(i => prepareNotification(i))).then((items) => {
-                notificationsStore.addNotifications(items.map(it => {
-                    it.new = true
-                    it.background = true
-                    return it
-                }))
-                notificationsStore.updateLastSyncTime(Date.now())
-            })
+            let storedNotifications = createIndex(notificationsStore.items, i => i.id)
+
+            let deletedNotifications = items.filter(i => i.deleted)
+            let updatedNotifications = items.filter(i => !i.deleted && i.id in storedNotifications)
+            let createdNotifications = items.filter(i => !i.deleted && !(i.id in storedNotifications))
+
+            Promise.all([
+                Promise.all(createdNotifications.map(i => prepareNotification(i))).then((items) => {
+                    notificationsStore.addNotifications(items.map(it => {
+                        it.new = true
+                        it.background = true
+                        return it
+                    }))
+                }),
+                Promise.all(updatedNotifications.map(i => prepareNotification(i))).then((items) => {
+                    items.forEach((it) => {
+                        notificationsStore.updateNotification({
+                            $id: it.id,
+                            ...it
+                        })
+                    })
+                })
+            ]).catch(iziToastError)
+
+            notificationsStore.removeNotification(deletedNotifications.map(i => i.id))
+            notificationsStore.updateLastSyncTime(Date.now())
         })
     }).catch((err: ApiException) => {
         if (err.code === 'UNKNOWN_USER') authStore.setUser(null)

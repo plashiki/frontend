@@ -15,7 +15,7 @@
         >
             <span
                 v-if="error && error.code"
-                v-html="$t(`Api.Errors.${error.code}`, error)"
+                v-html="html"
             />
             <span
                 v-else-if="error"
@@ -34,5 +34,14 @@ import { ApiException } from '@/types/api'
 @Component({})
 export default class ErrorAlert extends Vue {
     @Prop() error?: ApiException
+
+    get html (): string {
+        if (!this.error) return ''
+        if (this.error.code?.startsWith('TRANSLATION_DUPLICATE_')) {
+            return this.$t('Api.Errors.TRANSLATION_DUPLICATE', { description: this.error.code.substr(22) })
+        }
+
+        return this.$t(`Api.Errors.${this.error.code}`, this.error)
+    }
 }
 </script>

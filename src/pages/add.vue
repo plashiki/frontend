@@ -159,9 +159,6 @@ export default class AddTranslationPage extends LoadableVue {
                 this.captcha.execute()
                     .then(sendCaptcha)
                     .then(() => this.send())
-            } else if (err.code?.startsWith('TRANSLATION_DUPLICATE_')) {
-                this.error = new ApiException('TRANSLATION_DUPLICATE', err.code.substr(22))
-                this.sending = false
             } else {
                 this.error = err
                 this.sending = false

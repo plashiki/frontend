@@ -1,6 +1,9 @@
 <template>
     <div>
-        <v-dialog v-model="editing">
+        <v-dialog
+            v-model="editing"
+            scrollable
+        >
             <TranslationEditDialog
                 v-if="editing"
                 :report-id="currentReport.id"

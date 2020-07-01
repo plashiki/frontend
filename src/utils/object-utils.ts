@@ -382,7 +382,7 @@ export function shallowDiff<T extends AnyKV> (obj: T, modified: T, ignoreValues:
 
 export type KeyDelegate<T> = (obj: T) => any
 
-export function createIndex<T extends AnyKV, M extends keyof T> (arr: T[], key: M | KeyDelegate<T>): Record<any, T> {
+export function createIndex<T, M extends keyof T> (arr: T[], key: M | KeyDelegate<T>): Record<any, T> {
     let ret: Record<any, T> = {} as any
 
     if (typeof key === 'string') {

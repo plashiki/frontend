@@ -7,6 +7,7 @@ export interface ApiNotification<T = AnyKV> {
     for_users?: number[]
     topics: string[]
     payload: T
+    deleted: boolean
 
     // was this boi received from background?
     background?: boolean

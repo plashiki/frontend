@@ -45,7 +45,7 @@
                         <iframe
                             :src="editableTranslation.url"
                             allowfullscreen
-                            allow="autoplay, encrypted-media, fullscreen"
+                            allow="autoplay, encrypted-media"
                             class="viewer-iframe"
                         ></iframe>
                     </v-responsive>

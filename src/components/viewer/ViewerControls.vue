@@ -9,7 +9,8 @@
             >
                 <v-dialog
                     v-model="reportDialog"
-                    max-width="800"
+                    max-width="1000"
+                    scrollable
                 >
                     <ReportForm
                         v-if="translation"

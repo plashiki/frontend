@@ -22,7 +22,13 @@
                 :form="editableTranslation"
                 :show-meta="showMeta"
             >
-                <slot />
+                <template #default="{ setField }">
+                    <slot
+                        :original="originalTranslation"
+                        :editable="editableTranslation"
+                        :set-field="setField"
+                    />
+                </template>
             </TranslationForm>
         </v-card-text>
 
@@ -32,6 +38,14 @@
                 @click="close"
             >
                 {{ $t('Common.Form.Cancel') }}
+            </v-btn>
+            <v-btn
+                v-if="this.originalTranslation && this.originalTranslation.id"
+                text
+                :disabled="!this.originalTranslation || !this.editableTranslation"
+                @click="reset"
+            >
+                {{ $t('Common.Action.Reset') }}
             </v-btn>
 
             <v-spacer />
@@ -120,6 +134,10 @@ export default class TranslationEditDialog extends Vue {
     originalTranslation: Translation | null = null
     editableTranslation: Translation | null = null
 
+    reset (): void {
+        if (!this.originalTranslation || !this.editableTranslation) return
+        Object.entries(this.originalTranslation).forEach(([k, v]) => (this.$refs.form as any).setField(k, v))
+    }
 
     close (): void {
         this.$emit('close')

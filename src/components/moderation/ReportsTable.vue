@@ -13,17 +13,48 @@
                 @delete="update"
                 @update="update"
             >
-                <v-card
-                    v-if="currentReport.edit"
-                    outlined
-                >
-                    <v-card-title>
-                        {{ $t('Items.Report.ProposedEdit') }}
-                    </v-card-title>
-                    <v-card-text
-                        v-html="proposedEditText(currentReport, true)"
-                    />
-                </v-card>
+                <template #default="{ original, editable, setField, proposedEdit = currentReport.edit && proposedEditText(currentReport, true) }">
+                    <v-card
+                        v-if="currentReport.edit"
+                        outlined
+                    >
+                        <v-card-title>
+                            {{ $t('Items.Report.ProposedEdit') }}
+                        </v-card-title>
+                        <v-card-text>
+                            <div
+                                v-for="(it, i) in proposedEdit"
+                                :key="i"
+                                class="row no-gutters align-center"
+                            >
+                                <v-btn
+                                    class="mr-1"
+                                    small
+                                    icon
+                                    :disabled="original[it.object[0]] === it.object[1] || editable[it.object[0]] === it.object[1]"
+                                    @click="setField(it.object[0], it.object[1])"
+                                >
+                                    <v-icon small>mdi-arrow-top-left</v-icon>
+                                </v-btn>
+                                <component :is="original[it.object[0]] === it.object[1] ? 's' : 'div'">
+                                    <b v-html="it.display[0]" />: <span v-html="it.display[1]" />
+                                </component>
+                            </div>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer />
+                            <v-btn
+                                color="success"
+                                text
+                                small
+                                :disabled="!proposedEdit.some((it) => original[it.object[0]] !== it.object[1] && editable[it.object[0]] !== it.object[1])"
+                                @click="() => proposedEdit.forEach((it) => setField(it.object[0], it.object[1]))"
+                            >
+                                {{ $t('Common.Form.Apply') }}
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </template>
             </TranslationEditDialog>
         </v-dialog>
 
@@ -120,7 +151,7 @@
                         </b>
                         <span
                             v-else
-                            v-tooltip="proposedEditText(item)"
+                            v-tooltip="proposedEditText(item).map(i => `<b>${i.display[0]}</b>: ${i.display[1]}`).join('<br/>')"
                         >
                             {{ $tc('Items.Report.EditNFields', Object.keys(item.edit).length) }}
                         </span>
@@ -142,6 +173,14 @@ import UserChip from '@/components/user/UserChip.vue'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 import { convertDataTableOptionsToPagination } from '@/utils/helpers'
+
+// type ProposedEditField = [string, string, string, any] // display key, object key, display value (html), value
+interface ProposedEditField {
+    // key, value (html)
+    display: [string, string]
+    // key, value (if different from display)
+    object?: [string, any]
+}
 
 @Component({
     components: { TranslationEditDialog, UserChip, ErrorAlert }
@@ -221,55 +260,82 @@ export default class ReportsTable extends Vue {
         })
     }
 
-    proposedEditText (it: Report, full = false): string {
+    proposedEditText (it: Report, full = false): ProposedEditField[] {
         return it.edit
             ? Object.entries(it.edit)
-                .map(([key, value]) => {
-                    key = key as EditableTranslationFields
+                .map((object: [string, any]) => {
+                    const [key, value] = object
                     if (key === 'lang') {
-                        return [this.$t('Items.Translation.LanguageName'), this.$t('Items.Translation.Language.' + value)]
+                        return {
+                            display: [this.$t('Items.Translation.LanguageName'), this.$t('Items.Translation.Language.' + value)],
+                            object
+                        }
                     }
 
                     if (key === 'kind') {
-                        return [this.$t('Items.Translation.KindNameShort'), this.$t('Items.Translation.Kind.' + value)]
+                        return {
+                            display: [this.$t('Items.Translation.KindNameShort'), this.$t('Items.Translation.Kind.' + value)],
+                            object
+                        }
                     }
 
                     if (key === 'hq') {
-                        return [this.$t('Items.Translation.IsHqShort'), this.$t(value ? 'Common.Yes' : 'Common.No')]
+                        return {
+                            display: [this.$t('Items.Translation.IsHqShort'), this.$t(value ? 'Common.Yes' : 'Common.No')],
+                            object
+                        }
                     }
 
                     if (key === 'target_id' || key === 'target_type') {
-                        return [this.$t('Items.Translation.Target'), value]
+                        return {
+                            display: [this.$t('Items.Translation.Target'), value],
+                            object
+                        }
                     }
 
                     if (key === 'part') {
-                        return [this.$t('Items.Translation.Part'), value]
+                        return {
+                            display: [this.$t('Items.Translation.Part'), value],
+                            object
+                        }
                     }
 
                     if (key === 'author') {
-                        return [this.$t('Items.Translation.Author'), value]
+                        return {
+                            display: [this.$t('Items.Translation.Author'), value],
+                            object
+                        }
                     }
 
                     if (key === 'url') {
                         try {
                             let hostname = new URL(value as string).hostname
                             if (full) {
-                                return [
-                                    this.$t('Items.Translation.Url'),
-                                    `<a href="${(value as string).replace(/"/g, '&quot;')}">${hostname}</a>`
-                                ]
+                                return {
+                                    display: [
+                                        this.$t('Items.Translation.Url'),
+                                        `<a href="${(value as string).replace(/"/g, '&quot;')}" target="_blank">${hostname}</a>`
+                                    ],
+                                    object
+                                }
                             }
-                            return [this.$t('Items.Translation.Url'), hostname]
+                            return {
+                                display: [this.$t('Items.Translation.Url'), hostname],
+                                object
+                            }
                         } catch (e) {
-                            return [this.$t('Items.Translation.Url'), '[parse failed]']
+                            return {
+                                display: [this.$t('Items.Translation.Url'), '[parse failed]'],
+                                object
+                            }
                         }
                     }
 
-                    return [key, value]
+                    return {
+                        display: [key, value + '']
+                    }
                 })
-                .map(([k, v]) => `${k}: ${v}`)
-                .join('<br>')
-            : ''
+            : []
     }
 
     @Watch('options', { deep: true })

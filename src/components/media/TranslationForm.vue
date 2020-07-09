@@ -179,7 +179,7 @@
                 row
                 wrapa
             >
-                <slot />
+                <slot :set-field="setField" />
                 <template v-if="showMeta">
                     <v-simple-card class="v-card--outlined text-wrap">
                         <v-progress-linear v-if="playerMetaLoading" />
@@ -319,6 +319,14 @@ export default class TranslationForm extends Vue {
                 }
             })
         } else setTimeout(this.fixValidation, 10)
+    }
+
+    setField (key: string, value: any): void {
+        if (key === 'url') {
+            this.inputUrl = value
+        } else {
+            (this.form as any)[key] = value
+        }
     }
 
     @Watch('inputUrl')

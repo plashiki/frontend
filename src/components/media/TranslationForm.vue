@@ -180,9 +180,14 @@
                 wrapa
             >
                 <slot :set-field="setField" />
-                <template v-if="showMeta">
+                <template v-if="showMeta && (playerMeta !== null || playerMetaLoading)">
                     <v-simple-card class="v-card--outlined text-wrap">
-                        <v-progress-linear v-if="playerMetaLoading" />
+                        <v-progress-circular
+                            v-if="playerMetaLoading"
+                            color="primary"
+                            width="4"
+                            indeterminate
+                        />
                         <template v-if="playerMeta !== null">
                             <h4
                                 v-if="playerMeta.title"

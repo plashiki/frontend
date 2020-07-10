@@ -7,7 +7,7 @@
             <TranslationEditDialog
                 v-if="editing"
                 :init-translation="editingTranslation"
-                :moderator="moderator && editingTranslation.status === 'pending'"
+                :moderator="moderator"
                 :show-meta="moderator"
                 @close="editing = false"
                 @media="medias[$event.id] = $event"

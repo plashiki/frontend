@@ -51,7 +51,7 @@
             <v-spacer />
 
             <v-btn
-                v-if="!hideDelete && !moderator"
+                v-if="!hideDelete && (!moderator || this.originalTranslation && this.originalTranslation.status !== 'pending')"
                 :disabled="loading"
                 icon
                 @click="del"
@@ -61,7 +61,7 @@
                 </v-icon>
             </v-btn>
             <DeclineReasonMenu
-                v-if="moderator"
+                v-if="moderator && this.originalTranslation && this.originalTranslation.uploader_id"
                 @send="decline"
             >
                 <template #default="{ on }">
@@ -90,7 +90,7 @@
                 text
                 @click="save"
             >
-                {{ $t(moderator ? 'Pages.Moderation.Accept' : 'Common.Form.Save') }}
+                {{ $t(moderator && this.originalTranslation && this.originalTranslation.status !== 'added' ? 'Pages.Moderation.Accept' : 'Common.Form.Save') }}
             </v-btn>
         </v-card-actions>
     </v-card>
@@ -163,7 +163,7 @@ export default class TranslationEditDialog extends Vue {
         this.loading = true
         this.error = null
         let method
-        if (this.moderator && this.originalTranslation.status === TranslationStatus.Pending) {
+        if (this.moderator && this.originalTranslation.status !== TranslationStatus.Added) {
             method = acceptTranslation
         } else if (this.reportId !== -1) {
             method = resolveReport

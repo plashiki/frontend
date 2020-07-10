@@ -61,7 +61,7 @@
                 </v-icon>
             </v-btn>
             <DeclineReasonMenu
-                v-if="moderator && this.originalTranslation && this.originalTranslation.uploader_id"
+                v-if="moderator && this.originalTranslation && this.originalTranslation.uploader_id && this.originalTranslation.status !== 'declined'"
                 @send="decline"
             >
                 <template #default="{ on }">

@@ -25,6 +25,7 @@ export default class ConfigModule extends VuexModule {
     listViewMode: 'cards' | 'items' = 'cards'
     expandAllViewer = true
     hideSamePlayers = true
+    highlightUnknownAuthor = false
     lightColors = {
         primary: '#1976D2',
         accent: '#82B1FF'

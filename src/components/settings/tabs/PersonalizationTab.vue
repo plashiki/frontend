@@ -41,6 +41,12 @@
             :label="$t('Pages.Settings.HideSamePlayers')"
             hide-details
         />
+        <v-switch
+            v-if="moderator"
+            v-model="highlightUnknownAuthor"
+            :label="$t('Pages.Settings.HighlightUnknownAuthor')"
+            hide-details
+        />
 
         <v-switch
             v-model="onlyOngoingsInRecent"
@@ -65,7 +71,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import VColorField from '@/components/common/fields/VColorField.vue'
-import { configStore } from '@/store'
+import { authStore, configStore } from '@/store'
 import { Media } from '@/types/media'
 import ReorderList from '@/components/common/fields/ReorderList.vue'
 
@@ -73,6 +79,10 @@ import ReorderList from '@/components/common/fields/ReorderList.vue'
     components: { ReorderList, VColorField }
 })
 export default class PersonalizationTab extends Vue {
+    get moderator (): boolean {
+        return authStore.user?.moderator ?? false
+    }
+
     get provider (): string {
         return configStore.dataProvider
     }
@@ -156,6 +166,16 @@ export default class PersonalizationTab extends Vue {
     set hideSamePlayers (val: boolean) {
         configStore.merge({
             hideSamePlayers: val
+        })
+    }
+
+    get highlightUnknownAuthor (): boolean {
+        return configStore.highlightUnknownAuthor
+    }
+
+    set highlightUnknownAuthor (val: boolean) {
+        configStore.merge({
+            highlightUnknownAuthor: val
         })
     }
 

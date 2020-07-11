@@ -44,6 +44,7 @@
                         v-for="author in authors"
                         :key="author.key"
                         class="authors-list-item my-3"
+                        :class="{ 'authors-list-unknown': highlightUnknownAuthor && author.name === '' }"
                     >
                         <v-row
                             class="ma-0"
@@ -103,7 +104,7 @@
 import { Component, Prop, PropSync, Vue, Watch } from 'vue-property-decorator'
 import TranslationsList from '@/components/viewer/TranslationsList.vue'
 import AuthorsFiltersMenu from '@/components/viewer/AuthorsFiltersMenu.vue'
-import { configStore } from '@/store'
+import { authStore, configStore } from '@/store'
 import { SingleTranslationData, TranslationAuthor } from '@/types/translation'
 import { AuthorsTab, MediaType, TabToKind } from '@/types/media'
 import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
@@ -127,6 +128,10 @@ export default class AuthorsList extends Vue {
 
     get expandAll (): boolean {
         return configStore.expandAllViewer || this.translationSelectionMode
+    }
+
+    get highlightUnknownAuthor (): boolean {
+        return authStore.user?.moderator === true && configStore.highlightUnknownAuthor
     }
 
     get authors (): TranslationAuthor[] {
@@ -262,6 +267,10 @@ export default class AuthorsList extends Vue {
 
     &-item {
         z-index: 1;
+    }
+
+    &-unknown {
+        background: rgba(255, 255, 0, 0.3);
     }
 
     &-move {

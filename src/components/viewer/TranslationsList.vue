@@ -48,11 +48,19 @@ export default class TranslationsList extends Vue {
     @Prop() selectedTranslations!: number[]
     @Prop() translationSelectionMode!: boolean
 
-    showFull = false
+    _showFull = false
+
+    get showFull () {
+        return this._showFull || !configStore.hideSamePlayers
+    }
+
+    set showFull (val: boolean) {
+        this._showFull = val
+    }
 
     get translations (): (SingleTranslationData & { key: string })[] {
         let times: Record<string, number> = {}
-        return (this.showFull || !configStore.hideSamePlayers ? this.preFilteredData : this.filteredData).map((it: any) => {
+        return (this.showFull ? this.preFilteredData : this.filteredData).map((it: any) => {
             if (!(it.name in times)) {
                 times[it.name] = 0
             }

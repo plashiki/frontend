@@ -47,7 +47,7 @@
                     >
                         <v-row
                             class="ma-0"
-                            @click="toggleExpanded(author.key)"
+                            @click="authorClicked(author)"
                         >
                             <p class="mb-0 cursor-pointer flex-fill text-truncate text--primary">
                                 <span
@@ -126,7 +126,7 @@ export default class AuthorsList extends Vue {
     expanded: Record<string, boolean> = {}
 
     get expandAll (): boolean {
-        return configStore.expandAllViewer
+        return configStore.expandAllViewer || this.translationSelectionMode
     }
 
     get authors (): TranslationAuthor[] {
@@ -145,9 +145,30 @@ export default class AuthorsList extends Vue {
         return list
     }
 
-    toggleExpanded (key: string): void {
+    authorClicked (author: TranslationAuthor): void {
+        if (this.translationSelectionMode) {
+            let translations = author.translations.filter(tr => configStore.playersFilters[tr.name] !== true)
+            let allSelected = true
+            for (let tr of translations) {
+                let idx = this.selectedTranslations.indexOf(tr.id)
+                if (idx === -1) {
+                    allSelected = false
+                    this.selectedTranslations.push(tr.id)
+                }
+            }
+
+            if (allSelected) {
+                for (let tr of translations) {
+                    let idx = this.selectedTranslations.indexOf(tr.id)
+                    if (idx > -1) {
+                        this.selectedTranslations.splice(idx, 1)
+                    }
+                }
+            }
+            return
+        }
         if (this.expandAll) return
-        this.$set(this.expanded, key, !this.expanded[key])
+        this.$set(this.expanded, author.key, !this.expanded[author.key])
     }
 
     @Watch('currentTab')

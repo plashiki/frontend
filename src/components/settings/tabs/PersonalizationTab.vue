@@ -30,10 +30,15 @@
             class="caption text--secondary"
             v-html="$t('Pages.Settings.PreferredNameLanguageShiki')"
         />
-        
+
         <v-switch
             v-model="expandAllViewer"
             :label="$t('Pages.Settings.ExpandAllAuthors')"
+            hide-details
+        />
+        <v-switch
+            v-model="hideSamePlayers"
+            :label="$t('Pages.Settings.HideSamePlayers')"
             hide-details
         />
 
@@ -141,6 +146,16 @@ export default class PersonalizationTab extends Vue {
     set expandAllViewer (val: boolean) {
         configStore.merge({
             expandAllViewer: val
+        })
+    }
+
+    get hideSamePlayers (): boolean {
+        return configStore.hideSamePlayers
+    }
+
+    set hideSamePlayers (val: boolean) {
+        configStore.merge({
+            hideSamePlayers: val
         })
     }
 

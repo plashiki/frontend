@@ -52,7 +52,7 @@ export default class TranslationsList extends Vue {
 
     get translations (): (SingleTranslationData & { key: string })[] {
         let times: Record<string, number> = {}
-        return (this.showFull ? this.preFilteredData : this.filteredData).map((it: any) => {
+        return (this.showFull || !configStore.hideSamePlayers ? this.preFilteredData : this.filteredData).map((it: any) => {
             if (!(it.name in times)) {
                 times[it.name] = 0
             }

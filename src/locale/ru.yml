@@ -99,6 +99,7 @@ Pages:
     Language_romaji: Ромадзи
     Language_japanese: Японский
     ExpandAllAuthors: Развернуть всех авторов
+    HideSamePlayers: Прятать повторяющиеся плееры
     OnlyOngoingsInRecent: Только онгоинги в Недавних
     OnlyOngoingsInRecentDescription: На главной странице в разделе "Недавние" будут отображаться только онгоинги
     TranslationPreferenceOrder: Приоритет сортировки переводов

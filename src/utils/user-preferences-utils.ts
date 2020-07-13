@@ -208,7 +208,8 @@ export function getDefaultTranslation (
     for (let i = 0; i < authors.length; i++) {
         if (tab !== AuthorsTab.All && authors[i].kind !== TabToKind[tab]) continue
         if (languageFilters[authors[i].lang] === true) continue
-        if (!ignoreAuthor && lastAuthor) {
+        if (!ignoreAuthor && lastAuthor !== null) {
+            if (lastAuthor === '' && authors[i].name !== '') continue
             if (authors[i].kind !== lastKind) continue
             let { studio } = processAuthorName(authors[i].name)
             if (studio !== lastAuthor) continue

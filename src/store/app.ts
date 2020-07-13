@@ -16,7 +16,7 @@ export default class AppModule extends VuexModule {
     showSearch = false
     searchInput = ''
 
-    lastAuthor = ''
+    lastAuthor: string | null = null
     lastKind = ''
     lastPlayer = ''
 

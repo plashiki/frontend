@@ -202,8 +202,7 @@ export function getDefaultTranslation (
     // this.data?.[val]?.authors?.[0]?.translations?.[0]?.id ?? null
     let { playersFilters, languageFilters } = configStore
     let authors = translations?.[partNumber]?.authors
-    let lastAuthor = appStore.lastAuthor
-    let lastKind = appStore.lastKind
+    let { lastAuthor, lastKind, lastPlayer } = appStore
     if (!authors) return { translation: null }
 
     for (let i = 0; i < authors.length; i++) {
@@ -215,10 +214,14 @@ export function getDefaultTranslation (
             if (studio !== lastAuthor) continue
         }
 
-        for (let j = 0; j < authors[i].translations.length; j++) {
-            if (playersFilters[authors[i].translations[j].name]) continue
+        for (let k = 0; k <= 1; k++) {
+            let ignorePlayer = k === 1
+            for (let j = 0; j < authors[i].translations.length; j++) {
+                if (playersFilters[authors[i].translations[j].name]) continue
+                if (!ignorePlayer && lastPlayer && authors[i].translations[j].name !== lastPlayer) continue
 
-            return { translation: authors[i].translations[j] }
+                return { translation: authors[i].translations[j] }
+            }
         }
     }
 

@@ -18,6 +18,7 @@ export default class AppModule extends VuexModule {
 
     lastAuthor = ''
     lastKind = ''
+    lastPlayer = ''
 
     loading = false
 

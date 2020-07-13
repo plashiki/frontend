@@ -340,7 +340,8 @@ export default class Viewer extends LoadableVue {
         }
         appStore.merge({
             lastAuthor: author,
-            lastKind: val.author.kind
+            lastKind: val.author.kind,
+            lastPlayer: val.name
         })
 
         this.iframeUrl = val.url

@@ -140,7 +140,8 @@
                         {{ $t('Items.Report.Type.' + item.type) }}
                     </td>
                     <td>
-                        {{ item.comment }}
+                        <i v-if="item.comment === 'AUTO_REPORT_DESCRIPTION'">{{ $t('Pages.Report.AutoReportDescription') }}</i>
+                        <template v-else>{{ item.comment }}</template>
                     </td>
                     <td>
                         <b

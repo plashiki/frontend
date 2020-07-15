@@ -204,6 +204,7 @@ Pages:
     Name: Пожаловаться
     SuggestEdit: Предложить изменение
     ReportSent: Жалоба отправлена! ID $id
+    AutoReportDescription: Эта жалоба была создана автоматически.
   Calendar:
     Name: Календарь
   Lists:
@@ -750,6 +751,7 @@ Api:
     Captcha verification failed: Ошибка капчи
     # moder
     TRANSLATION_DUPLICATE: Этот перевод является дупликатом <a href="/translation/$description">$description</a>
+    TRANSLATION_DUPLICATE_REP: Этот перевод является дупликатом <a href="/translation/$description">$description</a>, поэтому была отправлена жалоба.
     ALREADY_PROCESSED: Этот перевод уже обработан
     BANNED: Вы забанены
     NOT_DECLINED: Этот перевод не отклонен

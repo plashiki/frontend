@@ -89,7 +89,7 @@ import TranslationsTable from '@/components/moderation/TranslationsTable.vue'
 import Recaptcha from '@/components/common/Recaptcha.vue'
 import { IRecaptcha } from '@/types'
 import { submitTranslation } from '@/api/moderation'
-import { TranslationStatus } from '@/types/translation'
+import { Translation, TranslationStatus } from '@/types/translation'
 import { ApiException } from '@/types/api'
 import { sendCaptcha } from '@/api/auth'
 import ReportsTable from '@/components/moderation/ReportsTable.vue'
@@ -146,7 +146,12 @@ export default class AddTranslationPage extends LoadableVue {
         this.sending = true
         this.error = null
 
-        submitTranslation(this.form).then((tr) => {
+        // fix random problems with missing fields
+        let form: Partial<Translation> = { ...this.form }
+        if (form.author == null) form.author = ''
+        if (form.hq == null) form.hq = false
+
+        submitTranslation(form).then((tr) => {
             // just to be sure its not null
             if (this.formEl.selectedMedia) {
                 this.medias[tr.target_id] = this.formEl.selectedMedia

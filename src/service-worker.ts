@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
     )
 
     registerRoute(
-        ({ request, url }) => request.destination === 'script' || request.destination === 'style' || url.pathname.endsWith('.user.js'),
+        ({ request, url }) => (request.destination === 'script' || request.destination === 'style') && !url.pathname.endsWith('.user.js'),
         new StaleWhileRevalidate({
             cacheName: 'static-resources'
         })

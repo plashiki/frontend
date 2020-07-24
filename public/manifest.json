@@ -13,6 +13,38 @@
             "type": "image/png"
         }
     ],
+    "shortcuts": [
+        {
+            "name": "Поиск",
+            "url": "/search",
+            "icons": [
+                {
+                    "src": "/img/icons/mdi-magnify.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Списки",
+            "url": "/lists",
+            "icons": [
+                {
+                    "src": "/img/icons/mdi-format-list-checks.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Календарь",
+            "url": "/calendar",
+            "icons": [
+                {
+                    "src": "/img/icons/mdi-calendar.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
     "start_url": "/",
     "display": "standalone",
     "background_color": "#1867c0",

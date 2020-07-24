@@ -67,6 +67,7 @@
                             right
                         >
                             <v-btn
+                                v-if="isModerator || $r12s.screenWidth < 600"
                                 icon
                                 v-on="on"
                             >
@@ -83,7 +84,7 @@
                             @click="reportDialog = true"
                         />
                         <VListItemIconText
-                            v-if="media !== null && $r12s.screenWidth < 650"
+                            v-if="media !== null && $r12s.screenWidth < 600"
                             :title="$t('Pages.AddTranslation.Name')"
                             :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
                             icon="mdi-file-plus-outline"
@@ -150,7 +151,7 @@
 
 
                 <v-btn
-                    v-if="media != null && translation != null && $r12s.screenWidth >= 650"
+                    v-if="media != null && translation != null && $r12s.screenWidth >= 600"
                     v-tooltip="$t('Pages.AddTranslation.Name')"
                     :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
                     icon
@@ -184,6 +185,7 @@
                 >
                     <template #default="{ on }">
                         <v-btn
+                            v-tooltip="$t('Items.Notification.NamePlural')"
                             icon
                             v-on="on"
                         >

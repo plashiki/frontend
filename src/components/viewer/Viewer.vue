@@ -301,7 +301,7 @@ export default class Viewer extends LoadableVue {
                     if (this.authors) {
                         this.authors.selectedTranslationChanged()
                     } else {
-                        this.$nextTick(notify)
+                        setTimeout(notify, 50)
                     }
                 }
                 this.$nextTick(notify)
@@ -492,11 +492,11 @@ export default class Viewer extends LoadableVue {
             if (this.$route.params.translationId !== undefined) {
                 this.translationId = parseInt(this.$route.params.translationId)
             }
-            this.mobilePage = 'authors'
         } else {
             this.partNumber = 1
             this.unsetPartNumber = true
         }
+        this.mobilePage = 'authors'
 
         this.update()
     }

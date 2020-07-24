@@ -150,7 +150,7 @@
 
 
                 <v-btn
-                    v-if="translation != null && $r12s.screenWidth >= 650"
+                    v-if="media != null && translation != null && $r12s.screenWidth >= 650"
                     v-tooltip="$t('Pages.AddTranslation.Name')"
                     :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
                     icon

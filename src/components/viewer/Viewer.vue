@@ -297,7 +297,14 @@ export default class Viewer extends LoadableVue {
                 }
             } else {
                 // index was re-populated, notifying AuthorsList about it
-                this.$nextTick(() => this.authors.selectedTranslationChanged())
+                const notify = () => {
+                    if (this.authors) {
+                        this.authors.selectedTranslationChanged()
+                    } else {
+                        this.$nextTick(notify)
+                    }
+                }
+                this.$nextTick(notify)
             }
         } else setTimeout(() => this.onPartNumberChanged(val), 50)
     }
@@ -354,10 +361,12 @@ export default class Viewer extends LoadableVue {
         // workaround so urls in iframe dont pollute browser history
         this.$nextTick(() => {
             const el = this.iframe
-            const cont = el.parentElement as HTMLDivElement
-            el.remove()
-            el.setAttribute('src', val)
-            cont.prepend(el)
+            if (el) {
+                const cont = el.parentElement as HTMLDivElement
+                el.remove()
+                el.setAttribute('src', val)
+                cont.prepend(el)
+            }
         })
     }
 

@@ -3,12 +3,12 @@
     "short_name": "PlaShiki",
     "icons": [
         {
-            "src": "/img/icons/android-chrome-192x192.png?new",
+            "src": "/img/icons/android-chrome-192x192.png?new2",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/img/icons/android-chrome-512x512.png?new",
+            "src": "/img/icons/android-chrome-512x512.png?new2",
             "sizes": "512x512",
             "type": "image/png"
         }

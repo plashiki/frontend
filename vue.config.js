@@ -77,6 +77,7 @@ module.exports = {
             .plugin('bundle-service-worker')
             .use(InjectManifest, [workBoxConfig])
         config.plugins.delete('workbox')
+        config.plugins.delete('pwa')
     },
     devServer: {
         port: 8123,

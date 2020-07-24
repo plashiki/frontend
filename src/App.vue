@@ -17,7 +17,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import DefaultLayout from '@/layouts/default.vue'
 import { appStore, configStore } from '@/store'
-import { titleTemplate } from '@/utils/helpers'
+import { setHtmlThemeColor, titleTemplate } from '@/utils/helpers'
 import EmptyLayout from '@/layouts/empty.vue'
 import PlainLayout from '@/layouts/plain.vue'
 import ErrorDisplay from '@/components/common/ErrorDisplay.vue'
@@ -64,9 +64,11 @@ export default class VueApp extends Vue {
         // sets default background color to prevent flicker
         // also sets background color for page scrollbar
         if (val) {
+            setHtmlThemeColor('#272727')
             document.documentElement.classList.remove('light')
             document.documentElement.classList.add('dark')
         } else {
+            setHtmlThemeColor('#fbfbfb')
             document.documentElement.classList.remove('dark')
             document.documentElement.classList.add('light')
         }

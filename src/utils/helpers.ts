@@ -28,6 +28,14 @@ export function isElementInViewport (el: Element | Vue) {
     return (vertInView && horInView)
 }
 
+export function setHtmlThemeColor (color: string) {
+    let element = document.querySelector('meta[name=theme-color]')
+    if (!element) {
+        return
+    }
+    element.setAttribute('content', color)
+}
+
 export function once (target: EventTarget, eventName: string, handler: Function): void {
     target.addEventListener(eventName, function wrapHandler (this: any, e: any) {
         handler.call(this, e)

@@ -67,7 +67,7 @@
                             right
                         >
                             <v-btn
-                                v-if="isModerator || $r12s.screenWidth < 600"
+                                v-show="isModerator || $r12s.screenWidth < 600"
                                 icon
                                 v-on="on"
                             >
@@ -78,20 +78,20 @@
 
                     <v-list dense>
                         <VListItemIconText
-                            v-if="translation != null && $r12s.screenWidth < 600"
+                            v-show="translation != null && $r12s.screenWidth < 600"
                             :title="$t('Pages.Report.Name')"
                             icon="mdi-alert-circle"
                             @click="reportDialog = true"
                         />
                         <VListItemIconText
-                            v-if="media !== null && $r12s.screenWidth < 600"
+                            v-show="$r12s.screenWidth < 600"
                             :title="$t('Pages.AddTranslation.Name')"
-                            :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
+                            :to="{ name: 'add', query: { id: $route.params.id, type: mediaType } }"
                             icon="mdi-file-plus-outline"
                             target="_blank"
                         />
                         <TranslationSubscribeMenu
-                            v-if="media && authenticated && $r12s.screenWidth <= 480"
+                            v-show="media && authenticated && $r12s.screenWidth <= 480"
                             :media-id="mediaId"
                             :media-type="mediaType"
                             :translation="translation"
@@ -108,19 +108,19 @@
                             </template>
                         </TranslationSubscribeMenu>
                         <VListItemIconText
-                            v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
+                            v-show="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
                             :title="$t('Items.Translation.Edit')"
                             icon="mdi-pencil"
                             @click="editDialog = true"
                         />
                         <VListItemIconText
-                            v-if="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
+                            v-show="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
                             :title="$t('Items.Translation.Delete')"
                             icon="mdi-delete"
                             @click="deleteCurrent"
                         />
                         <VListItemIconText
-                            v-if="isModerator"
+                            v-show="isModerator"
                             :title="$t(translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select')"
                             icon="mdi-select-group"
                             @click.stop.prevent="translationSelectionMode = !translationSelectionMode"
@@ -151,9 +151,9 @@
 
 
                 <v-btn
-                    v-if="media != null && translation != null && $r12s.screenWidth >= 600"
+                    v-show="media != null && translation != null && $r12s.screenWidth >= 600"
                     v-tooltip="$t('Pages.AddTranslation.Name')"
-                    :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
+                    :to="{ name: 'add', query: { id: $route.params.id, type: mediaType } }"
                     icon
                     target="_blank"
                     @click="reportDialog = true"
@@ -164,7 +164,7 @@
                 </v-btn>
 
                 <v-btn
-                    v-if="translation != null && $r12s.screenWidth >= 600"
+                    v-show="translation != null && $r12s.screenWidth >= 600"
                     v-tooltip="$t('Pages.Report.Name')"
                     icon
                     @click="reportDialog = true"
@@ -175,7 +175,6 @@
                 </v-btn>
 
                 <TranslationSubscribeMenu
-                    v-if="media && authenticated && $r12s.screenWidth > 480"
                     :media-id="mediaId"
                     :media-type="mediaType"
                     :translation="translation"
@@ -185,6 +184,7 @@
                 >
                     <template #default="{ on }">
                         <v-btn
+                            v-show="media && authenticated && $r12s.screenWidth > 480"
                             v-tooltip="$t('Items.Notification.NamePlural')"
                             icon
                             v-on="on"
@@ -243,7 +243,7 @@
                 </v-btn>
 
                 <v-btn
-                    v-if="$r12s.screenWidth >= 400 || userRate === null"
+                    v-show="$r12s.screenWidth >= 400 || userRate === null"
                     v-tooltip="{ content: $t(`Items.UserRate.ControlButton.${userRateStatus}-${mediaType}`), trigger: 'hover click focus' }"
                     :color="userRateStatus === 'old-part' ? 'success' : undefined"
                     :disabled="!authenticated || userRateLoading"
@@ -264,7 +264,7 @@
                 >
                     <template #activator="{ on }">
                         <v-btn
-                            v-if="$r12s.screenWidth >= 400 || userRate !== null"
+                            v-show="$r12s.screenWidth >= 400 || userRate !== null"
                             v-tooltip="$t('Items.UserRate.EditEntry')"
                             :disabled="!authenticated || !userRate"
                             icon
@@ -287,7 +287,7 @@
                 <v-spacer />
 
                 <v-btn
-                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    v-show="translation !== null && isModerator && $r12s.screenWidth >= 570"
                     v-tooltip="$t('Items.Translation.Delete')"
                     :disabled="translationSelectionMode && selectedTranslations.length === 0"
                     icon
@@ -297,7 +297,7 @@
                 </v-btn>
 
                 <v-btn
-                    v-if="translation !== null && isModerator && $r12s.screenWidth >= 570"
+                    v-show="translation !== null && isModerator && $r12s.screenWidth >= 570"
                     v-tooltip="$t('Items.Translation.Edit')"
                     :disabled="translationSelectionMode && selectedTranslations.length === 0"
                     icon
@@ -309,7 +309,7 @@
                 <AuthorsFiltersMenu :data="authors" />
 
                 <v-btn
-                    v-if="!mobileDisplay"
+                    v-show="!mobileDisplay"
                     icon
                     @click="posterVisible = !posterVisible"
                 >

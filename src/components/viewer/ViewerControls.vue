@@ -91,7 +91,6 @@
                             target="_blank"
                         />
                         <TranslationSubscribeMenu
-                            v-show="media && authenticated && $r12s.screenWidth <= 480"
                             :media-id="mediaId"
                             :media-type="mediaType"
                             :translation="translation"
@@ -101,6 +100,7 @@
                         >
                             <template #default="{ on }">
                                 <VListItemIconText
+                                    v-show="media && authenticated && $r12s.screenWidth <= 480"
                                     :title="$t('Items.Notification.NamePlural')"
                                     icon="mdi-bell"
                                     v-on="on"

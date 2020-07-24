@@ -33,10 +33,13 @@
 
         <v-row class="ma-0 mt-2" no-gutters>
             <v-col class="d-flex flex-column justify-center">
-                <v-simple-card>
-                    <v-responsive
-                        :aspect-ratio="16/9"
-                        class="viewer-frame--wrap"
+                <v-responsive
+                    :aspect-ratio="16/9"
+                    class="viewer-frame--wrap elevation-2"
+                >
+                    <v-simple-card
+                        class="viewer-frame--card"
+                        text-class="pa-0"
                     >
                         <iframe
                             ref="iframe"
@@ -56,8 +59,8 @@
                                 indeterminate
                             />
                         </v-layout>
-                    </v-responsive>
-                </v-simple-card>
+                    </v-simple-card>
+                </v-responsive>
             </v-col>
             <v-col
                 v-if="posterVisible && !mobileDisplay"
@@ -512,5 +515,16 @@ export default class Viewer extends LoadableVue {
     max-height: 420px;
     max-width: 746.66px;
     margin: 0 auto;
+    width: 100%;
+}
+
+.viewer-frame--card {
+    overflow: hidden;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.viewer-frame--card .v-card__text {
+    height: 100%
 }
 </style>

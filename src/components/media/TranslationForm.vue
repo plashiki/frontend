@@ -272,7 +272,7 @@ export default class TranslationForm extends Vue {
     byId = false
     valid = false
 
-    authorSearch = null
+    authorSearch: string | null = null
 
     formValid = false
     malLookupError: ApiException | null = null
@@ -397,6 +397,12 @@ export default class TranslationForm extends Vue {
                     this.malLookupError = err
                 })
             }
+        }
+    }
+
+    applyPendingChanges () {
+        if (this.authorSearch) {
+            this.form.author = this.authorSearch
         }
     }
 

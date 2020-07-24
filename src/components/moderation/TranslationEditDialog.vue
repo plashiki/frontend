@@ -159,7 +159,9 @@ export default class TranslationEditDialog extends Vue {
     }
 
     save (): void {
-        if (!this.originalTranslation || !this.editableTranslation) return
+        if (!this.originalTranslation || !this.editableTranslation) return;
+        (this.$refs.form as any).applyPendingChanges()
+
         this.loading = true
         this.error = null
         let method

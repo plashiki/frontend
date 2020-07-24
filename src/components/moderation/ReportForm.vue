@@ -56,6 +56,7 @@
                     sm="6"
                 >
                     <TranslationForm
+                        ref="form"
                         v-model="valid2"
                         :form="editableTranslation"
                         :media="media"
@@ -180,6 +181,10 @@ export default class ReportForm extends Vue {
 
     send (): Promise<void> {
         this.sending = true
+        if (this.$refs.form) {
+            (this.$refs.form as any).applyPendingChanges()
+        }
+
         return submitReport({
             ...this.form,
             translation_id: this.translation.id,

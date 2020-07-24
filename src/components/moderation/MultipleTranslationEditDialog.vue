@@ -17,6 +17,7 @@
         <v-card-text>
             <TranslationForm
                 v-if="editable !== null"
+                ref="form"
                 v-model="valid"
                 :form="editable"
                 :no-url="!single"
@@ -101,7 +102,8 @@ export default class MultipleTranslationEditDialog extends Vue {
     }
 
     save (): void {
-        if (!this.original || !this.editable) return
+        if (!this.original || !this.editable) return;
+        (this.$refs.form as any).applyPendingChanges()
 
         this.loading = true
         this.error = null

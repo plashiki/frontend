@@ -4,19 +4,19 @@
             ok so here we have some debug stuff. development build only.
         </div>
 
-        <!--        <Player-->
-        <!--            ref="vuedio"-->
-        <!--            style="width: 640px; height: 360px; margin: 16px;"-->
-        <!--        />-->
-        <!--        <v-btn @click="loadMp4">MP4</v-btn>-->
-        <!--        <v-btn @click="loadMp4Qualities">MP4-quals</v-btn>-->
-        <!--        <v-btn @click="loadMp4Concat">MP4-concat</v-btn>-->
-        <!--        <v-btn @click="loadMp4QualitiesConcat">MP4-concat-quals</v-btn>-->
-        <!--        <v-btn @click="loadDash">DASH</v-btn>-->
-        <!--        <v-btn @click="loadHls">HLS</v-btn>-->
-        <!--        <br />-->
-        <!--        <v-btn @click="addSubtitlesTest">subtitles(test)</v-btn>-->
-        <!--        <v-btn @click="addSubtitlesKaraoke">subtitles(karaoke)</v-btn>-->
+        <Player
+            ref="vuedio"
+            style="width: 640px; height: 360px; margin: 16px;"
+        />
+        <v-btn @click="loadMp4">MP4</v-btn>
+        <v-btn @click="loadMp4Qualities">MP4-quals</v-btn>
+        <v-btn @click="loadMp4Concat">MP4-concat</v-btn>
+        <v-btn @click="loadMp4QualitiesConcat">MP4-concat-quals</v-btn>
+        <v-btn @click="loadDash">DASH</v-btn>
+        <v-btn @click="loadHls">HLS</v-btn>
+        <br />
+        <v-btn @click="addSubtitlesTest">subtitles(test)</v-btn>
+        <v-btn @click="addSubtitlesKaraoke">subtitles(karaoke)</v-btn>
 
 
         <!--        <ImageUploadMenu-->

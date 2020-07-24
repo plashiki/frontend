@@ -77,12 +77,13 @@
 
                     <v-list dense>
                         <VListItemIconText
+                            v-if="translation != null && $r12s.screenWidth < 600"
                             :title="$t('Pages.Report.Name')"
                             icon="mdi-alert-circle"
                             @click="reportDialog = true"
                         />
                         <VListItemIconText
-                            v-if="media !== null"
+                            v-if="media !== null && $r12s.screenWidth < 650"
                             :title="$t('Pages.AddTranslation.Name')"
                             :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
                             icon="mdi-file-plus-outline"
@@ -146,6 +147,31 @@
                         </template>
                     </v-list>
                 </v-menu>
+
+
+                <v-btn
+                    v-if="translation != null && $r12s.screenWidth >= 650"
+                    v-tooltip="$t('Pages.AddTranslation.Name')"
+                    :to="{ name: 'add', query: { id: media.id, type: mediaType } }"
+                    icon
+                    target="_blank"
+                    @click="reportDialog = true"
+                >
+                    <v-icon>
+                        mdi-file-plus-outline
+                    </v-icon>
+                </v-btn>
+
+                <v-btn
+                    v-if="translation != null && $r12s.screenWidth >= 600"
+                    v-tooltip="$t('Pages.Report.Name')"
+                    icon
+                    @click="reportDialog = true"
+                >
+                    <v-icon>
+                        mdi-alert-circle
+                    </v-icon>
+                </v-btn>
 
                 <TranslationSubscribeMenu
                     v-if="media && authenticated && $r12s.screenWidth > 480"

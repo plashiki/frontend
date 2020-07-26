@@ -2,9 +2,7 @@
     <div>
         <ErrorAlert :error="error" />
 
-        <v-fade-transition
-            v-if="items.length > 0 || loading"
-        >
+        <v-fade-transition v-if="items.length > 0 || loading">
             <div v-if="items.length > 0">
                 <v-card
                     v-for="day in days"
@@ -17,24 +15,6 @@
                     <v-card-text>
                         <MediaCarousel
                             :items="day.medias"
-                        />
-                    </v-card-text>
-                </v-card>
-            </div>
-
-            <div v-else-if="loading">
-                <v-card
-                    v-for="i in 5"
-                    :key="i"
-                    class="my-2"
-                >
-                    <v-card-text>
-                        <v-skeleton-loader
-                            class="mb-2"
-                            type="heading"
-                        />
-                        <v-skeleton-loader
-                            type="paragraph"
                         />
                     </v-card-text>
                 </v-card>

@@ -80,6 +80,9 @@ export default class CalendarPage extends LoadableVue {
         Object.values(grouped).forEach((entries) => {
             let day = new Date(entries[0].ts)
             day.setHours(0, 0, 0, 0)
+
+            if (day < this.today) return
+
             let name = dateFnsDropTime(formatRelative(day, this.today, {
                 locale: dateFnLocale()
             }))

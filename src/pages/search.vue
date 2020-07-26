@@ -53,7 +53,6 @@
         >
             <template #activator="{ on }">
                 <v-btn
-                    :small="$r12s.screenWidth < 480"
                     bottom
                     color="primary"
                     fab
@@ -205,7 +204,7 @@ import { AnyKV } from '@/types'
 import { deepEqual } from '@/utils/object-utils'
 import { isElementInViewport } from '@/utils/helpers'
 
-const perPage = 30
+const perPage = 35
 
 @Component({
     components: { ErrorAlert, MediaList }

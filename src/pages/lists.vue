@@ -71,7 +71,6 @@
                 :style="{'min-width': $r12s.screenWidth < 480 ? '72px' : '96px' }"
                 cols="1"
                 md="3"
-                xl="2"
             >
                 <v-card style="position:sticky; top: 76px">
                     <v-card-text :class="{'pa-1': $r12s.screenWidth < 480}">

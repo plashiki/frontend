@@ -53,8 +53,9 @@
         >
             <template #activator="{ on }">
                 <v-btn
-                    bottom
                     color="primary"
+                    :disabled="filterComponent == null"
+                    bottom
                     fab
                     fixed
                     right
@@ -132,15 +133,10 @@
                         ref="filters"
                         @update="filtersUpdated"
                     />
-                    <v-row
+                    <NoItemsPlaceholder
                         v-else
-                        align="center"
-                        class="grey--text body-2 font-weight-bold"
-                        justify="center"
-                        style="height: 150px"
-                    >
-                        {{ $t('Pages.Search.NoFilters') }}
-                    </v-row>
+                        :text="$t('Pages.Search.NoFilters')"
+                    />
                 </v-card-text>
 
                 <v-divider />
@@ -203,11 +199,12 @@ import { VueConstructor } from 'vue'
 import { AnyKV } from '@/types'
 import { deepEqual } from '@/utils/object-utils'
 import { isElementInViewport } from '@/utils/helpers'
+import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 
 const perPage = 35
 
 @Component({
-    components: { ErrorAlert, MediaList }
+    components: { NoItemsPlaceholder, ErrorAlert, MediaList }
 })
 export default class SearchPage extends Vue {
     @Ref() filters!: Vue

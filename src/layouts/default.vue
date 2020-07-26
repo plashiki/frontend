@@ -9,6 +9,7 @@
         <v-app-bar
             v-if="showAppBar"
             app
+            :hide-on-scroll="$r12s.isMobileByWidth || $r12s.screenHeight < 480"
             :dark="isDark"
         >
             <v-app-bar-nav-icon

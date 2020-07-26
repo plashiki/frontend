@@ -6,7 +6,7 @@ interface VResponsiveness {
     isMobileByWidth: boolean
     isDesktopByWidth: boolean
     isTouchDevice: boolean
-    isTabActive: boolean
+    isPwa: boolean
 }
 
 const isTouchDevice = function (): boolean {
@@ -33,7 +33,7 @@ export const r12s = Vue.observable<VResponsiveness>({
     isMobileByWidth: window.innerWidth <= 480,
     isDesktopByWidth: window.innerWidth > 480,
     isTouchDevice: isTouchDevice(),
-    isTabActive: true
+    isPwa: (window.matchMedia('(display-mode: standalone)').matches) || ((window.navigator as any).standalone) || document.referrer.includes('android-app://')
 })
 
 Vue.use({

@@ -112,7 +112,7 @@
             dense
             nav
         >
-            <template v-if="!userscriptInstalled">
+            <template v-if="!userscriptInstalled && canInstallUserscript">
                 <InstallUserscriptDialog>
                     <template #default="{ on }">
                         <VListItemIconText
@@ -298,6 +298,18 @@ export default class AppNavigation extends Vue {
 
             return true
         })
+    }
+
+    get canInstallUserscript (): boolean {
+        return this.$r12s.isPwa
+            // desktop chromium supports plugins inside pwa
+            ? 'chrome' in window && !!navigator.userAgent.match(/windows nt|mac os x|X11/i)
+            : this.$r12s.isTouchDevice
+                // windows/macos/x11 (linux) with touchscreen are probably running full-featured browser
+                ? !!navigator.userAgent.match(/windows nt|mac os x|X11/i)
+                    // firefox and yandex browser on android support plugins
+                    || (!!navigator.userAgent.match(/firefox\/|YaBrowser\/|Yowser\//i) && !!navigator.userAgent.match(/android/i))
+                : true
     }
 
     get versionInfo (): string {

@@ -125,7 +125,7 @@
                 </v-card-title>
                 <v-divider />
 
-                <v-card-text class="overflow-y-auto card-layout-bg">
+                <v-card-text class="overflow-y-auto">
                     <component
                         :is="filterComponent"
                         v-if="filterComponent !== null"

@@ -6,7 +6,10 @@
                 lg="4"
                 md="6"
             >
-                <v-card class="fill-height">
+                <v-card
+                    class="fill-height"
+                    outlined
+                >
                     <v-card-text>
                         <v-autocomplete
                             v-model="filters.genre"
@@ -95,7 +98,10 @@
                 lg="4"
                 md="6"
             >
-                <v-card class="fill-height">
+                <v-card
+                    class="fill-height"
+                    outlined
+                >
                     <v-card-title>
                         {{ $t(f.name) }}
                         <v-spacer />

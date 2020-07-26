@@ -307,19 +307,6 @@
                 </v-btn>
 
                 <AuthorsFiltersMenu :data="authors" />
-
-                <v-btn
-                    v-show="!mobileDisplay"
-                    icon
-                    @click="posterVisible = !posterVisible"
-                >
-                    <v-icon
-                        :class="{ 'mdi-rotate-180': !posterVisible }"
-                        class="poster-control-icon"
-                    >
-                        mdi-chevron-right
-                    </v-icon>
-                </v-btn>
             </v-row>
         </v-card-text>
     </v-card>
@@ -369,7 +356,6 @@ export default class ViewerControls extends Vue {
     @Prop() media!: Media | null
     @PropSync('rate') userRate!: UserRate | null
     @PropSync('part') partNumber!: number
-    @PropSync('poster') posterVisible!: boolean
     @Prop() userRateLoading!: boolean
     @Prop() translation!: SingleTranslationData | null
     @Prop() selectedTranslations!: number[]

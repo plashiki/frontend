@@ -1,28 +1,70 @@
 <template>
     <div>
-        <v-simple-card>
-            <ErrorAlert :error="error" />
+        <ErrorAlert :error="error" />
+
+        <v-simple-card text-class="pa-0">
             <transition mode="out-in" name="fade-transition">
-                <div v-if="media != null">
-                    <HeadlineWithLinkButton
-                        :href="media.url"
-                        :text="name + (secondaryName ? $t('Pages.Viewer.TitleDelimiter') + secondaryName : '')"
-                        :tooltip="$t('Items.Media.OpenExternal', { service: $t('Providers.' + dataProvider) })"
-                        class="my-2"
-                        icon="mdi-open-in-new"
+                <div
+                    v-if="media != null"
+                    class="d-flex flex-row flex-nowrap"
+                >
+                    <v-img
+                        v-show="$r12s.screenWidth >= 360"
+                        class="viewer-poster"
+                        :class="{ 'viewer-poster--small': mobileDisplay }"
+                        :aspect-ratio="2/3"
+                        :lazy-src="smallImage"
+                        :src="fullImage"
+                        :gradient="'to right, #00000000 90%, #' + (isDark ? '1e1e1e' : 'ffffff') + ' 100%'"
                     />
-                    <v-chip-group
-                        v-if="media.genres !== undefined"
-                        :show-arrows="$r12s.isDesktopByWidth"
-                    >
-                        <v-chip
-                            v-for="genre in media.genres"
-                            :key="genre.id"
-                            :href="genreLink(genre)"
+
+                    <div class="d-flex flex-column flex pa-4 pb-0 pr-0 text-truncate">
+                        <h1
+                            :class="{
+                                'subtitle-05 pb-1': mobileDisplay,
+                                'pb-2': !mobileDisplay
+                            }"
+                            class="text-truncate"
+                            :title="name"
+                            v-text="name"
+                        />
+                        <h3
+                            v-show="!!secondaryName"
+                            class="grey--text text-truncate"
+                            :class="{ 'subtitle-025': mobileDisplay }"
+                            :title="secondaryName"
+                            v-text="secondaryName"
+                        />
+
+                        <v-spacer />
+
+                        <v-chip-group
+                            v-if="media.genres !== undefined"
+                            :show-arrows="!mobileDisplay"
                         >
-                            {{ $t(genre.name) }}
-                        </v-chip>
-                    </v-chip-group>
+                            <v-chip
+                                v-for="genre in media.genres"
+                                :key="genre.id"
+                                :href="genreLink(genre)"
+                                :small="mobileDisplay"
+                            >
+                                {{ $t(genre.name) }}
+                            </v-chip>
+                        </v-chip-group>
+                    </div>
+
+                    <v-btn
+                        v-tooltip="$t('Items.Media.OpenExternal', { service: $t('Providers.' + dataProvider) })"
+                        target="_blank"
+                        :href="media.url"
+                        :small="mobileDisplay"
+                        class="ma-2 align-self-center"
+                        icon
+                    >
+                        <v-icon :small="mobileDisplay">
+                            mdi-open-in-new
+                        </v-icon>
+                    </v-btn>
                 </div>
                 <v-skeleton-loader
                     v-else-if="loading"
@@ -62,27 +104,6 @@
                     </v-simple-card>
                 </v-responsive>
             </v-col>
-            <v-col
-                v-if="posterVisible && !mobileDisplay"
-                class="viewer-poster text-center ml-2 d-flex flex-column"
-            >
-                <v-simple-card class="fill-height">
-                    <v-img
-                        :aspect-ratio="2/3"
-                        :lazy-src="smallImage"
-                        :src="fullImage"
-                    />
-                    <v-rating
-                        v-if="media && media.score != null"
-                        :value="media.score / 2"
-                        class="rating-smaller-gap mt-2"
-                        half-icon="mdi-star-half-full"
-                        half-increments
-                        readonly
-                    />
-                    <v-spacer />
-                </v-simple-card>
-            </v-col>
         </v-row>
 
         <ViewerControls
@@ -91,7 +112,6 @@
             :media-id="mediaId"
             :media-type="mediaType"
             :part.sync="partNumber"
-            :poster.sync="posterVisible"
             :rate.sync="userRate"
             :selected-translations="selectedTranslations"
             :selection-mode.sync="translationSelectionMode"
@@ -218,7 +238,6 @@ export default class Viewer extends LoadableVue {
 
     iframeLoading = false
     userRateLoading = false
-    posterVisible = true
 
     mediaId = -1
     media: Media | null = null
@@ -239,6 +258,10 @@ export default class Viewer extends LoadableVue {
 
     get authenticated (): boolean {
         return authStore.authenticated
+    }
+
+    get isDark (): boolean {
+        return configStore.dark
     }
 
     get mobileDisplay (): boolean {
@@ -276,15 +299,6 @@ export default class Viewer extends LoadableVue {
 
     get currentTranslation (): ExtendedSingleTranslationData | null {
         return this.translationId !== null ? this.translationsIndex[this.translationId] ?? null : null
-    }
-
-    @Watch('posterVisible')
-    posterVisibilityChanged (val: boolean): void {
-        configStore.merge({
-            components: {
-                viewerPoster: val
-            }
-        })
     }
 
     @Watch('partNumber')
@@ -480,7 +494,6 @@ export default class Viewer extends LoadableVue {
 
     mounted (): void {
         this.updateName()
-        this.posterVisible = configStore.components.viewerPoster !== false
 
         const mediaId = parseInt(this.$route.params.id)
         this.mediaId = mediaId
@@ -508,7 +521,13 @@ export default class Viewer extends LoadableVue {
 
 <style>
 .viewer-poster {
-    max-width: 200px;
+    max-width: 96px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.viewer-poster--small {
+    max-width: 64px;
 }
 
 .viewer-frame--wrap {
@@ -516,6 +535,14 @@ export default class Viewer extends LoadableVue {
     max-width: 746.66px;
     margin: 0 auto;
     width: 100%;
+    border-radius: 4px;
+}
+
+@media screen and (min-width: 968px) {
+    .viewer-frame--wrap {
+        max-height: 500px;
+        max-width: 888.89px;
+    }
 }
 
 .viewer-frame--card {

@@ -25,6 +25,16 @@ html:not(.touch) *:not(.default-scroll) {
     }
 }
 
+.theme--dark.v-app-bar.v-toolbar.v-sheet {
+    background-color: #363636!important;
+    border-bottom: 1px solid #4e4e4e!important;
+}
+
+.theme--light.v-app-bar.v-toolbar.v-sheet {
+    background-color: #ffffff!important;
+    border-bottom: 1px solid #e0e0e0!important;
+}
+
 .theme--light.v-application, .theme--light .card-layout-bg, html.light {
     background: #f2f2f2;
 }

@@ -8,9 +8,10 @@
 
         <v-app-bar
             v-if="showAppBar"
-            app
             :hide-on-scroll="$r12s.isMobileByWidth || $r12s.screenHeight < 480"
             :dark="isDark"
+            flat
+            app
         >
             <v-app-bar-nav-icon
                 v-if="showNavBar"
@@ -27,10 +28,9 @@
                 v-if="showSearch"
                 v-model="searchInput"
                 :label="$t('Pages.Search.Name')"
-                :solo-inverted="isDark"
-                :solo="!isDark"
                 class="search-field"
                 append-icon="mdi-magnify"
+                solo
                 flat
                 hide-details
                 @blur="$route.name === 'search' && doSearch()"
@@ -272,15 +272,19 @@ export default class DefaultLayout extends Vue {
 </script>
 
 <style>
-.theme--light.v-app-bar.v-toolbar.v-sheet {
-    background-color: #fbfbfb !important;
-}
-
 .theme--light.search-field.v-text-field--solo.v-input--is-focused > .v-input__control > .v-input__slot {
-    background: #e0e0e0 !important;
+    background: #ededed !important;
 }
 
 .theme--light.search-field.v-text-field--solo > .v-input__control > .v-input__slot {
-    background: #ededed !important;
+    background: #fafafa !important;
+}
+
+.theme--dark.search-field.v-text-field--solo.v-input--is-focused > .v-input__control > .v-input__slot {
+    background: #212121 !important;
+}
+
+.theme--dark.search-field.v-text-field--solo > .v-input__control > .v-input__slot {
+    background: #2e2e2e !important;
 }
 </style>

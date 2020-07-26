@@ -48,14 +48,14 @@ export default class TranslationsList extends Vue {
     @Prop() selectedTranslations!: number[]
     @Prop() translationSelectionMode!: boolean
 
-    _showFull = false
+    showFull_ = false
 
     get showFull () {
-        return this._showFull || !configStore.hideSamePlayers
+        return this.showFull_ || !configStore.hideSamePlayers
     }
 
     set showFull (val: boolean) {
-        this._showFull = val
+        this.showFull_ = val
     }
 
     get translations (): (SingleTranslationData & { key: string })[] {

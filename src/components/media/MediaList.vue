@@ -44,11 +44,27 @@
                     <MediaCard
                         v-if="listViewMode === 'cards'"
                         :item="item"
-                    />
+                        :actions="actions"
+                    >
+                        <template
+                            v-if="actions"
+                            #actions
+                        >
+                            <slot name="actions-card" />
+                        </template>
+                    </MediaCard>
                     <MediaListItem
                         v-else
                         :item="item"
-                    />
+                        :actions="actions"
+                    >
+                        <template
+                            v-if="actions"
+                            #actions
+                        >
+                            <slot name="actions-list" />
+                        </template>
+                    </MediaListItem>
                 </template>
             </virtual-grid>
             <slot name="placeholder">
@@ -80,6 +96,7 @@ export default class MediaList extends Vue {
     @Prop({ default: false }) hideButtons!: boolean
     @Prop({ default: false }) flat!: boolean
     @Prop({ type: Boolean, default: false }) noLinks!: boolean
+    @Prop({ type: Boolean, default: false }) actions!: boolean
     @Prop({ type: Boolean, default: false }) noPlaceholder!: boolean
     @Prop({ type: Boolean, default: false }) noHeaderSpacer!: boolean
     @Prop({ default: undefined }) textClass!: any

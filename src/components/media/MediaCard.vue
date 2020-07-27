@@ -1,11 +1,12 @@
 <template>
     <v-card
         :height="fixedSize ? 240 : undefined"
-        :ripple="!$r12s.isTouchDevice"
+        :ripple="!$r12s.isTouchDevice && !actions"
         :title="name"
-        :to="noLink ? undefined : `/${item.type}/${item.id}`"
+        :to="noLink || actions ? undefined : `/${item.type}/${item.id}`"
         :width="fixedSize ? 180 : undefined"
         class="media-card"
+        :class="{ 'media-card--has-actions': actions }"
         flat
     >
         <v-img
@@ -14,7 +15,7 @@
             :lazy-src="smallImage"
             :src="fullImage"
             :width="fixedSize ? 180 : undefined"
-            class="align-end"
+            class="fill-height d-flex align-end"
             gradient="to bottom, rgba(0,0,0,0) 80%, rgba(0,0,0,.9) 100%"
         >
             <v-chip
@@ -32,6 +33,28 @@
             <v-card-subtitle class="text-left text-truncate white--text pb-2">
                 {{ name }}
             </v-card-subtitle>
+
+            <div
+                v-if="actions"
+                class="media-card--actions-overlay"
+            >
+                <slot name="actions" />
+
+                <v-btn
+                    v-if="!noLink"
+                    color="primary"
+                    class="ma-1"
+                    :to="`/${item.type}/${item.id}`"
+                    depressed
+                    small
+                >
+                    <v-icon left>
+                        mdi-open-in-new
+                    </v-icon>
+
+                    {{ $t('Common.Action.Open') }}
+                </v-btn>
+            </div>
         </v-img>
     </v-card>
 </template>
@@ -44,7 +67,8 @@ import { Media } from '@/types/media'
 @Component({})
 export default class MediaCard extends Vue {
     @Prop({ required: true }) item!: Media
-    @Prop({ default: false }) noLink!: boolean
+    @Prop({ type: Boolean, default: false }) noLink!: boolean
+    @Prop({ type: Boolean, default: false }) actions!: boolean
     @Prop({ type: Boolean, default: false }) fixedSize!: boolean
 
     get fullImage (): string {
@@ -91,9 +115,34 @@ export default class MediaCard extends Vue {
         background: lighten(black, 15%) !important;
     }
 
+    &--actions-overlay {
+        position: absolute;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(0);
+        opacity: 0;
+        transition: all 0.25s linear;
+    }
+
     &:hover {
         .v-image__image {
             transform: scale(1.05);
+        }
+    }
+
+    &--has-actions:hover, &--has-actions:active {
+        .media-card--actions-overlay {
+            opacity: 1;
+            backdrop-filter: blur(2px);
         }
     }
 }

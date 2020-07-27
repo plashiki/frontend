@@ -21,6 +21,9 @@
                 {{ secondaryName }}
             </v-list-item-subtitle>
         </v-list-item-content>
+        <v-list-item-avatar v-if="actions">
+            <slot name="actions" />
+        </v-list-item-avatar>
     </v-list-item>
 </template>
 
@@ -37,6 +40,7 @@ import { Media } from '@/types/media'
 @Component({})
 export default class MediaListItem extends Vue {
     @Prop({ required: true }) item!: Media
+    @Prop({ type: Boolean, default: false }) actions!: boolean
     @Prop({ default: false }) noLink!: boolean
 
     get fullImage (): string {

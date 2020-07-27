@@ -57,6 +57,7 @@
                 >
                     <template #activator="{ on }">
                         <v-badge
+                            v-show="$r12s.screenWidth < 600"
                             :color="dark ? 'grey darken-3' : 'grey'"
                             :content="selectedTranslations.length"
                             :offset-x="24"
@@ -67,7 +68,6 @@
                             right
                         >
                             <v-btn
-                                v-show="isModerator || $r12s.screenWidth < 600"
                                 icon
                                 v-on="on"
                             >
@@ -122,7 +122,7 @@
                         <VListItemIconText
                             v-show="isModerator"
                             :title="$t(translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select')"
-                            icon="mdi-select-group"
+                            :icon="translationSelectionMode ? 'mdi-select-off' : 'mdi-select-group'"
                             @click.stop.prevent="translationSelectionMode = !translationSelectionMode"
                         />
 
@@ -149,6 +149,26 @@
                     </v-list>
                 </v-menu>
 
+
+                <v-badge
+                    v-show="isModerator && $r12s.screenWidth >= 600"
+                    :color="dark ? 'grey darken-3' : 'grey'"
+                    :content="selectedTranslations.length"
+                    :offset-x="24"
+                    :value="selectedTranslations.length > 0"
+                    bottom
+                    class="small-badge"
+                    overlap
+                    right
+                >
+                    <v-btn
+                        v-tooltip="$t(translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select')"
+                        icon
+                        @click.stop.prevent="translationSelectionMode = !translationSelectionMode"
+                    >
+                        <v-icon v-text="translationSelectionMode ? 'mdi-select-off' : 'mdi-select-group'" />
+                    </v-btn>
+                </v-badge>
 
                 <v-btn
                     v-show="media != null && translation != null && $r12s.screenWidth >= 600"

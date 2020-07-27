@@ -38,7 +38,7 @@
                 v-if="actions"
                 class="media-card--actions-overlay"
             >
-                <slot name="actions" />
+                <slot name="actions" :item="item" />
 
                 <v-btn
                     v-if="!noLink"

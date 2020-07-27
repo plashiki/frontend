@@ -48,9 +48,9 @@
                 >
                     <template
                         v-if="actions"
-                        #actions
+                        #actions="data"
                     >
-                        <slot name="actions-card" />
+                        <slot name="actions-card" v-bind="data" />
                     </template>
                 </MediaCard>
                 <MediaListItem
@@ -60,9 +60,9 @@
                 >
                     <template
                         v-if="actions"
-                        #actions
+                        #actions="data"
                     >
-                        <slot name="actions-list" />
+                        <slot name="actions-list" v-bind="data" />
                     </template>
                 </MediaListItem>
             </virtual-grid>

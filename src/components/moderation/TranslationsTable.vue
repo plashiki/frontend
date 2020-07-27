@@ -57,20 +57,21 @@
                             </v-icon>
                         </v-btn>
 
-                        <DeclineReasonMenu @send="decline(item, $event)">
-                            <template #default="{ on }">
-                                <v-btn
-                                    v-tooltip="$t('Pages.Moderation.Decline')"
-                                    :disabled="loading"
-                                    icon
-                                    small
-                                    v-on="on"
-                                >
-                                    <v-icon small>
-                                        mdi-close
-                                    </v-icon>
-                                </v-btn>
-                            </template>
+                        <DeclineReasonMenu
+                            #default="{ on }"
+                            @send="decline(item, $event)"
+                        >
+                            <v-btn
+                                v-tooltip="$t('Pages.Moderation.Decline')"
+                                :disabled="loading"
+                                icon
+                                small
+                                v-on="on"
+                            >
+                                <v-icon small>
+                                    mdi-close
+                                </v-icon>
+                            </v-btn>
                         </DeclineReasonMenu>
                     </template>
                     <template v-else>

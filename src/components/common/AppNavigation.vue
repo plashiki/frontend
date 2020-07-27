@@ -40,17 +40,18 @@
                                 </v-fade-transition>
                             </v-btn>
 
-                            <SettingsDialog v-if="$r12s.screenWidth >= 768">
-                                <template #default="{ on }">
-                                    <v-btn
-                                        v-tooltip="$t('Pages.Settings.Name')"
-                                        class="mr-2"
-                                        icon
-                                        v-on="on"
-                                    >
-                                        <v-icon>mdi-cog</v-icon>
-                                    </v-btn>
-                                </template>
+                            <SettingsDialog
+                                v-if="$r12s.screenWidth >= 768"
+                                #default="{ on }"
+                            >
+                                <v-btn
+                                    v-tooltip="$t('Pages.Settings.Name')"
+                                    class="mr-2"
+                                    icon
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
                             </SettingsDialog>
                             <v-btn
                                 v-else
@@ -113,14 +114,12 @@
             nav
         >
             <template v-if="!userscriptInstalled && canInstallUserscript">
-                <InstallUserscriptDialog>
-                    <template #default="{ on }">
-                        <VListItemIconText
-                            :title="$t('Pages.Userscript.Name')"
-                            icon="mdi-download"
-                            v-on="on"
-                        />
-                    </template>
+                <InstallUserscriptDialog #default="{ on }">
+                    <VListItemIconText
+                        :title="$t('Pages.Userscript.Name')"
+                        icon="mdi-download"
+                        v-on="on"
+                    />
                 </InstallUserscriptDialog>
                 <v-divider class="mb-1" />
             </template>

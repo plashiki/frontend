@@ -26,17 +26,16 @@
             <template v-else>
                 <div class="text-center">
                     <AvatarUploadMenu
+                        #default="{ on }"
                         :src="fullApp.icon"
                         @save="fullApp.icon = $event"
                     >
-                        <template #default="{ on }">
-                            <AvatarView
-                                :no-edit="loading"
-                                :src="fullApp.icon"
-                                size="96"
-                                v-on="on"
-                            />
-                        </template>
+                        <AvatarView
+                            :no-edit="loading"
+                            :src="fullApp.icon"
+                            size="96"
+                            v-on="on"
+                        />
                     </AvatarUploadMenu>
                 </div>
 

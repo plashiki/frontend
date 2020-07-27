@@ -31,6 +31,7 @@
             <!-- bruh -->
             <virtual-grid
                 ref="grid"
+                #default="{ item }"
                 :aspect-ratio="3/2"
                 :fixed-height="listViewMode === 'cards' ? -1 : 64"
                 :gap-x="listViewMode === 'cards' ? 8 : 4"
@@ -40,32 +41,30 @@
                 :min-cell-width="listViewMode === 'cards' ? 130 : 300"
                 :min-columns="listViewMode === 'cards' ? 2 : 1"
             >
-                <template #default="{ item }">
-                    <MediaCard
-                        v-if="listViewMode === 'cards'"
-                        :item="item"
-                        :actions="actions"
+                <MediaCard
+                    v-if="listViewMode === 'cards'"
+                    :item="item"
+                    :actions="actions"
+                >
+                    <template
+                        v-if="actions"
+                        #actions
                     >
-                        <template
-                            v-if="actions"
-                            #actions
-                        >
-                            <slot name="actions-card" />
-                        </template>
-                    </MediaCard>
-                    <MediaListItem
-                        v-else
-                        :item="item"
-                        :actions="actions"
+                        <slot name="actions-card" />
+                    </template>
+                </MediaCard>
+                <MediaListItem
+                    v-else
+                    :item="item"
+                    :actions="actions"
+                >
+                    <template
+                        v-if="actions"
+                        #actions
                     >
-                        <template
-                            v-if="actions"
-                            #actions
-                        >
-                            <slot name="actions-list" />
-                        </template>
-                    </MediaListItem>
-                </template>
+                        <slot name="actions-list" />
+                    </template>
+                </MediaListItem>
             </virtual-grid>
             <slot name="placeholder">
                 <NoItemsPlaceholder

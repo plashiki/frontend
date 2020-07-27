@@ -17,18 +17,17 @@
             <TranslationForm
                 v-if="editableTranslation"
                 ref="form"
+                #default="{ setField }"
                 v-model="valid"
                 :disabled="loading"
                 :form="editableTranslation"
                 :show-meta="showMeta"
             >
-                <template #default="{ setField }">
-                    <slot
-                        :original="originalTranslation"
-                        :editable="editableTranslation"
-                        :set-field="setField"
-                    />
-                </template>
+                <slot
+                    :original="originalTranslation"
+                    :editable="editableTranslation"
+                    :set-field="setField"
+                />
             </TranslationForm>
         </v-card-text>
 
@@ -62,17 +61,16 @@
             </v-btn>
             <DeclineReasonMenu
                 v-if="moderator && this.originalTranslation && this.originalTranslation.uploader_id && this.originalTranslation.status !== 'declined'"
+                #default="{ on }"
                 @send="decline"
             >
-                <template #default="{ on }">
-                    <v-btn
-                        color="error"
-                        text
-                        v-on="on"
-                    >
-                        {{ $t('Pages.Moderation.Decline') }}
-                    </v-btn>
-                </template>
+                <v-btn
+                    color="error"
+                    text
+                    v-on="on"
+                >
+                    {{ $t('Pages.Moderation.Decline') }}
+                </v-btn>
             </DeclineReasonMenu>
 
             <v-btn

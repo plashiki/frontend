@@ -51,19 +51,18 @@
                 <virtual-grid
                     v-if="items.length > 0"
                     ref="grid"
+                    #default="{ item }"
                     :fixed-height="150"
                     :gap-y="8"
                     :items="items"
                     :max-columns="1"
                     @visibilitychange="onNotificationVisible($event.item, $event.visible)"
                 >
-                    <template #default="{ item }">
-                        <Notification
-                            :item="item"
-                            @click="visible = false"
-                            @close="onNotificationClose(item)"
-                        />
-                    </template>
+                    <Notification
+                        :item="item"
+                        @click="visible = false"
+                        @close="onNotificationClose(item)"
+                    />
                 </virtual-grid>
                 <v-row
                     v-else

@@ -6,6 +6,7 @@
         >
             <TranslationEditDialog
                 v-if="editing"
+                #default="{ original, editable, setField, proposedEdit = currentReport.edit && proposedEditText(currentReport, true) }"
                 :report-id="currentReport.id"
                 :translation-id="currentReport.translation_id"
                 show-meta
@@ -13,48 +14,46 @@
                 @delete="update"
                 @update="update"
             >
-                <template #default="{ original, editable, setField, proposedEdit = currentReport.edit && proposedEditText(currentReport, true) }">
-                    <v-card
-                        v-if="currentReport.edit"
-                        outlined
-                    >
-                        <v-card-title>
-                            {{ $t('Items.Report.ProposedEdit') }}
-                        </v-card-title>
-                        <v-card-text>
-                            <div
-                                v-for="(it, i) in proposedEdit"
-                                :key="i"
-                                class="row no-gutters align-center"
-                            >
-                                <v-btn
-                                    class="mr-1"
-                                    small
-                                    icon
-                                    :disabled="original[it.object[0]] === it.object[1] || editable[it.object[0]] === it.object[1]"
-                                    @click="setField(it.object[0], it.object[1])"
-                                >
-                                    <v-icon small>mdi-arrow-top-left</v-icon>
-                                </v-btn>
-                                <component :is="original[it.object[0]] === it.object[1] ? 's' : 'div'">
-                                    <b v-html="it.display[0]" />: <span v-html="it.display[1]" />
-                                </component>
-                            </div>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer />
+                <v-card
+                    v-if="currentReport.edit"
+                    outlined
+                >
+                    <v-card-title>
+                        {{ $t('Items.Report.ProposedEdit') }}
+                    </v-card-title>
+                    <v-card-text>
+                        <div
+                            v-for="(it, i) in proposedEdit"
+                            :key="i"
+                            class="row no-gutters align-center"
+                        >
                             <v-btn
-                                color="success"
-                                text
+                                class="mr-1"
                                 small
-                                :disabled="!proposedEdit.some((it) => original[it.object[0]] !== it.object[1] && editable[it.object[0]] !== it.object[1])"
-                                @click="() => proposedEdit.forEach((it) => setField(it.object[0], it.object[1]))"
+                                icon
+                                :disabled="original[it.object[0]] === it.object[1] || editable[it.object[0]] === it.object[1]"
+                                @click="setField(it.object[0], it.object[1])"
                             >
-                                {{ $t('Common.Form.Apply') }}
+                                <v-icon small>mdi-arrow-top-left</v-icon>
                             </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </template>
+                            <component :is="original[it.object[0]] === it.object[1] ? 's' : 'div'">
+                                <b v-html="it.display[0]" />: <span v-html="it.display[1]" />
+                            </component>
+                        </div>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                            color="success"
+                            text
+                            small
+                            :disabled="!proposedEdit.some((it) => original[it.object[0]] !== it.object[1] && editable[it.object[0]] !== it.object[1])"
+                            @click="() => proposedEdit.forEach((it) => setField(it.object[0], it.object[1]))"
+                        >
+                            {{ $t('Common.Form.Apply') }}
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
             </TranslationEditDialog>
         </v-dialog>
 

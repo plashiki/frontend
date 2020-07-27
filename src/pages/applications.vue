@@ -69,6 +69,7 @@
                 <ErrorAlert :error="error" />
 
                 <virtual-grid
+                    #default="{ item }"
                     :fixed-height="180"
                     :gap-x="8"
                     :gap-y="8"
@@ -78,15 +79,13 @@
                     :min-columns="1"
                     class="mt-2"
                 >
-                    <template #default="{ item }">
-                        <Application
-                            :app="item"
-                            :context="context"
-                            class="fill-height"
-                            @control="edit(item)"
-                            @delete="requestUpdate()"
-                        />
-                    </template>
+                    <Application
+                        :app="item"
+                        :context="context"
+                        class="fill-height"
+                        @control="edit(item)"
+                        @delete="requestUpdate()"
+                    />
                 </virtual-grid>
                 <NoItemsPlaceholder
                     v-if="storage[tab].length === 0 && !loading[tab]"

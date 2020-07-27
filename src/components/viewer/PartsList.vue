@@ -8,20 +8,19 @@
             >
                 <div class="d-flex flex-row">
                     <AuthorAvailabilityPopup
+                        #default="{ on }"
                         :data="data"
                     >
-                        <template #default="{ on }">
-                            <v-btn
-                                v-tooltip="$t('Pages.Viewer.Availability')"
-                                icon
-                                small
-                                v-on="on"
-                            >
-                                <v-icon small>
-                                    mdi-folder-information
-                                </v-icon>
-                            </v-btn>
-                        </template>
+                        <v-btn
+                            v-tooltip="$t('Pages.Viewer.Availability')"
+                            icon
+                            small
+                            v-on="on"
+                        >
+                            <v-icon small>
+                                mdi-folder-information
+                            </v-icon>
+                        </v-btn>
                     </AuthorAvailabilityPopup>
                     <v-spacer />
                     <v-btn

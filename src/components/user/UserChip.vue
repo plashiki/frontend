@@ -1,26 +1,25 @@
 <template>
     <UserPopup
+        #default="{ on, user }"
         :control="control"
         :full="full"
         :user="user"
     >
-        <template #default="{ on, user }">
-            <v-chip
-                v-if="user != null"
-                :class="chipClass"
-                pill
-                v-bind="$attrs"
-                v-on="{ ...$listeners, ...on }"
-            >
-                <v-avatar left>
-                    <v-img :src="user.avatar || defaultAvatar" />
-                </v-avatar>
-                <span
-                    class="user-chip-nickname text-truncate"
-                    v-text="user.nickname"
-                />
-            </v-chip>
-        </template>
+        <v-chip
+            v-if="user != null"
+            :class="chipClass"
+            pill
+            v-bind="$attrs"
+            v-on="{ ...$listeners, ...on }"
+        >
+            <v-avatar left>
+                <v-img :src="user.avatar || defaultAvatar" />
+            </v-avatar>
+            <span
+                class="user-chip-nickname text-truncate"
+                v-text="user.nickname"
+            />
+        </v-chip>
     </UserPopup>
 </template>
 

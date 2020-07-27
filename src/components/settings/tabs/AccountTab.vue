@@ -11,18 +11,17 @@
                 sm="4"
             >
                 <AvatarUploadMenu
+                    #default="{ on }"
                     :src="user.avatar"
                     @save="updateAvatar"
                 >
-                    <template #default="{ on }">
-                        <AvatarView
-                            :loading="avatarLoading"
-                            :src="user.avatar"
-                            class="elevation-5"
-                            size="96"
-                            v-on="on"
-                        />
-                    </template>
+                    <AvatarView
+                        :loading="avatarLoading"
+                        :src="user.avatar"
+                        class="elevation-5"
+                        size="96"
+                        v-on="on"
+                    />
                 </AvatarUploadMenu>
             </v-col>
             <v-col

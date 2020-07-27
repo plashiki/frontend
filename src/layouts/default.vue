@@ -73,17 +73,17 @@
             >
                 <v-icon>mdi-refresh</v-icon>
             </v-btn>
-            <NotificationsDialog>
-                <template #default="{ on }">
-                    <v-btn
-                        v-tooltip="$t('Items.Notification.NamePlural')"
-                        class="ml-1 mr-n3"
-                        icon
-                        v-on="on"
-                    >
-                        <v-icon>mdi-bell</v-icon>
-                    </v-btn>
-                </template>
+            <NotificationsDialog
+                #default="{ on }"
+            >
+                <v-btn
+                    v-tooltip="$t('Items.Notification.NamePlural')"
+                    class="ml-1 mr-n3"
+                    icon
+                    v-on="on"
+                >
+                    <v-icon>mdi-bell</v-icon>
+                </v-btn>
             </NotificationsDialog>
             <v-progress-linear
                 :active="loading === true"

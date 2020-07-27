@@ -91,6 +91,7 @@
                             target="_blank"
                         />
                         <TranslationSubscribeMenu
+                            #default="{ on }"
                             :media-id="mediaId"
                             :media-type="mediaType"
                             :translation="translation"
@@ -98,14 +99,12 @@
                             right
                             transition="slide-x-transition"
                         >
-                            <template #default="{ on }">
-                                <VListItemIconText
-                                    v-show="media && authenticated && $r12s.screenWidth <= 480"
-                                    :title="$t('Items.Notification.NamePlural')"
-                                    icon="mdi-bell"
-                                    v-on="on"
-                                />
-                            </template>
+                            <VListItemIconText
+                                v-show="media && authenticated && $r12s.screenWidth <= 480"
+                                :title="$t('Items.Notification.NamePlural')"
+                                icon="mdi-bell"
+                                v-on="on"
+                            />
                         </TranslationSubscribeMenu>
                         <VListItemIconText
                             v-show="translation !== null && !translationSelectionMode && isModerator && $r12s.screenWidth < 570"
@@ -195,6 +194,7 @@
                 </v-btn>
 
                 <TranslationSubscribeMenu
+                    #default="{ on }"
                     :media-id="mediaId"
                     :media-type="mediaType"
                     :translation="translation"
@@ -202,18 +202,16 @@
                     top
                     transition="slide-y-transition"
                 >
-                    <template #default="{ on }">
-                        <v-btn
-                            v-show="media && authenticated && $r12s.screenWidth > 480"
-                            v-tooltip="$t('Items.Notification.NamePlural')"
-                            icon
-                            v-on="on"
-                        >
-                            <v-icon>
-                                mdi-bell
-                            </v-icon>
-                        </v-btn>
-                    </template>
+                    <v-btn
+                        v-show="media && authenticated && $r12s.screenWidth > 480"
+                        v-tooltip="$t('Items.Notification.NamePlural')"
+                        icon
+                        v-on="on"
+                    >
+                        <v-icon>
+                            mdi-bell
+                        </v-icon>
+                    </v-btn>
                 </TranslationSubscribeMenu>
 
                 <v-spacer />

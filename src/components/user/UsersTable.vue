@@ -61,18 +61,17 @@
             </template>
             <template #item._control="{ item }">
                 <UserPopup
+                    #default="{ on }"
                     :user="item"
                     control
                     full
                 >
-                    <template #default="{ on }">
-                        <v-btn
-                            icon
-                            v-on="on"
-                        >
-                            <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
-                    </template>
+                    <v-btn
+                        icon
+                        v-on="on"
+                    >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
                 </UserPopup>
             </template>
         </v-data-table>

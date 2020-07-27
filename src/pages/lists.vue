@@ -9,6 +9,7 @@
                         :items="selectedState.items"
                         :no-placeholder="!!(selectedState.more || selectedState.error)"
                         :text-class="{'pa-1': $r12s.screenWidth < 480}"
+                        :actions="selected === '$recent'"
                     >
                         <template #buttons>
                             <HeadlineWithLinkButton
@@ -62,6 +63,35 @@
                                     v-text="$t('Common.Action.TryAgain')"
                                 />
                             </ErrorAlert>
+                        </template>
+
+                        <template #actions-card="{ item }">
+                            <v-btn
+                                v-if="selected === '$recent'"
+                                color="error"
+                                class="ma-1"
+                                depressed
+                                small
+                                @click="deleteFromRecent(item.type, item.id)"
+                            >
+                                <v-icon left>
+                                    mdi-delete
+                                </v-icon>
+
+                                {{ $t('Common.Form.Delete') }}
+                            </v-btn>
+                        </template>
+
+                        <template #actions-list="{ item }">
+                            <v-btn
+                                v-if="selected === '$recent'"
+                                icon
+                                @click.stop.prevent="deleteFromRecent(item.type, item.id)"
+                            >
+                                <v-icon>
+                                    mdi-delete
+                                </v-icon>
+                            </v-btn>
                         </template>
                     </MediaList>
                 </template>
@@ -244,6 +274,11 @@ export default class ListsPage extends Vue {
             this.state = {}
             this.initState()
         }
+    }
+
+    deleteFromRecent (type: MediaType, id: number) {
+        configStore.deleteRecentMedia({ type, id })
+        this.state.$recent.items = this.state.$recent.items.filter(i => i.type !== type || i.id !== id)
     }
 
     clearRecent (): void {

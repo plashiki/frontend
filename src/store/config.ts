@@ -88,6 +88,14 @@ export default class ConfigModule extends VuexModule {
     }
 
     @LocalSharedMutation()
+    deleteRecentMedia (params: { type: MediaType, id: number }): void {
+        let idx = this.recentMedias[params.type].indexOf(params.id)
+        if (idx !== -1) {
+            this.recentMedias[params.type].splice(idx, 1)
+        }
+    }
+
+    @LocalSharedMutation()
     addSearchPreset (params: { provider: string, preset: AnyKV }): void {
         if (!this.searchPresets[params.provider]) {
             Vue.set(this.searchPresets, params.provider, [])

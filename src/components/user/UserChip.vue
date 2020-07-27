@@ -4,7 +4,7 @@
         :full="full"
         :user="user"
     >
-        <template #default="{ on }">
+        <template #default="{ on, user }">
             <v-chip
                 v-if="user != null"
                 :class="chipClass"
@@ -15,7 +15,10 @@
                 <v-avatar left>
                     <v-img :src="user.avatar || defaultAvatar" />
                 </v-avatar>
-                {{ user.nickname }}
+                <span
+                    class="user-chip-nickname text-truncate"
+                    v-text="user.nickname"
+                />
             </v-chip>
         </template>
     </UserPopup>
@@ -25,6 +28,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { User } from '@/types/user'
 import UserPopup from '@/components/user/UserPopup.vue'
+import { defaultAvatar } from '@/config'
 
 @Component({
     components: { UserPopup }
@@ -34,5 +38,13 @@ export default class UserChip extends Vue {
     @Prop({ type: Boolean, default: false }) full!: boolean
     @Prop({ type: Boolean, default: false }) control!: boolean
     @Prop({ type: String, default: '' }) chipClass!: string
+
+    defaultAvatar = defaultAvatar
 }
 </script>
+
+<style>
+.user-chip-nickname {
+    max-width: 96px;
+}
+</style>

@@ -11,7 +11,7 @@
         </template>
 
         <v-card class="d-flex flex-column fill-height pa-1">
-            <v-list-item>
+            <v-list-item v-if="user">
                 <v-list-item-avatar>
                     <v-img :src="user.avatar || defaultAvatar" />
                 </v-list-item-avatar>

@@ -9,53 +9,60 @@
         :class="{ 'media-card--has-actions': actions }"
         flat
     >
-        <v-img
-            :aspect-ratio="2/3"
-            :height="fixedSize ? 240 : undefined"
-            :lazy-src="smallImage"
-            :src="fullImage"
-            :width="fixedSize ? 180 : undefined"
-            class="fill-height d-flex align-end"
-            gradient="to bottom, rgba(0,0,0,0) 80%, rgba(0,0,0,.9) 100%"
-        >
-            <v-chip
-                v-if="item.statusText2 !== undefined || item.releaseType !== undefined"
-                class="release-type no-hover"
+        <v-hover #default="{ hover }">
+            <v-img
+                :aspect-ratio="2/3"
+                :height="fixedSize ? 240 : undefined"
+                :lazy-src="smallImage"
+                :src="fullImage"
+                :width="fixedSize ? 180 : undefined"
+                class="fill-height d-flex align-end"
+                gradient="to bottom, rgba(0,0,0,0) 80%, rgba(0,0,0,.9) 100%"
             >
-                {{ item.statusText2 || $t('Items.Media.ReleaseType.' + item.releaseType) }}
-            </v-chip>
-            <v-chip
-                v-if="!!item.statusText"
-                class="status-text no-hover"
-            >
-                {{ item.statusText }}
-            </v-chip>
-            <v-card-subtitle class="text-left text-truncate white--text pb-2">
-                {{ name }}
-            </v-card-subtitle>
-
-            <div
-                v-if="actions"
-                class="media-card--actions-overlay"
-            >
-                <slot name="actions" :item="item" />
-
-                <v-btn
-                    v-if="!noLink"
-                    color="primary"
-                    class="ma-1"
-                    :to="`/${item.type}/${item.id}`"
-                    depressed
-                    small
+                <v-chip
+                    v-if="item.statusText2 !== undefined || item.releaseType !== undefined"
+                    class="release-type no-hover"
                 >
-                    <v-icon left>
-                        mdi-open-in-new
-                    </v-icon>
+                    {{ item.statusText2 || $t('Items.Media.ReleaseType.' + item.releaseType) }}
+                </v-chip>
+                <v-chip
+                    v-if="!!item.statusText"
+                    class="status-text no-hover"
+                >
+                    {{ item.statusText }}
+                </v-chip>
+                <v-card-subtitle class="text-left text-truncate white--text pb-2">
+                    {{ name }}
+                </v-card-subtitle>
 
-                    {{ $t('Common.Action.Open') }}
-                </v-btn>
-            </div>
-        </v-img>
+                <transition
+                    v-if="actions"
+                    name="fade-transition"
+                >
+                    <div
+                        v-if="hover"
+                        class="media-card--actions-overlay"
+                    >
+                        <slot name="actions" :item="item" />
+
+                        <v-btn
+                            v-if="!noLink"
+                            color="primary"
+                            class="ma-1"
+                            :to="`/${item.type}/${item.id}`"
+                            depressed
+                            small
+                        >
+                            <v-icon left>
+                                mdi-open-in-new
+                            </v-icon>
+
+                            {{ $t('Common.Action.Open') }}
+                        </v-btn>
+                    </div>
+                </transition>
+            </v-img>
+        </v-hover>
     </v-card>
 </template>
 
@@ -128,21 +135,13 @@ export default class MediaCard extends Vue {
         justify-content: center;
         align-items: center;
         background-color: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(0);
-        opacity: 0;
+        backdrop-filter: blur(2px);
         transition: all 0.25s linear;
     }
 
     &:hover {
         .v-image__image {
             transform: scale(1.05);
-        }
-    }
-
-    &--has-actions:hover, &--has-actions:active {
-        .media-card--actions-overlay {
-            opacity: 1;
-            backdrop-filter: blur(2px);
         }
     }
 }

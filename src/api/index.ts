@@ -315,6 +315,10 @@ export function requestAppRestart (): void {
     location.reload()
 }
 
+export function languageChanged (lang: string): void {
+    emitIpc('LANGUAGE', { lang })
+}
+
 channel.addEventListener('message', (msg: IPCEvent) => {
     DEBUG.api('<<< (IPC)', msg)
     if (msg.act === 'API_REQUEST' && thisTab.master) {
@@ -349,6 +353,10 @@ channel.addEventListener('message', (msg: IPCEvent) => {
 
     if (msg.act === 'RELOAD') {
         location.reload()
+    }
+
+    if (msg.act === 'LANGUAGE') {
+        changeLanguage(msg.lang, true)
     }
 })
 

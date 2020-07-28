@@ -3,6 +3,7 @@ import VueI18n from 'vue-i18n'
 import axios from 'axios'
 import { AnyKV } from '@/types'
 import { configStore } from '@/store'
+import { languageChanged } from '@/api'
 
 export const availableLocales: string[] = process.env.AVAILABLE_LOCALES as any
 
@@ -46,13 +47,18 @@ export function dateFnsDropTime (s: string): string {
     return s
 }
 
-function setI18nLanguage (lang: string): string {
+function setI18nLanguage (lang: string, local = false): string {
     i18n.locale = lang
     axios.defaults.headers.common['Accept-Language'] = lang
     document.documentElement.setAttribute('lang', lang)
     if (configStore.language !== lang) {
         configStore.merge({ language: lang })
     }
+
+    if (!local) {
+        languageChanged(lang)
+    }
+
     return lang
 }
 
@@ -107,8 +113,8 @@ const PluralizationStrategies: Record<string, PluralizationStrategy> = {
     }
 }
 
-export function changeLanguage (lang: string): void {
-    setI18nLanguage(lang)
+export function changeLanguage (lang: string, local = false): void {
+    setI18nLanguage(lang, local)
 }
 
 

@@ -99,6 +99,9 @@ export type IPCEvent = {
     act: 'TAB_VISIBILITY'
     id: number
     visible: boolean
+} | {
+    act: 'LANGUAGE'
+    lang: string
 }
 
 export type ExtractIpcData<A, T> = A extends { act: T } ? { [K in Exclude<keyof A, 'act'>]: A[K] } : never

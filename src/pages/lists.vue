@@ -154,7 +154,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import MediaList from '@/components/media/MediaList.vue'
-import { authStore, configStore } from '@/store'
+import { appStore, authStore, configStore } from '@/store'
 import HeadlineWithLinkButton from '@/components/common/HeadlineWithLinkButton.vue'
 import { Media, MediaType } from '@/types/media'
 import { ApiException } from '@/types/api'
@@ -391,6 +391,9 @@ export default class ListsPage extends Vue {
         }
 
         this.initState()
+        appStore.merge({
+            pageTitle: this.$t('Pages.Lists.Name')
+        })
     }
 }
 </script>

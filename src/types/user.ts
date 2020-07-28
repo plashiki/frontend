@@ -12,6 +12,7 @@ export interface User {
 
     service: string
     sub: string[]
+    language?: string | null
 }
 
 // idk how to call it lmao

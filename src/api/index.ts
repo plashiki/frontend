@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from 'axios'
 import { BroadcastChannel, createLeaderElection } from 'broadcast-channel'
 import { createIndex, merge } from '@/utils/object-utils'
 import { authStore, configStore, notificationsStore, onceStoreReady } from '@/store'
-import { getCurrentUser } from '@/api/user'
+import { getCurrentUser, setUserLanguage } from '@/api/user'
 import { getMissedNotifications, registerFirebaseToken, unregisterFirebaseToken } from '@/api/notifications'
 import {
     ApiEnvelope,
@@ -24,6 +24,7 @@ import { iziToastError } from '@/plugins/izitoast'
 import { firebaseMessaging } from '@/plugins/firebase'
 import { prepareNotification } from '@/utils/notification-utils'
 import { configureScope } from '@sentry/browser'
+import { changeLanguage } from '@/plugins/vue-i18n'
 
 let thisTab: SessionTab = {
     id: -1,
@@ -359,6 +360,14 @@ export function updateInitData (retry = false): void {
         configureScope(scope => scope.setUser({
             id: user.id + ''
         }))
+        if (user.language) {
+            if (user.language !== configStore.language) {
+                configStore.merge({ language: user.language })
+                changeLanguage(user.language)
+            }
+        } else {
+            setUserLanguage(configStore.language).catch(console.error)
+        }
 
         getMissedNotifications(notificationsStore.lastSyncTime).then((items) => {
             let storedNotifications = createIndex(notificationsStore.items, i => i.id)

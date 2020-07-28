@@ -83,3 +83,12 @@ export function disconnectService (service: string): Promise<User> {
         query: { service }
     })
 }
+
+export function setUserLanguage (language: string): Promise<void> {
+    return makeApiRequest({
+        path: '/v2/users/@me/lang',
+        query: {
+            new: language
+        }
+    })
+}

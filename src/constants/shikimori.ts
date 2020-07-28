@@ -146,7 +146,7 @@ export function shikimoriGetSeasonText (season: string): [string, AnyKV] {
     }
     m = season.match(/^(\d{3})x$/)
     if (m) {
-        return ['Items.Media.Season.decade', { n: m[1] + '0' }]
+        return ['Items.Media.Season.decade', { n: m[1] }]
     }
 
     return ['Items.Media.Season.year', { n: season }]

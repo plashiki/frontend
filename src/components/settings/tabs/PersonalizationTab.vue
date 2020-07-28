@@ -126,7 +126,10 @@ export default class PersonalizationTab extends Vue {
             language: val
         })
         changeLanguage(val)
-        setUserLanguage(val).catch(iziToastError)
+
+        if (authStore.authenticated) {
+            setUserLanguage(val).catch(iziToastError)
+        }
     }
 
     get primaryColor (): string {

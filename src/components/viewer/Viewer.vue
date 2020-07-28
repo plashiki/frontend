@@ -521,7 +521,7 @@ export default class Viewer extends LoadableVue {
 
 <style>
 .viewer-poster {
-    width: 96px;
+    max-width: 96px;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
 }

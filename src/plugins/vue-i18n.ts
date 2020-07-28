@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import * as ruLocale from '@/locale/ru.yml'
-import { ru } from 'date-fns/locale'
 import axios from 'axios'
 import { AnyKV } from '@/types'
+import { configStore } from '@/store'
 
 export const availableLocales: string[] = process.env.AVAILABLE_LOCALES as any
 
@@ -18,24 +17,31 @@ Object.defineProperty(Vue.prototype, '$i18n', {
 Vue.use(VueI18n)
 
 i18n = new VueI18n({
-    locale: 'ru',
-    fallbackLocale: 'ru',
-    messages: { ru: ruLocale as any }
+    locale: 'en',
+    fallbackLocale: 'en',
+    messages: {
+        ru: require('@/locale/ru.yml'),
+        en: require('@/locale/en.yml')
+    }
 })
 
-const loadedLanguages = ['ru']
-
-const dateFnsLocales: AnyKV = { ru }
+const dateFnsLocales: AnyKV = {
+    en: require('date-fns/locale/en-US'),
+    ru: require('date-fns/locale/ru')
+}
 
 export function dateFnLocale (): any {
-    return dateFnsLocales[i18n.locale]
+    return dateFnsLocales[i18n.locale].default
 }
 
 // datefns has no way (afaik) to get distance in days. so we get formatRelative and remove time part
 // (which will apparently be smth like "at 00:00")
 export function dateFnsDropTime (s: string): string {
     if (i18n.locale === 'ru') {
-        return s.replace(/в 0+:0+$/i, '')
+        return s.replace(/ в 0+:0+$/i, '')
+    }
+    if (i18n.locale === 'en') {
+        return s.replace(/ at 12:0+ [AP]M$/i, '')
     }
     return s
 }
@@ -44,6 +50,9 @@ function setI18nLanguage (lang: string): string {
     i18n.locale = lang
     axios.defaults.headers.common['Accept-Language'] = lang
     document.documentElement.setAttribute('lang', lang)
+    if (configStore.language !== lang) {
+        configStore.merge({ language: lang })
+    }
     return lang
 }
 
@@ -74,45 +83,34 @@ const PluralizationStrategies: Record<string, PluralizationStrategy> = {
         }
 
         return (choicesLength < 4) ? 2 : 3
+    },
+    /*
+    * Requires input like:
+    * - (1) item
+    * - (2) items
+    * -- or --
+    * - (1)st item
+    * - (2)nd item
+    * - (3)rd item
+    * - (4)th item
+    * (for ordinals)
+    */
+    English (choice: number, choicesLength: number) {
+        if (choicesLength === 1 || choice % 10 === 1) return 0
+        if (choicesLength === 4) {
+            let last = choice % 10
+            if (last === 2) return 1
+            if (last === 3) return 2
+            return 3
+        }
+        return 1
     }
 }
 
-export function changeLanguage (lang: string): Promise<any> {
-    if (i18n.locale === lang) {
-        setI18nLanguage(lang)
-        return Promise.resolve()
-    }
-
-    if (loadedLanguages.includes(lang)) {
-        setI18nLanguage(lang)
-        return Promise.resolve()
-    }
-
-    return Promise.all([
-        import(/* webpackChunkName: "lang-[request]" */ `@/locale/${lang}.yml`)
-            .then(messages => {
-                if (messages.Meta?.PluralStrategy) {
-                    i18n.pluralizationRules[lang] = PluralizationStrategies[messages.Meta.PluralStrategy]
-                    if (!i18n.pluralizationRules[lang]) {
-                        throw Error('Unknown pluralization strategy: ' + messages.Meta.PluralStrategy)
-                    }
-                }
-                i18n.setLocaleMessage(lang, messages)
-                loadedLanguages.push(lang)
-                setI18nLanguage(lang)
-            }),
-        Promise.resolve()
-            .then(() => {
-                // idk maybe some codegen?...
-                if (lang === 'ru') return import(/* webpackChunkName: "lang-ru-datefns" */ 'date-fns/locale/ru')
-                // ...
-            })
-            .then((locale) => {
-                dateFnsLocales[lang] = locale
-            })
-
-    ])
+export function changeLanguage (lang: string): void {
+    setI18nLanguage(lang)
 }
 
 
+i18n.pluralizationRules['en'] = PluralizationStrategies.English
 i18n.pluralizationRules['ru'] = PluralizationStrategies.Slavic

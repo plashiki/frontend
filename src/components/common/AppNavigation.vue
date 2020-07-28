@@ -161,17 +161,24 @@
                 class="justify-center caption"
             >
                 <div class="text-center">
-                    <a
-                        href="https://github.com/plashiki"
-                        target="_blank"
-                    >GitHub</a>&nbsp;|&nbsp;
-                    <a
-                        href="https://telegram.dog/PlashikiSupport"
-                        target="_blank"
-                    >{{ $t('Pages.Support.Name') }}</a>&nbsp;
-                    <router-link to="/legal">
-                        {{ $t('Pages.Legal.Name') }}
-                    </router-link>
+                    <span class="text-truncate">
+                        <a
+                            href="https://github.com/plashiki"
+                            target="_blank"
+                            v-text="'GitHub'"
+                        />
+                        &nbsp;|&nbsp;
+                        <a
+                            href="https://telegram.dog/PlashikiSupport"
+                            target="_blank"
+                            v-text="$t('Pages.Support.Name')"
+                        />
+                        &nbsp;|&nbsp;
+                        <router-link
+                            to="/legal"
+                            v-text="$t('Pages.Legal.Name')"
+                        />
+                    </span>
                     <br>
                     &copy; PlaShiki
                     <span v-tooltip="versionInfo">v{{ version }}</span>

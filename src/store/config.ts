@@ -9,6 +9,7 @@ import { AnyKV } from '@/types'
 import IndexedDBClient from '@/utils/indexed-db-client'
 import { isLocalStorageSupported, nop } from '@/utils/helpers'
 import { defaultProvider, shikimori } from '@/config'
+import { defaultLanguage } from '@/utils/i18n'
 
 const idb = new IndexedDBClient()
 
@@ -18,8 +19,18 @@ if (!isLocalStorageSupported() || !('plashiki-local' in localStorage)) {
     defaultPlayersFilters['smotret-anime.online'] = true
 }
 
+let defaultLanguageFilters: Record<string, true> = {}
+
+if ((!isLocalStorageSupported() || !('plashiki-local' in localStorage)) && defaultLanguage !== 'ru') {
+    defaultLanguageFilters['ru'] = true
+    defaultLanguageFilters['by'] = true
+    defaultLanguageFilters['ua'] = true
+}
+
 @VLocalModule('ConfigModule')
 export default class ConfigModule extends VuexModule {
+    language = defaultLanguage
+
     // ui
     dark = false
     listViewMode: 'cards' | 'items' = 'cards'
@@ -43,7 +54,7 @@ export default class ConfigModule extends VuexModule {
     connectionIndicator = false
 
     // logic
-    preferredNameLanguage: keyof Media['name'] = 'russian'
+    preferredNameLanguage: keyof Media['name'] = defaultLanguage === 'ru' ? 'russian' : 'romaji'
     onlyOngoingsInRecent = true
     searchPresets: Record<string, AnyKV[]> = {}
     recentMedias = {
@@ -59,7 +70,7 @@ export default class ConfigModule extends VuexModule {
     playerPreferences: Record<string, number> = {}
 
     // filtering in viewer. they do not interfere things above and do not affect sorting.
-    languageFilters: Record<string, true | undefined> = {}
+    languageFilters: Record<string, true | undefined> = defaultLanguageFilters
     playersFilters: Record<string, true | undefined> = defaultPlayersFilters
 
     // idk how to call it. basically key-value stuff

@@ -66,6 +66,13 @@ export function formatAnimeTranslationMeta (fmt: {
         meta += tran.toLowerCase()
 
         return meta
+    } else if (i18n.locale === 'en') {
+        let tran = i18n.t('Items.Translation.Language.' + fmt.lang + fmt.kind)
+        if (fmt.kind === TranslationKind.Subtitles || fmt.kind === TranslationKind.Dubbed) {
+            return 'with ' + tran
+        } else {
+            return tran
+        }
     } else return fmt.lang + fmt.kind
 }
 

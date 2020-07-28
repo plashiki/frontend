@@ -1,0 +1,724 @@
+Meta:
+    LangName: English
+    LangCode: en
+    LangCodeFull: en_US
+    PluralStrategy: English
+    # replace (N) with $n
+    # - (1) item
+    # - (2) items
+Pages:
+    Login:
+        Name: Log in
+        LoginVia: Log in via $name
+        Login: Log in
+        Logout: Log out
+        AcceptTos: By proceeding, you agree with <a target="_blank" href="/tos">PlaShiki ToS</a>
+    Error:
+        Name: Error $code
+        Occurred: An error occurred
+        Codes:
+            404: Page not found
+            403: Access denied
+            500: Render error
+            600: Unknown error
+        FullCodes:
+            500: >
+                Application encountered a fatal error while rendering this page, so it may not work normally.
+                It is usually due to a bug in application code. <br/>
+                If problem recurs, please ping our support. <br/><br/>
+            404: There's no page at this address.
+            403: Unfortunately, you do not have access to this page. If you are sure this is an error, feel free to ping our support.
+            400: API returned unprocessable entity.
+            600: Something went really wrong.
+        Restart: Restart
+    Support:
+        Name: Support
+    Legal:
+        Name: Legal
+        Text: >
+            <p>
+                This website does not store any media files, but provides a wrapper to a database
+                with links to them.<br/>
+                All media available on this website is in fact hosted on 3rd party servers,
+                and we are not responsible for that content.
+                Other content like images or text are loaded from external resources as well (namely:
+                <a href="//shikimori.one" target="_blank">Shikimori</a>), and we are also not responsible for that content.<br/><br/>
+                However, if you have found any content, available on our website, which violates your
+                copyright or discredits your company by providing incorrect or distorted information,
+                please contact us to resolve this issue.<br/><br/>
+                To do this, you have to send e-mail from your corporate mail address containing:
+            </p>
+            <ul>
+                <li>contact details, details of your company</li>
+                <li>direct link(links) to the material, which you consider controversial</li>
+                <li>certified scanned copies of documents confirming your exclusive right to material</li>
+                <li>in case you represent the interests of another company - copies of documents for intermediary services</li>
+            </ul>
+            <p>
+                To email address <a href="mailto:legal@plashiki.su">legal@plashiki.su</a><br/>
+                Thanks for your understanding and cooperation.
+            </p>
+    Tos:
+        Name: Terms of Service
+    Settings:
+        Name: Settings
+        DarkMode: Dark mode
+        EnableDarkMode: Enable dark mode
+        DisableDarkMode: Disable dark mode
+        AccountTab: Account
+        NetworkTab: Network
+        PersonalizationTab: Personalization
+        AboutTab: About
+        # AccountTab
+        ChangeNickname: Change nickname
+        ConnectedServices: Connected services
+        PrimaryService: Primary service
+        MakePrimaryService: Make primary
+        PrimaryServiceDescription: Primary service will be used (when possible) to receive information about anime/manga,
+            and your lists will be synchronized with this service.
+        JumpToProfile: Open
+        Connect: Connect
+        Disconnect: Disconnect
+        # PersonalizationTab
+        PrimaryColor: Primary color
+        AccentColor: Accent color
+        PreferredNameLanguage: Preferred name language
+        PreferredNameLanguageShiki: At this moment, Shikimori returns only russian and romaji names when requesting multiple anime at once.
+        Language_russian: Russian
+        Language_english: English
+        Language_romaji: Romaji
+        Language_japanese: Japanese
+        ExpandAllAuthors: Expand all authors
+        HideSamePlayers: Hide same players
+        HighlightUnknownAuthor: Highlight unknown authors
+        OnlyOngoingsInRecent: Only ongoings in recent
+        OnlyOngoingsInRecentDescription: On home page in "Recent" only ongoings will be displayed
+        TranslationPreferenceOrder: Translation preference order
+        Field_lang: Language
+        Field_kind: Kind
+        Field_author: Author
+        Field_player: Player
+        # NetworkTab
+        ConnectionIndicatorAlwaysVisible: Connection indicator is always visible
+        RequestTimeout: Request timeout (ms)
+        RequestTimeoutDescription: Increase this value if you often get "Timed out" error.
+            Set to 0 to disable timeout (not recommended)
+        ApiServer: API server $service
+        ApiServerDescription: These settings are for regions where access to some services is restricted.
+        EnableProxy: Enable proxy
+        CacheSize: Cache size
+        ClearCache: Clear cache
+        # AboutTab
+        Version: Version
+        BuiltOnCommit: Built on commit
+        BuildDate: Build date
+        License: License
+        Documentation: Documentation
+        Developer: Developer
+        Contributors: Contributors
+        Moderators: Moderators
+        MaybeYou: maybe you?
+    Oauth:
+        WaitASec: just a moment...
+        Done: Done!
+        DontCloseThisWindow: (do not close this window, it will close automatically)
+        ClosingIn:
+            - (closing in $n second)
+            - (closing in $n seconds)
+        ProvideNickname: To complete registration, please choose a nickname
+        Finish: Finish
+    Index:
+        Name: Home
+        RecentlyUpdated: Recently updated
+        RecentlyUpdatedOngoings: New episodes
+        OpenInSearch: Open in search
+        TopOngoings: Top ongoings
+        TopReleased: Top released
+    Viewer:
+        Name: Watch
+        TitleDelimiter: ' / '
+        Episodes: Episodes
+        Chapters: Chapters
+        Availability: Availability
+        NMoreLinks:
+            - (+$n link)
+            - (+$n links)
+        LinkTimes: x$n $name
+        Players: Players
+        Languages: Languages
+        ResetFilters: Reset filters
+        PrevEpisode: Previous episode
+        PrevChapter: Previous chapter
+        NextEpisode: Next episode
+        NextChapter: Next chapter
+        OutOf: '/ $n'
+        DirectLink: Direct link
+        NoTranslationsAvailable: No translations available
+        NotificationsTitle: 'Notify about:'
+        NotificationNewEpisodes: New episodes
+        NotificationNewEpisodesMeta: New episodes $meta
+        TabAll: All
+        TabSub: Subtitled
+        TabDub: Dubbed
+        TabRaw: Raw
+    Search:
+        Name: Search
+        Action: Search
+        Filters: Filters
+        NoFilters: No filters available
+        Sort:
+            ByScore: By score
+            ByPopularity: By popularity
+            ByPartCount: By part count
+            ByReleaseDate: By release date
+            ByName: By name
+            Random: Randomly
+        GenreGroup:
+            Main: Main
+            All: All
+        Genres: Genres
+        MinimumScore: Minimal score
+        Popular: Popular
+        Ongoings: Ongoings
+        Latest: Latest
+        FilterName: Filter name
+    AddTranslation:
+        Name: Add translation
+        SentModeration: Sent to moderators
+        Added: Added
+    Report:
+        Name: Report
+        SuggestEdit: Suggest edit
+        ReportSent: Report sent! ID $id
+        AutoReportDescription: This report was sent automatically.
+    Calendar:
+        Name: Calendar
+    Lists:
+        Name: My lists
+        GroupSpecial: Special
+        GroupGeneral: General
+        Recent: Recent
+        Updated: Updated
+        Recommendations: Recommendations
+    Moderation:
+        Name: Moderation
+        Consider: Consider
+        Decline: Decline
+        Accept: Accept
+        DeclineReason: Reason (optional)
+        Translations: Translations
+        Reports: Reports
+        Options: Options
+        Stats: Stats
+        YourStats: 'Your stats:'
+        Accepted:
+            - Accepted <b>$n</b> translation
+            - Accepted <b>$n</b> translations
+        Declined:
+            - Declined <b>$n</b> translation
+            - Declined <b>$n</b> translations
+        ReportsCount:
+            - Considered <b>$n</b> report
+            - Considered <b>$n</b> reports
+        EditedCount:
+            - Edited <b>$n</b> translation
+            - Edited <b>$n</b> translations
+        DeletedCount:
+            - Deleted <b>$n</b> translation
+            - Deleted <b>$n</b> translations
+    Redirect:
+        Name: Redirecting...
+        Text: Wait a second, we are about to redirect you.
+    Donate:
+        Name: Donate
+        Text: >
+            Hi. <br>
+            PlaShiki is an open non-profit project, supported by enthusiasts.
+            We don't have ads (yet), so the only way for us to live -
+            monetary donations from users. All money goes to support, develop and maintain project and infrastructure.
+            We are happy to receive any amount of donations, but cannot offer much in return...
+            <br><br>
+            Everyone, who supported project, will end up in history, and those who donated more than 5$
+            will have a badge, visible to all PlaShiki userscript users on all supported services.
+            <br><br>
+            A few donation links are below ＞﹏＜
+        Left:
+            - 'Left: $n\$'
+        WillLast:
+            - It is enough to pay for $n month of server. Thank you!
+            - It is enough to pay for $n months of server. Thank you!
+        Qiwi: Qiwi/card
+        YM: Yandex.Money/card
+        Sberbank: Sberbank
+        History: History
+        Top: Top
+    Image:
+        UrlTab: URL
+        UrlLabel: Image URL
+        ImgurTab: Imgur
+        LoadError: Upload error
+    Applications:
+        Name: Applications
+        HaveAccessTab: Access
+        MyAppsTab: My
+        AllAppsTab: All
+        HaveAccess: Applications that have access to my account
+        MyApps: My applications
+        AllApps: All applications
+        Revoke: Revoke
+        ServerScope: Server scope
+        ServerScopeFmt: (use comma w/out spaces)
+    Player:
+        ParseFailed: Failed to load player info
+    Userscript:
+        Name: Install userscript
+        Text: >
+            <h3>Why?</h3>
+            <p>
+                On all supported services on anime page there will appear a button
+                which will take you directly to player. Also, there will appear a badge
+                after nicknames/avatars of users who supported the project.
+                <br/>
+                Script is totally optional, application works just fine without it.
+            </p>
+            <h3>How?</h3>
+            <ol>
+                <li>
+                    Install userscript manager. We recommend
+                    <a href="$violentLink" target="_blank">ViolentMonkey</a>
+                    or
+                    <a href="$tamperLink" target="_blank">TamperMonkey</a>
+                </li>
+                <li>
+                    Install <a href="http://plashiki.su/assets/plashiki.user.js" target="_blank">the script</a>
+                </li>
+                <li>
+                    Refresh the page
+                </li>
+            </ol>
+            <p>
+                If everything is fine, then the button that suggests installing the script will disappear from the side menu.
+            </p>
+    Admin:
+        Name: Admin
+    Statistics:
+        Name: Statistics
+        LightMode: Graphs look better in light UI mode.
+        DateRangeFrom: Date range start
+        DateRangeTo: Date range end
+        Today: Today
+        Yesterday: Yesterday
+        LastWeek: Last week
+        LastMonth: Last month
+        LastYear: Last year
+        AllTime: All time
+        Users: Users
+        Registration: Registration
+        Login: Login
+        Moderation: Moderation
+        ModerationSent: Sent
+        ModerationAccepted: Accepted
+        ModerationDeclined: Declined
+        Senders: Senders
+        Moderators: Moderators
+        Translations: Translations
+        TranslationsAdded: Added
+        TranslationsRemoved: Deleted
+        TranslationsAdditionSource: Added by
+        TranslationsRemovalSource: Deleted by
+        ImportersEfficiency: Importers efficiency
+    UsersAdmin:
+        Name: Users
+        FindBy: 'Find by:'
+        Budget: Budget
+        Expense: Expense (-)
+        Donation: (+) Donation
+        Amount: Amount
+        ChangeTime: Change time
+        Comment: Comment
+        From: from
+    AdminTranslations:
+        Name: Translations
+        Group: Group
+        LeaveBlankForAll: Leave blank to display all translations
+Items:
+    User:
+        Anonymous: Anonymous
+        ID: ID
+        Avatar: Avatar
+        Nickname: Nickname
+        ConnectedServices: Connected services
+        FirstLogin: First login
+        Donated: Donated ($)
+        Donator: Donator
+        Banned: Banned
+        Trusted: Trusted
+        Moderator: Moderator
+        Admin: Admin
+    Media:
+        PartPrefix: '#'
+        Episode: Episode
+        Chapter: Chapter
+        AddedNthEpisode:
+            - + episode $n
+            - + episode $n
+            - + episode $n
+            - + episode $n
+        AddedNthChapter:
+            - + chapter $n
+            - + chapter $n
+            - + chapter $n
+            - + chapter $n
+        NthEpisode:
+            - episode $n
+            - episode $n
+            - episode $n
+            - episode $n
+        NthChapter:
+            - chapter $n
+            - chapter $n
+            - chapter $n
+            - chapter $n
+        OpenExternal: Open on $service
+        anime: Anime
+        manga: Manga
+        ReleaseType:
+            tv: TV series
+            tv_13: TV (12 ep.)
+            tv_24: TV (24 ep.)
+            tv_48: TV (48 ep.)
+            movie: Movie
+            ova: OVA
+            ona: ONA
+            special: Special
+            music: Music
+            manga: Manga
+            manhwa: Manhwa
+            manhua: Manhua
+            novel: Novel
+            one_shot: One shot
+            doujin: Doujin
+        Status:
+            announced: Announced
+            ongoing: Ongoing
+            released: Released
+            recent: Recently released
+        DurationText: Episode duration
+        Duration:
+            S: < 10 min.
+            D: 10-30 min.
+            F: '> 30 min.'
+        AgeRatingText: Age rating
+        AgeRating:
+            g: G (all)
+            pg: PG (children)
+            pg_13: PG-13 (teens)
+            r: R (17+)
+            r_plus: R+
+        SeasonText: Season
+        Season:
+            winterN: Winter $n
+            springN: Spring $n
+            summerN: Summer $n
+            fallN: Fall $n
+            year: $n year
+            yearRange: $a - $b
+            decade: $n$x
+            older: Older
+        ByName: By name
+        ById: By ID
+        InvalidId: Invalid ID
+        NEpisodes:
+            - $n episode
+            - $n episodes
+        NChapters:
+            - $n chapter
+            - $n chapters
+        OnlyNEpisodes:
+            - This anime only has $n episode
+            - This anime only has $n episodes
+        OnlyNChapters:
+            - This manga only has $n chapter
+            - This manga only has $n chapters
+    Translation:
+        NamePlural: Translations
+        UnknownAuthor: Unknown author
+        KindName: Translation kind
+        KindNameShort: Kind
+        Kind:
+            all: All
+            sub: Subtitled
+            dub: Dubbed
+            raw: Raw
+
+            scan: Scanlate
+            off: Official
+        LanguageName: Translation language
+        Language:
+            ru: Russian
+            en: English
+            jp: Japanese
+            cn: Chinese
+            ko: Korean
+            by: Belorussian
+            ua: Ukrainian
+            fr: French
+            de: German
+            other: Other
+
+            # sub
+            ensub: Russian subtitles
+            rusub: English subtitles
+            bysub: Japanese subtitles
+            uasub: Chinese subtitles
+            jpsub: Korean subtitles
+            frsub: Belorussian subtitles
+            desub: Ukrainian subtitles
+            cnsub: French subtitles
+            kosub: German subtitles
+            othersub: Subtitles in other language
+            # dub
+            endub: Russian voiceover
+            rudub: English voiceover
+            bydub: Japanese voiceover
+            uadub: Chinese voiceover
+            jpdub: Korean voiceover
+            frdub: Belorussian voiceover
+            dedub: Ukrainian voiceover
+            cndub: French voiceover
+            kodub: German voiceover
+            otherdub: Dubbed in other language
+            # raw
+            enraw: Russian raw
+            ruraw: English raw
+            byraw: Japanese raw
+            uaraw: Chinese raw
+            jpraw: Korean raw
+            frraw: Belorussian raw
+            deraw: Ukrainian raw
+            cnraw: French raw
+            koraw: German raw
+            otherraw: Raw in other language
+        IsHq: High quality
+        IsHqShort: HQ?
+        Author: Translation author
+        LeaveBlankIfUnknown: Leave blank if author is unknown
+        Url: URL
+        StatusName: Status
+        Status:
+            pending: Pending moderation
+            added: Added
+            declined: Declined
+        Target: Target
+        Part: Part
+        Edit: Edit translation
+        Delete: Delete translation
+        Deleted: <deleted>
+    Notification:
+        Name: Notification
+        NamePlural: Notifications
+        Zero: No notifications
+        BrowserPush: Browser push
+        BrowserPushDeclined: You declined browser push permission request.
+        Text:
+            NewTranslationTitle: New translation
+            NewTranslationBodyAnime: $episode episode of «$animeName» $meta by $author is available!
+            NewTranslationModerationTitle: '[MOD] New translation'
+            NewTranslationModerationBody: $part episode of «$name» $meta by $author. Sent by $sender
+            NewReportTitle: New report
+            NewReportBody: 'Translation #$id by $sender - $type'
+    UserRate:
+        ControlButton:
+            new-anime: Add to list
+            new-manga: Add to list
+            new-part-anime: Mark as watched
+            new-part-manga: Mark as read
+            start-repeat-anime: Start re-wathcing
+            start-repeat-manga: Start re-reading
+            old-part-anime: Mark as unwatched
+            old-part-manga: Mark as unread
+        StatusText:
+            planned: Planned
+            in_progress: In progress
+            completed: Completed
+            on_hold: On hold
+            dropped: Dropped
+
+            rewatching: Re-watching
+        EditEntry: Edit entry
+        Episodes: Watched episodes
+        Chapters: Read chapters
+        Volumes: Read volumes
+        Repeats: Repeats
+        Score: Score
+        ResetScore: Reset score
+        Status: Status
+        InList: In list
+    Report:
+        NamePlural: Report
+        TypeText: Report type
+        Type:
+            invalid_media: Invalid anime/manga
+            invalid_part: Invalid episode/chapter
+            invalid_meta: Invalid language or kind
+            broken_link: Broken link
+            legal_issue: Legal issue
+            other: Other
+        Comment: Comment
+        ProposedEdit: Proposed edit
+        Status:
+            pending: Pending
+            resolved: Resolved
+            discarded: Discarded
+        Discard: Discard
+        EditNFields:
+            - $n field
+            - $n fields
+Common:
+    Yes: yes
+    No: no
+    Clear: Clear
+    NeedAuth: Authorization is required
+    Description: Description
+    NoDescription: No description
+    Sender: Sender
+    ItemName: Name
+    Load: Load
+    Loading: Loading...
+    Success: Success
+    UpdatedAt: Updated at
+    Network:
+        Connected: Connected
+        ReconnectingInN:
+            - Reconnecting in $ns
+        Connecting: Connecting...
+    Collection:
+        NoItemsFound: No items found
+        DataFrom: Data from $provider
+        Select: Select
+        Deselect: Deselect
+        WithSelected: With selected
+    Action:
+        TryAgain: Try again
+        Update: Update
+        Deleting: Deleting...
+        Deleted: Deleted
+        Reset: Reset
+        Open: Open
+        Control: Control
+    Form:
+        ThisFieldIsRequired: This field is required!
+        InvalidNumber: Invalid number
+        InvalidUrl: Invalid URL
+        Optional: (optional)
+        Create: Create
+        Save: Save
+        Edit: Edit
+        Delete: Delete
+        Send: Send
+        Cancel: Cancel
+        ChangesSaved: Changes saved
+        Apply: Apply
+        SelectFile: Choose file
+        InvalidFile: Invalid file
+        MaxFileSize: Max. $size
+
+        PlusNOther:
+            - (+$n other)
+            - (+$n others)
+    RecaptchaLegalNotice: >
+        This site is protected by reCAPTCHA and the Google
+        <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+        <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+Services:
+    Shikimori: Shikimori
+Providers:
+    shikimori: Shikimori
+Genres:
+    Police: Police
+    Drama: Drama
+    Game: Game
+    Seinen: Seinen
+    Psychological: Psychological
+    Demons: Demons
+    Josei: Josei
+    Adventure: Adventure
+    Yuri: Yuri
+    Shounen: Shounen
+    Comedy: Comedy
+    Supernatural: Supernatural
+    Ecchi: Ecchi
+    Shoujo: Shoujo
+    Vampire: Vampire
+    Yaoi: Yaoi
+    Music: Music
+    Samurai: Samurai
+    Action: Action
+    Parody: Parody
+    Slice of Life: Slice of Life
+    Horror: Horror
+    Mecha: Mecha
+    Romance: Romance
+    Shounen Ai: Shounen Ai
+    Historical: Historical
+    Fantasy: Fantasy
+    Magic: Magic
+    Harem: Harem
+    Sports: Sports
+    Hentai: Hentai
+    Space: Space
+    School: School
+    Sci-Fi: Sci-Fi
+    Gender Bender: Gender Bender
+    Doujinshi: Doujinshi
+    Thriller: Thriller
+    Shoujo Ai: Shoujo Ai
+    Super Power: Super Power
+    Mystery: Mystery
+    Military: Military
+    Kids: Kids
+    Cars: Cars
+    Martial Arts: Martial Arts
+    Dementia: Dementia
+Api:
+    Errors:
+        # common
+        Internal Error: Internal Server Error
+        TIMEOUT: Timed out
+        ECONNABORTED: Connection aborted
+        BAD_CONNECTION: Connection error
+        VALIDATION_ERROR: 'API error: $description'
+        INTERNAL_ERROR: 'Internal API erorr. Error ID: $errorUuid'
+        UNEXPECTED_RESPONSE: API returned unexpected response
+        RATE_LIMIT: Too many requests
+        NO_AUTH: You are not authorized
+        NOT_FOUND: Not found
+        IMGUR_ERROR: 'Imgur error: $description'
+        FETCH_ERROR: External API error
+        # providers
+        SHIKIMORI_ERROR: 'Shikimori API error: $description'
+        SHIKIMORI_API_ERROR: 'Shikimori API error: $description'
+        NO_MAL_ID: Failed to find MAL ID for provider's ID. This resource is probably not available on MAL.
+        RECOMMENDATIONS_NOT_READY: Recommendations are not ready yet. Wait a little (it usually takes about a minute).
+        # auth
+        HAS_AUTH: You are already authorized!
+        NICKNAME_CLAIMED: This nickname is already claimed
+        INVALID_AUTH_CODE: Invalid auth code
+        USER_UNKNOWN: Session error
+        INVALID_SESSION: Session error
+        INVALID_TOKEN: 'Session error: invalid token'
+        ACCESS_DENIED: Access denied
+        NOT_CONNECTED: This service is not connected
+        LAST_SERVICE: This service is the last one
+        NO_EDIT: No edit
+        INVALID_LANG: Invalid lang
+        Captcha verification failed: Captcha error
+        # moder
+        TRANSLATION_DUPLICATE: This translation is a duplicate of <a href="/translation/$description">$description</a>
+        TRANSLATION_DUPLICATE_REP: This translation is a duplicate of <a href="/translation/$description">$description</a>, so we sent a report instead.
+        ALREADY_PROCESSED: This translation is already processed
+        BANNED: You are banned
+        NOT_DECLINED: This translation is not declined
+        # misc
+        INVALID_FIREBASE_TOKEN: Invalid Firebase token
+        UNKNOWN_FIELD: Unknown field, $description

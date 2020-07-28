@@ -34,8 +34,9 @@ import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import OauthWidget from '@/components/auth/OauthWidget.vue'
 import NicknameField from '@/components/auth/fields/NicknameField.vue'
 import { doShikimoriAuth } from '@/api/auth'
-import { authStore } from '@/store'
+import { authStore, configStore } from '@/store'
 import { ApiException } from '@/types/api'
+import { changeLanguage } from '@/plugins/vue-i18n'
 
 @Component({
     components: { NicknameField, OauthWidget, ErrorAlert }
@@ -59,6 +60,10 @@ export default class ShikimoriOauthPage extends Vue {
             if (res.state === 'OK') {
                 this.page = 'done'
                 authStore.setUser(res.user)
+
+                if (res.user.language && res.user.language !== configStore.language) {
+                    changeLanguage(res.user.language)
+                }
             } else {
                 throw new ApiException(res.state)
             }
@@ -81,6 +86,10 @@ export default class ShikimoriOauthPage extends Vue {
             if (res.state === 'OK') {
                 this.page = 'done'
                 authStore.setUser(res.user)
+
+                if (res.user.language) {
+                    changeLanguage(res.user.language)
+                }
             } else if (res.state === 'NEED_NICKNAME') {
                 this.page = 'form'
                 this.nickname = res.default

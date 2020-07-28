@@ -741,7 +741,7 @@ Api:
         HAS_AUTH: Вы уже авторизованы!
         NICKNAME_CLAIMED: Имя пользователя уже занято
         INVALID_AUTH_CODE: Неверный код авторизации
-        USER_UNKNOWN: Ошибка сессии
+        UNKNOWN_USER: Ошибка сессии
         INVALID_SESSION: Ошибка сессии
         INVALID_TOKEN: 'Ошибка сессии: неверный токен'
         ACCESS_DENIED: Ошибка доступа

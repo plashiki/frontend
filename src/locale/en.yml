@@ -705,7 +705,7 @@ Api:
         HAS_AUTH: You are already authorized!
         NICKNAME_CLAIMED: This nickname is already claimed
         INVALID_AUTH_CODE: Invalid auth code
-        USER_UNKNOWN: Session error
+        UNKNOWN_USER: Session error
         INVALID_SESSION: Session error
         INVALID_TOKEN: 'Session error: invalid token'
         ACCESS_DENIED: Access denied

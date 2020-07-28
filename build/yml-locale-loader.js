@@ -5,7 +5,7 @@ function processNode (node) {
         return node.map(processNode).join(' | ')
     }
     if (typeof node === 'string') {
-        return node.replace(/(?<!\\)\$([a-zA-Z0-9]+)/g, (_, $1) => `{${$1}}`)
+        return node.replace(/(?<!\\)\$([a-zA-Z0-9]+)\$?/g, (_, $1) => `{${$1}}`)
     }
     if (!node || typeof node !== 'object') return node
 

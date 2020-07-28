@@ -80,10 +80,11 @@ Pages:
         Connect: Connect
         Disconnect: Disconnect
         # PersonalizationTab
+        UiLanguage: UI language
         PrimaryColor: Primary color
         AccentColor: Accent color
         PreferredNameLanguage: Preferred name language
-        PreferredNameLanguageShiki: At this moment, Shikimori returns only russian and romaji names when requesting multiple anime at once.
+        PreferredNameLanguageShiki: Currently Shikimori returns only russian and romaji names when requesting multiple anime at once.
         Language_russian: Russian
         Language_english: English
         Language_romaji: Romaji

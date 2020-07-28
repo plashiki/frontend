@@ -89,6 +89,7 @@ Pages:
         Connect: Привязать
         Disconnect: Отвязать
         # PersonalizationTab
+        UiLanguage: Язык интерфейса
         PrimaryColor: Основной цвет
         AccentColor: Цвет акцента
         PreferredNameLanguage: Предпочтительный язык названия

@@ -227,6 +227,8 @@ Pages:
         DeletedCount:
             - Deleted <b>$n</b> translation
             - Deleted <b>$n</b> translations
+        NewTranslations: New translations
+        NewReports: New reports
     Redirect:
         Name: Redirecting...
         Text: Wait a second, we are about to redirect you.

@@ -78,7 +78,7 @@
                                         :disabled="subscriptionLoading !== false"
                                         :input-value="subscribed('mod:tr')"
                                         :loading="subscriptionLoading === 'mod:tr'"
-                                        label="Новые переводы"
+                                        :label="$t('Pages.Moderation.NewTranslations')"
                                         @change="toggleSubscription('mod:tr', $event)"
                                     />
                                 </v-col>
@@ -91,7 +91,7 @@
                                         :disabled="subscriptionLoading !== false"
                                         :input-value="subscribed('mod:rep')"
                                         :loading="subscriptionLoading === 'mod:rep'"
-                                        label="Новые жалобы"
+                                        :label="$t('Pages.Moderation.NewReports')"
                                         @change="toggleSubscription('mod:rep', $event)"
                                     />
                                 </v-col>

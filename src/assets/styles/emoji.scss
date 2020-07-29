@@ -1,0 +1,35 @@
+$base: 'https://noto-website-2.storage.googleapis.com/emoji/emoji_u';
+
+$obj: (
+    ru: '1f1f7_1f1fa',
+    en: '1f1ec_1f1e7',
+    ko: '1f1f0_1f1f7',
+    by: '1f1e7_1f1fe',
+    ua: '1f1fa_1f1e6',
+    jp: '1f1ef_1f1f5',
+    fr: '1f1eb_1f1f7',
+    de: '1f1e9_1f1ea',
+    cn: '1f1e8_1f1f3',
+    other: fe82b
+);
+
+@each $class, $code in $obj {
+    .flag-#{$class}:before {
+        content: '';
+        background-image: url($base + $code + '.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        width: 21px;
+        height: 22px;
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    // god help me, css is killing me
+    .flag-#{$class}.large:before {
+        width: 24px;
+        height: 21px;
+        vertical-align: text-bottom;
+    }
+}

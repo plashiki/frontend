@@ -1,0 +1,27 @@
+.basic-list-movement {
+    &-item {
+        z-index: 1;
+    }
+
+    &-move {
+        transition: transform 0.5s;
+    }
+
+    &-enter-active {
+        transition: all 0.5s ease-out;
+    }
+
+    &-leave-active {
+        transition: all 0.2s ease-in;
+        position: absolute;
+        z-index: 0;
+    }
+
+    &-enter, &-leave-to {
+        opacity: 0;
+    }
+}
+
+.mdi-spin-fast:before {
+    animation: mdi-spin 0.5s infinite linear;
+}

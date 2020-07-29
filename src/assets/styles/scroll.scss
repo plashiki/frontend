@@ -1,0 +1,21 @@
+// kawaii scroll (chrome, safari, firefox (?)).
+// on mobile its kawaii by default
+html:not(.touch) *:not(.default-scroll) {
+    scrollbar-color: #7f7f7f transparent;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        margin-left: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #7f7f7f;
+        border-radius: 6px;
+    }
+}

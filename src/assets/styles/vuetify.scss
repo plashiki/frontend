@@ -1,0 +1,120 @@
+// fixes/tweaks related to vuetify
+
+// remove last width breakpoint
+@media (min-width: 1904px) {
+    .container {
+        max-width: 1185px!important;
+    }
+}
+
+// md2 slider for tabs
+.v-tabs-slider {
+    width: 60% !important;
+    margin-left: 20%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+// change v-app-bar style to match drawer
+.theme--dark.v-app-bar.v-toolbar.v-sheet {
+    background-color: #363636!important;
+    border-bottom: 1px solid #4e4e4e!important;
+}
+
+.theme--light.v-app-bar.v-toolbar.v-sheet {
+    background-color: #ffffff!important;
+    border-bottom: 1px solid #e0e0e0!important;
+}
+
+// smaller badges (optional)
+.small-badge .v-badge__badge {
+    height: 14px;
+    padding: 3px 6px;
+    font-size: 10px;
+}
+
+// alignment inside v-text-field
+.v-text-field.text-right input {
+    text-align: right !important;
+}
+
+// "pretty" prefix for v-text-field
+.pretty-prefix .v-text-field__prefix, .pretty-prefix-self {
+    background-color: #eee !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    margin-right: 14px !important;
+    color: #000 !important;
+    font-size: 14px;
+
+    .theme--dark & {
+        background-color: #4a4a4a !important;
+        color: #fff !important;
+    }
+
+    @media screen and (max-width: 480px) {
+        font-size: 12px !important;
+    }
+
+
+    @media screen and (max-width: 360px) {
+        padding: 3px !important;
+        margin-right: 4px !important;
+    }
+}
+
+// smaller v-text-input
+.small-input-text .v-label {
+    font-size: 14px !important;
+}
+
+.small-input-text input,
+.small-input-text .v-file-input__text {
+    font-size: 13px !important;
+    white-space: nowrap;
+}
+
+// i don't remember what this does :c
+.v-responsive-center .v-responsive__content {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+// click through badge
+.v-badge__badge {
+    pointer-events: none;
+}
+
+// v-rating with smaller gap
+.rating-smaller-gap button {
+    padding: 4px !important
+}
+
+// remove hover effect from chip (optional)
+.v-chip.no-hover:hover::before {
+    opacity: 0 !important
+}
+
+// fix avatar size in small pill chip
+.v-chip--pill.v-size--small .v-avatar {
+    height: 24px !important;
+    width: 24px !important;
+}
+
+// do not show arrows for tabs on mobile
+.v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes) .v-slide-group__prev {
+    display: none !important
+}
+
+// force show scrollbar for <html>
+// (for some reason vuetify hides it when opening drawer which leads to flicker)
+html.light.overflow-y-hidden,
+html.dark.overflow-y-hidden {
+    overflow-y: scroll !important;
+}
+
+// disable active bg for v-list (optional)
+.fix-active-bg .theme--light.v-list-item--active::before {
+    opacity: 0;
+}

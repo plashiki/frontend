@@ -1,0 +1,56 @@
+// material styled tooltip for v-tooltip
+
+.tooltip {
+    display: block !important;
+    z-index: 10000;
+    font-family: "Roboto", sans-serif;
+}
+
+.tooltip .tooltip-inner {
+    background: rgba(97, 97, 97, 0.9);
+    color: white;
+    border-radius: 4px;
+    padding: 5px 16px;
+    font-size: 14px;
+}
+
+.tooltip .tooltip-arrow {
+    display: none
+}
+
+.tooltip[x-placement^="top"] {
+    margin-bottom: 5px
+}
+
+.tooltip[x-placement^="bottom"] {
+    margin-top: 5px
+}
+
+.tooltip[x-placement^="right"] {
+    margin-left: 5px
+}
+
+.tooltip[x-placement^="left"] {
+    margin-right: 5px
+}
+
+.tooltip[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .15s, visibility .15s
+}
+
+.tooltip[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .15s
+}
+
+.no-underline {
+    text-decoration: none !important;
+}
+
+span.has-tooltip:not(.no-dots) {
+    text-decoration: underline;
+    text-decoration-style: dotted
+}

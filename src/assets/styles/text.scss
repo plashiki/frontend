@@ -1,0 +1,39 @@
+.lh-2 {
+    line-height: 2rem;
+}
+
+.text--monospace {
+    font-family: 'Fira Code', 'Roboto Mono', monospace;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.link-like {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.icon-mid-size {
+    font-size: 20px !important;
+}
+
+.v-application .subtitle-05 {
+    font-size: 1rem !important;
+    font-weight: 700;
+    letter-spacing: 0.009375em !important;
+    line-height: 1.2rem;
+    font-family: "Roboto", sans-serif !important;
+}
+
+.v-application .subtitle-025 {
+    font-size: 0.875rem !important;
+    font-weight: 500;
+    letter-spacing: 0.0071428571em !important;
+    line-height: 1.1rem;
+    font-family: "Roboto", sans-serif !important;
+}

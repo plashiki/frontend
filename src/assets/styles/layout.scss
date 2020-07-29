@@ -1,0 +1,20 @@
+.fill-height {
+    height: 100%;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.v-application .pa-05 {
+    padding: 2px !important;
+}
+
+// background for card layouts
+.theme--light.v-application, .theme--light .card-layout-bg, html.light {
+    background: #f2f2f2;
+}
+
+.theme--dark.v-application, .theme--dark .card-layout-bg, html.dark {
+    background: #303030;
+}

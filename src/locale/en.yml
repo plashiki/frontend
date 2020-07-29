@@ -581,7 +581,7 @@ Common:
     Yes: yes
     No: no
     Clear: Clear
-    NeedAuth: Authorization is required
+    NeedAuth: Authentication is required
     Description: Description
     NoDescription: No description
     Sender: Sender

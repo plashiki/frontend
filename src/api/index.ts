@@ -374,7 +374,7 @@ export function updateInitData (retry = false): void {
                 changeLanguage(user.language)
             }
         } else {
-            setUserLanguage(configStore.language).catch(console.error)
+            setUserLanguage(configStore.language).catch(DEBUG.error)
         }
 
         getMissedNotifications(notificationsStore.lastSyncTime).then((items) => {

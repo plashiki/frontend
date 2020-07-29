@@ -22,7 +22,7 @@
                         <h1
                             :class="{
                                 'subtitle-05 pb-1': mobileDisplay,
-                                'pb-2': !mobileDisplay
+                                'lh-2 mb-1': !mobileDisplay
                             }"
                             class="text-truncate"
                             :title="name"

@@ -233,6 +233,10 @@ span.has-tooltip:not(.no-dots) {
     width: 100%;
 }
 
+.lh-2 {
+    line-height: 2rem;
+}
+
 @media screen and (max-width: 480px) {
     .pretty-prefix .v-text-field__prefix, .pretty-prefix-self {
         font-size: 12px !important;

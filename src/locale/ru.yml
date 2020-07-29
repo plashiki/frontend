@@ -78,6 +78,7 @@ Pages:
         NetworkTab: Сеть
         PersonalizationTab: Персонализация
         AboutTab: О проекте
+        NotificationsTab: Уведомления
         # AccountTab
         ChangeNickname: Сменить имя пользователя
         ConnectedServices: Подключенные сервисы
@@ -109,6 +110,11 @@ Pages:
         Field_kind: Тип
         Field_author: Автор
         Field_player: Плеер
+        # NotificationsTab
+        NotificationNewEpisodesOf: Новые серии «$name»
+        NotificationNewEpisodesOfMeta: Новые серии «$name» $meta
+        Unsubscribe: Отписаться
+        NoTopics: Вы не подписаны ни на какие уведомления
         # NetworkTab
         ConnectionIndicatorAlwaysVisible: Индикатор подключения всегда виден
         RequestTimeout: Тайм-аут запроса (мс)

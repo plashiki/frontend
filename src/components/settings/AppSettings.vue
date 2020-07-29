@@ -35,6 +35,7 @@ import AccountTab from '@/components/settings/tabs/AccountTab.vue'
 import NetworkTab from '@/components/settings/tabs/NetworkTab.vue'
 import PersonalizationTab from '@/components/settings/tabs/PersonalizationTab.vue'
 import AboutTab from '@/components/settings/tabs/AboutTab.vue'
+import NotificationsTab from './tabs/NotificationsTab.vue'
 
 @Component({
     components: { VSimpleCard }
@@ -47,6 +48,7 @@ export default class AppSettings extends Vue {
     tabs = Object.freeze([
         [AccountTab, 'AccountTab'],
         [PersonalizationTab, 'PersonalizationTab'],
+        [NotificationsTab, 'NotificationsTab'],
         [NetworkTab, 'NetworkTab'],
         [AboutTab, 'AboutTab']
     ])

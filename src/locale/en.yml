@@ -69,6 +69,7 @@ Pages:
         NetworkTab: Network
         PersonalizationTab: Personalization
         AboutTab: About
+        NotificationsTab: Notifications
         # AccountTab
         ChangeNickname: Change nickname
         ConnectedServices: Connected services
@@ -99,6 +100,11 @@ Pages:
         Field_kind: Kind
         Field_author: Author
         Field_player: Player
+        # NotificationsTab
+        NotificationNewEpisodesOf: New episodes of «$name»
+        NotificationNewEpisodesOfMeta: New episodes of «$name» $meta
+        Unsubscribe: Unsubscribe
+        NoTopics: You haven't subscribed to any topics
         # NetworkTab
         ConnectionIndicatorAlwaysVisible: Connection indicator is always visible
         RequestTimeout: Request timeout (ms)

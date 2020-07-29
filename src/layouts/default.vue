@@ -273,11 +273,11 @@ export default class DefaultLayout extends Vue {
 
 <style>
 .theme--light.search-field.v-text-field--solo.v-input--is-focused > .v-input__control > .v-input__slot {
-    background: #ededed !important;
+    background: #e6e6e6 !important;
 }
 
 .theme--light.search-field.v-text-field--solo > .v-input__control > .v-input__slot {
-    background: #fafafa !important;
+    background: #f2f2f2 !important;
 }
 
 .theme--dark.search-field.v-text-field--solo.v-input--is-focused > .v-input__control > .v-input__slot {

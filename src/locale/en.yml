@@ -476,37 +476,37 @@ Items:
             other: Other
 
             # sub
-            ensub: Russian subtitles
-            rusub: English subtitles
-            bysub: Japanese subtitles
-            uasub: Chinese subtitles
-            jpsub: Korean subtitles
-            frsub: Belorussian subtitles
-            desub: Ukrainian subtitles
-            cnsub: French subtitles
-            kosub: German subtitles
+            ensub: English subtitles
+            rusub: Russian subtitles
+            bysub: Belorussian subtitles
+            uasub: Ukrainian subtitles
+            jpsub: Japanese subtitles
+            frsub: French subtitles
+            desub: German subtitles
+            cnsub: Chinese subtitles
+            kosub: Korean subtitles
             othersub: Subtitles in other language
             # dub
-            endub: Russian voiceover
-            rudub: English voiceover
-            bydub: Japanese voiceover
-            uadub: Chinese voiceover
-            jpdub: Korean voiceover
-            frdub: Belorussian voiceover
-            dedub: Ukrainian voiceover
-            cndub: French voiceover
-            kodub: German voiceover
+            endub: English voiceover
+            rudub: Russian voiceover
+            bydub: Belorussian voiceover
+            uadub: Ukrainian voiceover
+            jpdub: Japanese voiceover
+            frdub: French voiceover
+            dedub: German voiceover
+            cndub: Chinese voiceover
+            kodub: Korean voiceover
             otherdub: Dubbed in other language
             # raw
-            enraw: Russian raw
-            ruraw: English raw
-            byraw: Japanese raw
-            uaraw: Chinese raw
-            jpraw: Korean raw
-            frraw: Belorussian raw
-            deraw: Ukrainian raw
-            cnraw: French raw
-            koraw: German raw
+            enraw: English raw
+            ruraw: Russian raw
+            byraw: Belorussian raw
+            uaraw: Ukrainian raw
+            jpraw: Japanese raw
+            frraw: French raw
+            deraw: German raw
+            cnraw: Chinese raw
+            koraw: Korean raw
             otherraw: Raw in other language
         IsHq: High quality
         IsHqShort: HQ?

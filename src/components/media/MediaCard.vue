@@ -31,7 +31,7 @@
                 >
                     {{ item.statusText }}
                 </v-chip>
-                <v-card-subtitle class="text-left text-truncate white--text pb-2">
+                <v-card-subtitle class="text-left text-truncate white--text pb-2 caption">
                     {{ name }}
                 </v-card-subtitle>
 

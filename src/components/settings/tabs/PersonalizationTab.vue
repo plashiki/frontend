@@ -42,11 +42,9 @@
             v-model="preferredNameLanguage"
             :items="nameLanguageItems"
             :label="$t('Pages.Settings.PreferredNameLanguage')"
-        />
-        <p
-            v-if="provider === 'shikimori'"
-            class="caption text--secondary"
-            v-html="$t('Pages.Settings.PreferredNameLanguageShiki')"
+            :hint="provider === 'shikimori' && $t('Pages.Settings.PreferredNameLanguageShiki')"
+            class="mb-1"
+            persistent-hint
         />
 
         <v-divider class="mb-2" />
@@ -76,10 +74,9 @@
         <v-switch
             v-model="onlyOngoingsInRecent"
             :label="$t('Pages.Settings.OnlyOngoingsInRecent')"
-        />
-        <p
-            class="caption text--secondary"
-            v-html="$t('Pages.Settings.OnlyOngoingsInRecentDescription')"
+            :hint="$t('Pages.Settings.OnlyOngoingsInRecentDescription')"
+            class="mb-1"
+            persistent-hint
         />
 
         <h3

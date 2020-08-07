@@ -87,6 +87,8 @@
                                 v-if="selected === '$recent'"
                                 icon
                                 @click.stop.prevent="deleteFromRecent(item.type, item.id)"
+                                @mousedown.stop
+                                @touchstart.native.stop
                             >
                                 <v-icon>
                                     mdi-delete

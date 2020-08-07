@@ -21,9 +21,9 @@
                 {{ secondaryName }}
             </v-list-item-subtitle>
         </v-list-item-content>
-        <v-list-item-avatar v-if="actions">
+        <v-list-item-action v-if="actions">
             <slot name="actions" :item="item" />
-        </v-list-item-avatar>
+        </v-list-item-action>
     </v-list-item>
 </template>
 

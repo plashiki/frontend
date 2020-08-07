@@ -54,6 +54,8 @@
                             icon
                             small
                             @click.stop.prevent="$emit('close')"
+                            @mousedown.stop
+                            @touchstart.native.stop
                         >
                             <v-icon small>
                                 mdi-close

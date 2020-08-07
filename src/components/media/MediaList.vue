@@ -95,25 +95,27 @@ export default class MediaList extends Vue {
     @Prop({ type: Boolean, default: false }) noHeaderSpacer!: boolean
     @Prop({ default: undefined }) textClass!: any
 
-    config: Record<ListViewMode, AnyKV> = Object.freeze({
-        cards: {
-            fixedHeight: -1,
-            gapX: 8,
-            gapY: 8,
-            aspectRatio: 3 / 2,
-            minColumns: 2,
-            maxColumns: 6,
-            minCellWidth: 160
-        },
-        items: {
-            fixedHeight: 136,
-            gapX: 4,
-            gapY: 0,
-            minColumns: 1,
-            maxColumns: 2,
-            minCellWidth: 480
+    get config (): Record<ListViewMode, AnyKV> {
+        return {
+            cards: {
+                fixedHeight: -1,
+                gapX: 8,
+                gapY: 8,
+                aspectRatio: 3 / 2,
+                minColumns: 2,
+                maxColumns: 6,
+                minCellWidth: 160
+            },
+            items: {
+                fixedHeight: 136,
+                gapX: 4,
+                gapY: 0,
+                minColumns: 1,
+                maxColumns: configStore.oneColumnInMediaList ? 1 : 2,
+                minCellWidth: 480
+            }
         }
-    })
+    }
 
     get listViewMode (): ListViewMode {
         return configStore.listViewMode

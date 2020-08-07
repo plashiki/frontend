@@ -52,6 +52,11 @@
         <v-divider class="mb-2" />
 
         <v-switch
+            v-model="oneColumnInMediaList"
+            :label="$t('Pages.Settings.OneColumnInMediaList')"
+            hide-details
+        />
+        <v-switch
             v-model="expandAllViewer"
             :label="$t('Pages.Settings.ExpandAllAuthors')"
             hide-details
@@ -187,6 +192,16 @@ export default class PersonalizationTab extends Vue {
     set onlyOngoingsInRecent (val: boolean) {
         configStore.merge({
             onlyOngoingsInRecent: val
+        })
+    }
+
+    get oneColumnInMediaList (): boolean {
+        return configStore.oneColumnInMediaList
+    }
+
+    set oneColumnInMediaList (val: boolean) {
+        configStore.merge({
+            oneColumnInMediaList: val
         })
     }
 

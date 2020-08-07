@@ -95,6 +95,7 @@ Pages:
         HighlightUnknownAuthor: Highlight unknown authors
         OnlyOngoingsInRecent: Only ongoings in recent
         OnlyOngoingsInRecentDescription: On home page in "Recent" only ongoings will be displayed
+        OneColumnInList: One column in media list view
         TranslationPreferenceOrder: Translation preference order
         Field_lang: Language
         Field_kind: Kind

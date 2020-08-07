@@ -58,6 +58,7 @@ export default class ConfigModule extends VuexModule {
     // logic
     preferredNameLanguage: keyof Media['name'] = defaultLanguage === 'ru' ? 'russian' : 'romaji'
     onlyOngoingsInRecent = true
+    oneColumnInMediaList = false
     searchPresets: Record<string, AnyKV[]> = {}
     recentMedias = {
         anime: [] as number[],

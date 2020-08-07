@@ -104,7 +104,8 @@ Pages:
         HideSamePlayers: Прятать повторяющиеся плееры
         HighlightUnknownAuthor: Подсвечивать неизвестных авторов
         OnlyOngoingsInRecent: Только онгоинги в Недавних
-        OnlyOngoingsInRecentDescription: На главной странице в разделе "Недавние" будут отображаться только онгоинги
+        OnlyOngoingsInRecentDescriptionOn: На главной странице в разделе "Недавние" будут отображаться только онгоинги
+        OnlyOngoingsInRecentDescriptionOff: На главной странице в разделе "Недавние" будут отображаться все недавние переводы
         OneColumnInMediaList: Одна колонка в списке аниме/манги
         TranslationPreferenceOrder: Приоритет сортировки переводов
         Field_lang: Язык

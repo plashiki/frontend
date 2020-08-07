@@ -74,7 +74,7 @@
         <v-switch
             v-model="onlyOngoingsInRecent"
             :label="$t('Pages.Settings.OnlyOngoingsInRecent')"
-            :hint="$t('Pages.Settings.OnlyOngoingsInRecentDescription')"
+            :hint="$t('Pages.Settings.OnlyOngoingsInRecentDescription' + (onlyOngoingsInRecent ? 'On' : 'Off'))"
             class="mb-1"
             persistent-hint
         />

@@ -27,13 +27,15 @@ if ((!isLocalStorageSupported() || !('plashiki-local' in localStorage)) && defau
     defaultLanguageFilters['ua'] = true
 }
 
+export type ListViewMode = 'cards' | 'items'
+
 @VLocalModule('ConfigModule')
 export default class ConfigModule extends VuexModule {
     language = defaultLanguage
 
     // ui
     dark = false
-    listViewMode: 'cards' | 'items' = 'cards'
+    listViewMode: ListViewMode = 'cards'
     expandAllViewer = true
     hideSamePlayers = true
     highlightUnknownAuthor = false

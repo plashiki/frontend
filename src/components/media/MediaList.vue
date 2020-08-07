@@ -28,18 +28,11 @@
                     <v-icon>mdi-view-list</v-icon>
                 </v-btn>
             </v-row>
-            <!-- bruh -->
             <virtual-grid
                 ref="grid"
                 #default="{ item }"
-                :aspect-ratio="3/2"
-                :fixed-height="listViewMode === 'cards' ? -1 : 64"
-                :gap-x="listViewMode === 'cards' ? 8 : 4"
-                :gap-y="listViewMode === 'cards' ? 8 : 0"
                 :items="items"
-                :max-columns="listViewMode === 'cards' ? 8 : 2"
-                :min-cell-width="listViewMode === 'cards' ? 130 : 300"
-                :min-columns="listViewMode === 'cards' ? 2 : 1"
+                v-bind="config[listViewMode]"
             >
                 <MediaCard
                     v-if="listViewMode === 'cards'"
@@ -86,6 +79,8 @@ import VirtualGrid from '@/components/common/VirtualGrid.vue'
 import MediaCard from '@/components/media/MediaCard.vue'
 import { Media } from '@/types/media'
 import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
+import { ListViewMode } from '@/store/config'
+import { AnyKV } from '@/types'
 
 @Component({
     components: { NoItemsPlaceholder, MediaCard, VirtualGrid, MediaListItem }
@@ -100,7 +95,27 @@ export default class MediaList extends Vue {
     @Prop({ type: Boolean, default: false }) noHeaderSpacer!: boolean
     @Prop({ default: undefined }) textClass!: any
 
-    get listViewMode (): string {
+    config: Record<ListViewMode, AnyKV> = Object.freeze({
+        cards: {
+            fixedHeight: -1,
+            gapX: 8,
+            gapY: 8,
+            aspectRatio: 3 / 2,
+            minColumns: 2,
+            maxColumns: 8,
+            minCellWidth: 130
+        },
+        items: {
+            fixedHeight: 64,
+            gapX: 4,
+            gapY: 0,
+            minColumns: 1,
+            maxColumns: 2,
+            minCellWidth: 300
+        }
+    })
+
+    get listViewMode (): ListViewMode {
         return configStore.listViewMode
     }
 

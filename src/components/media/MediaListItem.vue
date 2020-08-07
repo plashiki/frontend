@@ -1,29 +1,47 @@
 <template>
     <v-list-item
         :to="noLink ? undefined : `/${item.type}/${item.id}`"
-        class="text-left media-list-item"
+        class="media-list-item d-flex flex-row flex-nowrap"
         v-bind="$attrs"
         v-on="$listeners"
     >
         <v-list-item-avatar tile>
             <v-img
+                width="80"
+                height="120"
                 :lazy-src="smallImage"
                 :src="fullImage"
-                height="48"
-                width="64"
             />
         </v-list-item-avatar>
-        <v-list-item-content>
-            <v-list-item-title>
-                {{ name }}
-            </v-list-item-title>
-            <v-list-item-subtitle v-show="!!secondaryName">
-                {{ secondaryName }}
-            </v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action v-if="actions">
+        <div class="d-flex flex flex-column text-truncate py-2">
+            <h3
+                class="mb-1 text-truncate"
+                :title="name"
+                v-text="name"
+            />
+            <h5
+                v-show="!!secondaryName"
+                class="grey--text text-truncate"
+                :title="secondaryName"
+                v-text="secondaryName"
+            />
+            <p
+                v-if="item"
+                class="mt-2 mb-0 subtitle-2 font-weight-bold"
+                v-text="item.statusText"
+            />
+            <v-spacer />
+            <p
+                class="mb-0 caption font-weight-bold"
+                v-html="metaInformation.join(' / ')"
+            />
+        </div>
+        <div
+            v-if="actions"
+            class="d-flex flex-column align-self-center"
+        >
             <slot name="actions" :item="item" />
-        </v-list-item-action>
+        </div>
     </v-list-item>
 </template>
 
@@ -58,13 +76,47 @@ export default class MediaListItem extends Vue {
     get secondaryName (): string | undefined {
         return getMediaSecondaryName(this.item)
     }
+
+    get metaInformation (): string[] {
+        if (!this.item) return []
+
+        let ret: string[] = []
+
+        if (this.item.releaseType) {
+            ret.push(this.$t('Items.Media.ReleaseType.' + this.item.releaseType))
+        }
+
+        if (this.item.score) {
+            ret.push(this.item.score + ' ★')
+        }
+
+        if (this.item.studio) {
+            ret.push(this.item.studio)
+        }
+
+        if (this.item.genres?.length) {
+            ret.push(this.$t('Genres.' + this.item.genres[0]))
+        }
+
+        if (this.item.year) {
+            ret.push(this.$t('Items.Media.Season.year', { n: this.item.year }))
+        }
+
+        return ret
+    }
 }
 </script>
 
 <style lang="scss">
 .media-list-item {
+    align-items: stretch;
+    padding-left: 8px;
+
     .v-avatar {
         height: auto !important;
+        width: auto !important;
+        border-radius: 4px;
+        flex-shrink: 0;
     }
 }
 </style>

@@ -47,7 +47,7 @@
                     </template>
                 </MediaCard>
                 <MediaListItem
-                    v-else
+                    v-else-if="listViewMode === 'items'"
                     :item="item"
                     :actions="actions"
                 >
@@ -106,12 +106,12 @@ export default class MediaList extends Vue {
             minCellWidth: 130
         },
         items: {
-            fixedHeight: 64,
+            fixedHeight: 136,
             gapX: 4,
             gapY: 0,
             minColumns: 1,
             maxColumns: 2,
-            minCellWidth: 300
+            minCellWidth: 480
         }
     })
 
@@ -119,7 +119,7 @@ export default class MediaList extends Vue {
         return configStore.listViewMode
     }
 
-    setListViewMode (mode: 'cards' | 'items'): void {
+    setListViewMode (mode: ListViewMode): void {
         configStore.merge({
             listViewMode: mode
         })

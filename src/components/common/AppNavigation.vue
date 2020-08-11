@@ -163,12 +163,6 @@
                 <div class="text-center">
                     <span class="text-truncate">
                         <a
-                            href="https://github.com/plashiki"
-                            target="_blank"
-                            v-text="'GitHub'"
-                        />
-                        &nbsp;|&nbsp;
-                        <a
                             href="https://telegram.dog/PlashikiSupport"
                             target="_blank"
                             v-text="$t('Pages.Support.Name')"

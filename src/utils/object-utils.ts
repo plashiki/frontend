@@ -407,3 +407,7 @@ export function arrayMove<T> (array: T[], fromIndex: number, toIndex: number): T
 
     return array.splice(toIndex, 0, array.splice(fromIndex, 1)[0])
 }
+
+export function includesAll<T> (haystack: T[], needles: T[]): boolean {
+    return needles.every(i => haystack.indexOf(i) > -1)
+}

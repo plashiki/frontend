@@ -52,7 +52,7 @@
                                     {{ $tc(mediaType === 'anime' ? 'Items.Media.NthEpisode' : 'Items.Media.NthChapter', partN) }}
                                 </v-list-item-title>
                                 <v-list-item-subtitle class="text-truncate">
-                                    {{ data[partN].players.join(', ') }}
+                                    {{ filterPlayers(data[partN].players).join(', ') }}
                                 </v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-avatar v-if="userRate && partN <= userRate.parts" size="30">
@@ -85,6 +85,7 @@ import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
 import { configStore } from '@/store'
 import AuthorAvailabilityPopup from '@/components/viewer/AuthorAvailabilityPopup.vue'
+import { includesAll } from '@/utils/object-utils'
 
 @Component({
     components: { AuthorAvailabilityPopup, VSimpleCard, NoItemsPlaceholder }
@@ -116,7 +117,13 @@ export default class PartsList extends Vue {
             ret.sort((a, b) => a - b)
         }
 
-        return ret
+        const hiddenPlayers = Object.keys(configStore.playersFilters)
+
+        return ret.filter(it => !includesAll(hiddenPlayers, this.data[it].players))
+    }
+
+    filterPlayers (players: string[]): string[] {
+        return players.filter(it => !configStore.playersFilters[it])
     }
 
     @Watch('selectedPart')

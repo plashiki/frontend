@@ -15,12 +15,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import { getFeatureVarNow } from '@/api/providers'
 import { Debounced } from '@/utils/function-utils'
 import { getMedias } from '@/api/media'
 import { getMediaPreferredName, getMediaSecondaryName } from '@/utils/media-utils'
 import { Media, MediaType } from '@/types/media'
 import { nop } from '@/utils/helpers'
+import { getProviderNow } from '@/api/providers'
 
 @Component({})
 export default class MediaByIdField extends Vue {
@@ -34,9 +34,7 @@ export default class MediaByIdField extends Vue {
     notFound = false
 
     get prefix (): string {
-        return getFeatureVarNow('MediaByIdPrefix', {
-            mediaType: this.mediaType
-        })
+        return getProviderNow().getMediaUrlPrefix(this.mediaType)
     }
 
     validate (value: string): any {

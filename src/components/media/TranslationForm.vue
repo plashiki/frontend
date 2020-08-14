@@ -228,7 +228,6 @@ import SearchFieldAutocomplete from '@/components/search/SearchFieldAutocomplete
 import TwoOptionSwitch from '@/components/common/fields/TwoOptionSwitch.vue'
 import MediaByIdField from '@/components/media/MediaByIdField.vue'
 import { requiredField, urlValidator } from '@/utils/validators'
-import { getFeatureVarNow } from '@/api/providers'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import { lookupMalId } from '@/api/media'
 import { getMediaFullImage, getMediaSmallImage } from '@/utils/media-utils'
@@ -242,6 +241,7 @@ import { PlayerMeta } from '@/types/moderation'
 import { getPlayerMeta } from '@/api/moderation'
 import { iziToastError } from '@/plugins/izitoast'
 import { authors as commonAuthors } from '@/assets/authors.txt'
+import { getProviderNow } from '@/api/providers'
 
 const formDefaults = {
     author: '',
@@ -379,7 +379,7 @@ export default class TranslationForm extends Vue {
             this.form.target_id = null
             return
         }
-        let isMalId = getFeatureVarNow('IsMALId', { media: this.selectedMedia })
+        let isMalId = getProviderNow().isMalId
         let id = this.selectedMedia.id
         if (!id || isMalId) {
             this.form.target_id = id as any

@@ -1,4 +1,4 @@
-import { DataProvider } from '@/api/providers'
+import { DataProviderName } from '@/api/providers'
 
 export const isProduction = process.env.NODE_ENV! === 'production'
 export const currentCommit = process.env.COMMIT!
@@ -23,4 +23,4 @@ export const shikimori = {
 export const firebaseConfig = JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG!)
 export const imgurClientId = process.env.VUE_APP_IMGUR_CLIENT_ID!
 export const recaptchaSiteKey = process.env.VUE_APP_RECAPTCHA_SITE_KEY!
-export const defaultProvider: DataProvider = 'shikimori'
+export const defaultProvider: DataProviderName = 'shikimori'

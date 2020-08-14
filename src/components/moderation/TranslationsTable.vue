@@ -202,7 +202,6 @@ import {
 import { Media, MediaId } from '@/types/media'
 import { getMediaPreferredName } from '@/utils/media-utils'
 import { getMedias } from '@/api/media'
-import { getFeatureVarNow } from '@/api/providers'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { uniqueBy } from '@/utils/object-utils'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
@@ -212,6 +211,7 @@ import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 import { convertDataTableOptionsToPagination } from '@/utils/helpers'
 import { formatDistance } from 'date-fns'
 import { dateFnLocale } from '@/plugins/vue-i18n'
+import { getProviderNow } from '@/api/providers'
 
 @Component({
     components: { DeclineReasonMenu, UserChip, ErrorAlert, TranslationEditDialog }
@@ -407,10 +407,7 @@ export default class TranslationsTable extends Vue {
     }
 
     mediaLinkFor (tr: Translation): string {
-        return getFeatureVarNow('UrlByMediaId', {
-            mediaId: tr.target_id,
-            mediaType: tr.target_type
-        })
+        return getProviderNow().getUrlByMediaId(tr.target_type, tr.target_id)
     }
 }
 </script>

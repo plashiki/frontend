@@ -141,9 +141,7 @@ export default class SearchFieldAutocomplete extends Vue {
         }
         if (this.selected) return
         this.loading = true
-        searchMediaByName(this.input, this.mediaType, {
-            limit: 10
-        }).then((items) => {
+        searchMediaByName(this.input, this.mediaType).then(({ items }) => {
             this.items = items
         }).catch(iziToastError).finally(() => {
             this.loading = false

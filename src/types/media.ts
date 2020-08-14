@@ -6,7 +6,7 @@ export interface ImageMeta {
 }
 
 export interface MediaGenre {
-    id: number
+    id: number | string
     name: string
 }
 

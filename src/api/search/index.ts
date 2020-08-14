@@ -1,20 +1,22 @@
 import { Vue, VueConstructor } from 'vue/types/vue'
-import { Pagination } from '@/types/api'
+import { PaginatedData } from '@/types/api'
 import { Media, MediaType } from '@/types/media'
-import { DataProvider } from '@/api/providers'
 import { ShikimoriSearchProvider } from '@/api/search/shikimori'
 import { configStore } from '@/store'
 import { AnyKV } from '@/types'
 import { Route } from 'vue-router'
+import { DataProviderName } from '@/api/providers'
 
 export interface ISearchProvider {
     filterComponent (): VueConstructor | null
 
-    // should return items for given pagination and whether there are more items available
-    execute (text: string, mediaType: MediaType, pagination: Pagination, vue: Vue, sort: string): Promise<[Media[], boolean]>
+    /** should return items and control pagination just like {@link IDataProvider} */
+    execute (text: string, mediaType: MediaType, vue: Vue, sort: string, from?: any): Promise<PaginatedData<Media>>
 
-    // should return list of sorting options. text will be $t()-ed, value will be passed as `sort` param.
-    // icon is optional but when some have and some dont it looks weird.
+    /**
+     * should return list of sorting options. text will be $t()-ed, value will be passed as `sort` param.
+     * icon is optional but when some have and some dont it looks weird.
+     */
     sorters (): {
         text: string
         value: string
@@ -28,9 +30,9 @@ export interface ISearchProvider {
     applyPreset (preset: AnyKV & { sortMode: string }, vue: Vue): void
 }
 
-let providersCache: Partial<Record<DataProvider, ISearchProvider>> = {}
+let providersCache: Partial<Record<DataProviderName, ISearchProvider>> = {}
 
-export function getSearchProvider (dataProvider: DataProvider): ISearchProvider {
+export function getSearchProvider (dataProvider: DataProviderName): ISearchProvider {
     if (providersCache[dataProvider]) return providersCache[dataProvider]!
 
     if (dataProvider === 'shikimori') providersCache[dataProvider] = new ShikimoriSearchProvider()

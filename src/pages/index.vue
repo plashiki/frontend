@@ -64,14 +64,15 @@ import MediaList from '@/components/media/MediaList.vue'
 import VirtualGrid from '@/components/common/VirtualGrid.vue'
 import MediaCard from '@/components/media/MediaCard.vue'
 import MediaCarousel from '@/components/media/MediaCarousel.vue'
-import { getFeatureVarNow, isFeatureAvailableNow } from '@/api/providers'
 import { getOngoings, getPopularReleased, getRecentUpdates } from '@/api/media'
 import { appStore, configStore } from '@/store'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import HeadlineWithLinkButton from '@/components/common/HeadlineWithLinkButton.vue'
 import { Media, MediaType } from '@/types/media'
-import { ApiException } from '@/types/api'
+import { ApiException, PaginatedData } from '@/types/api'
 import OneTimeAlert from '@/components/common/OneTimeAlert.vue'
+import { getProviderNow } from '@/api/providers'
+import { IDataProvider } from '@/api/providers/types'
 
 
 @Component({
@@ -92,25 +93,23 @@ export default class IndexPage extends Vue {
     }
 
     get recentLink (): string | null {
-        return this.searchLink('RecentlyUpdatedSearchParams')
+        return this.searchLink('recentlyUpdatedSearchParams')
     }
 
     get topOngoingsLink (): string | null {
-        return this.searchLink('TopOngoingsSearchParams')
+        return this.searchLink('topOngoingsSearchParams')
     }
 
     get topReleasedLink (): string | null {
-        return this.searchLink('TopReleasedSearchParams')
+        return this.searchLink('topReleasedSearchParams')
     }
 
     get recentOngoings (): boolean {
-        return configStore.onlyOngoingsInRecent && isFeatureAvailableNow('MediaStatusInBatch', {
-            type: this.mediaType
-        })
+        return configStore.onlyOngoingsInRecent
     }
 
-    searchLink (featureName: string): string | null {
-        let val = getFeatureVarNow(featureName)
+    searchLink (featureName: keyof IDataProvider): string | null {
+        let val = getProviderNow()[featureName]
 
         return val === null ? null : '/search?p=' + val
     }
@@ -120,19 +119,15 @@ export default class IndexPage extends Vue {
         this.loading = true
         Promise.all([
             getRecentUpdates(this.mediaType),
-            getOngoings(this.mediaType, {
-                limit: 25
-            }),
-            getPopularReleased(this.mediaType, {
-                limit: 25
-            })
+            getOngoings(this.mediaType),
+            getPopularReleased(this.mediaType)
         ]).then(([updates, ongoings, released]) => {
             this.items.recent = updates.map(update => ({
                 ...update.media,
                 statusText: this.$tc(update.media.type === 'anime' ? 'Items.Media.AddedNthEpisode' : 'Items.Media.AddedNthChapter', update.part)
             }))
-            this.items.ongoings = ongoings
-            this.items.released = released
+            this.items.ongoings = ongoings.items
+            this.items.released = released.items
         }).catch((err: ApiException) => {
             this.error = err
         }).finally(() => {

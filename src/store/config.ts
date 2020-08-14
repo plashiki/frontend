@@ -1,7 +1,7 @@
 import { VuexModule } from 'vuex-module-decorators'
 import { LocalSharedMutation, VLocalModule } from '@/utils/vuex-sugar'
 import { merge } from '@/utils/object-utils'
-import { DataProvider } from '@/api/providers'
+import { DataProviderName } from '@/api/providers'
 import { TranslationPreferenceProperty } from '@/utils/user-preferences-utils'
 import { Vue } from 'vue-property-decorator'
 import { Media, MediaType } from '@/types/media'
@@ -50,7 +50,7 @@ export default class ConfigModule extends VuexModule {
     reverseSortParts = false
 
     // data & api
-    dataProvider: DataProvider = defaultProvider
+    dataProvider: DataProviderName = defaultProvider
     apiTimeout = 10000
     shikimoriApiEndpoint = shikimori.endpoint
     connectionIndicator = false

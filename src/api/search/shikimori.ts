@@ -1,16 +1,12 @@
 import { ISearchProvider } from '@/api/search/index'
 import { Media, MediaType } from '@/types/media'
 import { Vue, VueConstructor } from 'vue/types/vue'
-import { Pagination } from '@/types/api'
+import { PaginatedData } from '@/types/api'
 import ShikimoriFilters from '@/components/search/ShikimoriFilters.vue'
-import {
-    shikimoriGetMediasWithParams,
-    shikimoriMediaAdapter,
-    shikimoriPaginationAdapter
-} from '@/api/providers/shikimori'
 import { AnyKV } from '@/types'
-import { Route } from 'vue-router'
 import { mergeClone, shallowCloneAndTransform } from '@/utils/object-utils'
+import { shikimoriGetMediasWithParams } from '@/api/providers/shikimori/methods'
+import { shikimoriMediaAdapter } from '@/api/providers/shikimori/adapters'
 
 export interface ShikimoriFiltering {
     kind: string[]
@@ -100,7 +96,7 @@ export class ShikimoriSearchProvider implements ISearchProvider {
         ]
     }
 
-    execute (text: string, mediaType: MediaType, pagination: Pagination, vue: Vue, sort: string): Promise<[Media[], boolean]> {
+    execute (text: string, mediaType: MediaType, vue: Vue, sort: string, from?: any): Promise<PaginatedData<Media>> {
         let params: Partial<ShikimoriFiltering> = {}
 
         if (vue) {
@@ -129,9 +125,13 @@ export class ShikimoriSearchProvider implements ISearchProvider {
 
         return shikimoriGetMediasWithParams({
             ...params,
-            ...shikimoriPaginationAdapter(pagination)
+            page: from ?? 1,
+            limit: 30
         }, mediaType, (params.mylist?.length ?? 0) > 0)
-            .then(i => [i.map(shikimoriMediaAdapter), i.length === pagination.limit])
+            .then(i => ({
+                items: i.map(shikimoriMediaAdapter),
+                next: i.length > 0 ? (from ?? 1) + 1 : null
+            }))
     }
 
     getCurrentFilters (vue: Vue): AnyKV {

@@ -220,9 +220,9 @@ import { getTranslationsFor } from '@/api/translations'
 import { getUserRates } from '@/api/user-rates'
 import { nop } from '@/utils/helpers'
 import { Route } from 'vue-router'
-import { getFeatureVarNow } from '@/api/providers'
 import { iziToastError } from '@/plugins/izitoast'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
+import { getProviderNow } from '@/api/providers'
 
 @Component({
     components: { VSimpleCard, ErrorAlert, ViewerControls, AuthorsList, PartsList, HeadlineWithLinkButton }
@@ -407,7 +407,7 @@ export default class Viewer extends LoadableVue {
     }
 
     genreLink (genre: MediaGenre): string {
-        return '/search?p=' + getFeatureVarNow('GenreSearchParams', { genre })
+        return '/search?p=' + getProviderNow().getGenreSearchParams(genre)
     }
 
     updateUserRate (): Promise<void> {

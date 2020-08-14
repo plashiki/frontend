@@ -159,13 +159,10 @@ import MediaList from '@/components/media/MediaList.vue'
 import { appStore, authStore, configStore } from '@/store'
 import HeadlineWithLinkButton from '@/components/common/HeadlineWithLinkButton.vue'
 import { Media, MediaType } from '@/types/media'
-import { ApiException } from '@/types/api'
+import { ApiException, PaginatedData } from '@/types/api'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
-import { getMediaInList, getMedias, getRecommendations } from '@/api/media'
-import { shikimoriGetMediaUpdates } from '@/api/providers/shikimori'
+import { getMediaInList, getMedias, getRecommendations, getMediaUpdates } from '@/api/media'
 import { isElementInViewport } from '@/utils/helpers'
-
-const perPage = 30
 
 interface UiState {
     error: ApiException | null
@@ -173,7 +170,7 @@ interface UiState {
     loading: boolean
     items: Media[]
 
-    offset: 0
+    next?: any
 }
 
 @Component({
@@ -237,11 +234,6 @@ export default class ListsPage extends Vue {
     mediaType: MediaType = 'anime'
 
 
-    get recommendationsPerPage (): number {
-        if (configStore.dataProvider === 'shikimori') return 20
-        return perPage
-    }
-
     get authenticated (): boolean {
         return authStore.authenticated
     }
@@ -297,7 +289,7 @@ export default class ListsPage extends Vue {
     endReached (): void {
         let state = this.selectedState
         let selected = this.selected
-        let prom: Promise<Media[]> | null = null
+        let prom: Promise<PaginatedData<Media>> | null = null
         if (!state || !state.more) return
 
         if (selected[0] === '$') {
@@ -305,44 +297,35 @@ export default class ListsPage extends Vue {
                 if (!configStore.recentMedias[this.mediaType].length) {
                     state.more = false
                 } else {
-                    prom = getMedias(configStore.recentMedias[this.mediaType], this.mediaType).then(it => {
-                        state!.more = false
-                        return it
-                    })
+                    prom = getMedias(configStore.recentMedias[this.mediaType], this.mediaType).then(items => ({ items }))
                 }
             }
             if (selected === '$recommendations') {
-                // shiki is gay
-                prom = getRecommendations(this.mediaType, {
-                    offset: state.items.length,
-                    limit: this.recommendationsPerPage
-                }).then((it) => {
-                    state!.more = it.length === this.recommendationsPerPage
-
-                    return it
-                })
+                prom = getRecommendations(this.mediaType, state.next)
             }
             if (selected === '$updated') {
-                prom = shikimoriGetMediaUpdates(this.mediaType)
-                    .then((upds) => upds.map(it => {
-                        it.media.statusText = '+ ' + this.$tc(this.mediaType === 'anime' ? 'Items.Media.NEpisodes' : 'Items.Media.NChapters', it.part)
-                        return it.media
-                    }))
+                prom = getMediaUpdates(this.mediaType)
+                    .then((res) => (
+                        {
+                            items: res.items.map(it => {
+                                it.media.statusText = '+ ' + this.$tc(this.mediaType === 'anime'
+                                    ? 'Items.Media.NEpisodes'
+                                    : 'Items.Media.NChapters', it.part)
+                                return it.media
+                            }),
+                            next: res.next
+                        }
+                    ))
             }
         } else {
-            prom = getMediaInList(selected as any, this.mediaType, {
-                offset: state.items.length,
-                limit: perPage
-            })
+            prom = getMediaInList(selected as any, this.mediaType, state.next)
         }
 
         if (!prom) return
-        prom.then((medias) => {
-            state!.items.push(...medias)
-            if (selected !== '$recommendations') {
-                // shiki is gay
-                state!.more = medias.length === perPage
-            }
+        prom.then(({ items, next }) => {
+            state!.items.push(...items)
+            state!.next = next
+            state!.more = next != null
 
             this.$nextTick(() => {
                 if (this.$refs.loader && isElementInViewport(this.$refs.loader as any)) {
@@ -378,8 +361,7 @@ export default class ListsPage extends Vue {
                     more: true,
                     loading: false,
                     items: [],
-                    error: null,
-                    offset: 0
+                    error: null
                 })
             }
         })

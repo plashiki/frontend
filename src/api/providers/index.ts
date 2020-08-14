@@ -1,27 +1,23 @@
-import { AnyKV } from '@/types'
-import * as shikimori from './shikimori'
 import { configStore } from '@/store'
+import { IDataProvider } from '@/api/providers/types'
+import { ShikimoriDataProvider } from './shikimori'
+import { Constructor } from 'vue/types/options'
 
-export type DataProvider =
+export type DataProviderName =
     | 'shikimori'
 // more TBA
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function isFeatureAvailable (provider: DataProvider, featureName: string, options?: AnyKV): boolean {
-    return true
+const providersRegistry: Record<DataProviderName, IDataProvider | Constructor> = {
+    shikimori: ShikimoriDataProvider
 }
 
-export function isFeatureAvailableNow (featureName: string, options?: AnyKV): boolean {
-    return isFeatureAvailable(configStore.dataProvider, featureName, options)
-}
-
-export function getFeatureVar (provider: DataProvider, varName: string, options?: AnyKV): any {
-    if (provider === 'shikimori') {
-        return shikimori.getFeatureVar(varName, options)
+export function getProvider (providerName: DataProviderName): IDataProvider {
+    if (typeof providersRegistry[providerName] === 'function') {
+        providersRegistry[providerName] = new (providersRegistry[providerName] as Constructor)()
     }
-    return null
+    return providersRegistry[providerName] as IDataProvider
 }
 
-export function getFeatureVarNow (varName: string, options?: AnyKV): any {
-    return getFeatureVar(configStore.dataProvider, varName, options)
+export function getProviderNow () {
+    return getProvider(configStore.dataProvider)
 }

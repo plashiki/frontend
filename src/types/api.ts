@@ -113,6 +113,12 @@ export interface SessionTab {
 
 export type DataAdapter<F, T> = (input: F) => T
 
+export type PaginatedData<T> = {
+    items: T[]
+    // when nullish EOS is inferred
+    next?: any
+}
+
 export interface Pagination {
     offset?: number
     limit?: number

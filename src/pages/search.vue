@@ -201,8 +201,6 @@ import { deepEqual } from '@/utils/object-utils'
 import { isElementInViewport } from '@/utils/helpers'
 import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 
-const perPage = 35
-
 @Component({
     components: { NoItemsPlaceholder, ErrorAlert, MediaList }
 })
@@ -223,6 +221,8 @@ export default class SearchPage extends Vue {
 
     savePopup = false
     presetName = ''
+
+    searchAnchor: any = null
 
     get currentPreset (): AnyKV | null {
         for (let it of this.presets) {
@@ -305,14 +305,12 @@ export default class SearchPage extends Vue {
         // having track of subsequent requests.
         // if multiple simultaneous requests exist only one which started last will do smth
         let reqId = ++this.reqId
-        this.provider.execute(appStore.searchInput, this.mediaType, {
-            offset: this.items.length,
-            limit: perPage
-        }, this.filters, this.sortMode)
-            .then(([results, hasMore]) => {
+        this.provider.execute(appStore.searchInput, this.mediaType, this.filters, this.sortMode, this.searchAnchor)
+            .then(({ items, next }) => {
                 if (reqId === this.reqId) {
-                    this.items.push(...results)
-                    this.hasMore = hasMore
+                    this.items.push(...items)
+                    this.searchAnchor = next
+                    this.hasMore = next != null
 
                     this.$nextTick(() => {
                         if (this.$refs.loader && isElementInViewport(this.$refs.loader as any)) {

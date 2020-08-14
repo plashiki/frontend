@@ -24,7 +24,7 @@ import LoadableVue from '@/components/common/LoadableVue'
 import { ApiException } from '@/types/api'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import { appStore } from '@/store'
-import { shikimoriGetUser } from '@/api/providers/shikimori'
+import { shikimoriGetUser } from '@/api/providers/shikimori/methods'
 
 @Component({
     components: { ErrorAlert }

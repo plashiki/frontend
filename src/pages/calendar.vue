@@ -109,7 +109,8 @@ export default class CalendarPage extends LoadableVue {
     requestUpdate (): void {
         this.error = null
         this.loading = true
-        getCalendar().then((items) => {
+        // todo: pagination for calendar (idk how it may even look, so impl once i find service which provides it)
+        getCalendar('anime').then(({ items }) => {
             this.items = items
         }).catch((err) => {
             this.error = err

@@ -451,7 +451,7 @@ Items:
             fallN: Осень $n
             year: $n год
             yearRange: $a - $b
-            decade: $n0-е
+            decade: $n$0-е
             older: Более старые
         ByName: По названию
         ById: По ID

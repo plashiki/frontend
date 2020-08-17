@@ -24,6 +24,12 @@ export interface MediaGenre {
     name: string
 }
 
+export interface MediaCharacter {
+    name: NameMeta
+    image?: ImageMeta
+    url?: string
+}
+
 export enum MediaStatus {
     Ongoing,
     Released,
@@ -46,6 +52,11 @@ export interface Media {
     description?: string
     partsCount?: number
     partsAired?: number
+
+    airedOn?: Date
+    releasedOn?: Date
+    nextPartAt?: Date
+
     poster?: ImageMeta
     genres?: MediaGenre[]
     // 0-10
@@ -69,6 +80,20 @@ export interface Media {
     // text that wiill override `releaseType` in card.
     // and yes im rly bad at naming
     statusText2?: string
+}
+
+/**
+ * Extended {@see Media} interface containing more detailed information
+ * for display in MediaInfoDrawer.
+ *
+ * Currently `videos`, `screenshots` and `characters` are not used in UI
+ */
+export interface ExtendedMedia extends Media {
+    related?: Media[]
+    similar?: Media[]
+    videos?: VideoMeta[]
+    screenshots?: ImageMeta[]
+    characters?: MediaCharacter[]
 }
 
 export enum AuthorsTab {

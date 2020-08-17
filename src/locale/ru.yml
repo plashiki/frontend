@@ -184,6 +184,11 @@ Pages:
         TabSub: Субтитры
         TabDub: Озвучка
         TabRaw: Оригинал
+    MediaInfo:
+        Information: Информация
+        Description: Описание
+        Related: Связанное
+        Similar: Похожее
     Search:
         Name: Поиск
         Action: Искать
@@ -411,6 +416,7 @@ Items:
         anime: Аниме
         manga: Манга
         ReleaseType:
+            _: Тип
             tv: TV сериал
             tv_13: Сериал (12)
             tv_24: Сериал (24)
@@ -427,6 +433,7 @@ Items:
             one_shot: Ван-шот
             doujin: Додзинси
         Status:
+            _: Статус
             announced: Анонс
             ongoing: Онгоинг
             released: Завершен
@@ -476,6 +483,15 @@ Items:
             - В этой манге всего $n глава
             - В этой манге всего $n главы
             - В этой манге всего $n глав
+        Episodes: Серии
+        Chapters: Главы
+        NextEpisode: Следующая серия
+        NextChapter: Следующая глава
+        AnnouncedFor: Анонс на $date
+        ReleasedOn: Вышел $date
+        OngoingSince: Онгоинг с $date
+        Studio: Студия
+        OtherNames: Другия названия
     Translation:
         NamePlural: Переводы
         UnknownAuthor: Неизвестный автор

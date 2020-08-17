@@ -1,4 +1,4 @@
-import { CalendarEntry, Media, MediaGenre, MediaId, MediaType, MediaUpdate } from '@/types/media'
+import { CalendarEntry, ExtendedMedia, Media, MediaGenre, MediaId, MediaType, MediaUpdate } from '@/types/media'
 import { PaginatedData, Pagination } from '@/types/api'
 import { UserRateStatus } from '@/types/user-rate'
 
@@ -45,6 +45,8 @@ export interface IDataProvider {
     getMediasByIds (ids: MediaId[], type: MediaType): Promise<Media[]>
     // get single media (or null if not found)
     getSingleMedia (id: MediaId, type: MediaType): Promise<Media | null>
+    // get single media with additional fields (or null if not found)
+    getSingleExtendedMedia (id: MediaId, type: MediaType): Promise<ExtendedMedia | null>
     // search `type` by name
     searchByName (input: string, type: MediaType, from?: any): Promise<PaginatedData<Media>>
     // get ongoing medias

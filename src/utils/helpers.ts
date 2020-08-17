@@ -115,3 +115,9 @@ export function convertDataTableOptionsToPagination (options: AnyKV, enableSorti
 
     return ret
 }
+
+export function fixRelativeUrl (url: string, base: string) {
+    if (url.startsWith('//')) return 'https:' + url
+    if (!url.match(/^https?:\/\//)) return base + url
+    return url
+}

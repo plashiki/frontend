@@ -1,5 +1,13 @@
 import { IDataProvider } from '@/api/providers/types'
-import { CalendarEntry, Media, MediaGenre, MediaId, MediaType, MediaUpdate } from '@/types/media'
+import {
+    CalendarEntry,
+    ExtendedMedia,
+    Media,
+    MediaGenre,
+    MediaId,
+    MediaType,
+    MediaUpdate
+} from '@/types/media'
 import { PaginatedData } from '@/types/api'
 import { UserRateStatus } from '@/types/user-rate'
 import {
@@ -10,10 +18,17 @@ import {
     shikimoriGetOngoings,
     shikimoriGetPopularReleased,
     shikimoriGetRecommendations,
+    shikimoriGetRelatedMedia,
+    shikimoriGetSimilarMedia,
     shikimoriGetSingleMedia,
     shikimoriSearchByName
 } from './methods'
-import { shikimoriCalendarAdapter, shikimoriMediaAdapter } from './adapters'
+import {
+    shikimoriCalendarAdapter,
+    shikimoriMediaAdapter,
+} from './adapters'
+import { isRussian } from '@/utils/i18n'
+import { configStore } from '@/store'
 
 export class ShikimoriDataProvider implements IDataProvider {
     recentlyUpdatedSearchParams = '%7B%22sortMode%22%3A%22aired_on%22%2C%22status%22%3A%5B%22ongoing%22%5D%7D'
@@ -87,6 +102,33 @@ export class ShikimoriDataProvider implements IDataProvider {
 
     getSingleMedia (id: MediaId, type: MediaType): Promise<Media | null> {
         return shikimoriGetSingleMedia(id, type).then(it => it ? shikimoriMediaAdapter(it) : null)
+    }
+
+    getSingleExtendedMedia (id: MediaId, type: MediaType): Promise<ExtendedMedia | null> {
+        return Promise.all([
+            // damm, i wish shiki had graphql api
+            shikimoriGetSingleMedia(id, type),
+            shikimoriGetRelatedMedia(id, type),
+            shikimoriGetSimilarMedia(id, type),
+            // shikimoriGetVideos(id, type),
+            // shikimoriGetScreenshots(id, type),
+            // shikimoriGetRoles(id, type)
+        ]).then(([media, related, similar, /* videos, screenshots, roles */]) => {
+            if (media === null) return null
+            let ret: ExtendedMedia = shikimoriMediaAdapter(media)
+
+            ret.related = related?.map((it) => {
+                let ret = shikimoriMediaAdapter(it.anime || it.manga!)
+                ret.statusText = isRussian(configStore.language) ? it.relation_russian : it.relation
+                return ret
+            })
+            ret.similar = similar?.map(it => shikimoriMediaAdapter(it))
+            // ret.videos = videos?.map(it => shikimoriVideoAdapter(it))
+            // ret.screenshots = screenshots?.map(it => shikimoriImageAdapter(it)).filter(i => i !== undefined) as ImageMeta[]
+            // ret.characters = roles?.filter(it => it.character && it.roles.indexOf('Main') > -1).map(it => shikimoriPersonAdapter(it.character!))
+
+            return ret
+        })
     }
 
     async searchByName (input: string, type: MediaType, from = 1): Promise<PaginatedData<Media>> {

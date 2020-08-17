@@ -3,7 +3,16 @@ import { makeApiRequest } from '@/api/index'
 import { getProviderNow } from '@/api/providers'
 import { createIndex, uniqueBy } from '@/utils/object-utils'
 import { PaginatedData } from '@/types/api'
-import { CalendarEntry, Media, MediaId, MediaStatus, MediaType, MediaUpdate } from '@/types/media'
+import {
+    CalendarEntry,
+    ExtendedMedia,
+    Media,
+    MediaId,
+    MediaStatus,
+    MediaType,
+    MediaUpdate,
+    NameMeta
+} from '@/types/media'
 import { TranslationUpdate } from '@/types/translation'
 import { UserRateStatus } from '@/types/user-rate'
 
@@ -18,7 +27,7 @@ export function getMediaFromCache (id: MediaId, type: MediaType): Media | null {
     return item
 }
 
-export function getMediaNamesFromCache (id: MediaId, type: MediaType): Media['name'] | null {
+export function getMediaNamesFromCache (id: MediaId, type: MediaType): NameMeta | null {
     const data = cacheStore.mediaNames[`${type}:${id}`]
     if (!data) return null
     const [item, expires] = data
@@ -72,12 +81,12 @@ export async function getMedias (ids: MediaId[], type: 'anime' | 'manga'): Promi
     return ret
 }
 
-export async function getMediaNames (ids: MediaId[], type: MediaType): Promise<Record<MediaId, Media['name']>> {
+export async function getMediaNames (ids: MediaId[], type: MediaType): Promise<Record<MediaId, NameMeta>> {
     if (!ids.length) return {}
 
     const provider = getProviderNow()
 
-    let ret: Record<MediaId, Media['name']> = {}
+    let ret: Record<MediaId, NameMeta> = {}
     let uncached: MediaId[] = []
 
     ids.forEach((id) => {
@@ -121,6 +130,10 @@ export async function getSingleMedia (id: MediaId, type: MediaType): Promise<Med
     }
 
     return media
+}
+
+export async function getSingleExtendedMedia (id: MediaId, type: MediaType): Promise<ExtendedMedia | null> {
+    return getProviderNow().getSingleExtendedMedia(id, type)
 }
 
 export async function searchMediaByName (input: string, type: MediaType, next?: any): Promise<PaginatedData<Media>> {

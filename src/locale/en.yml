@@ -170,6 +170,11 @@ Pages:
         TabSub: Subtitled
         TabDub: Dubbed
         TabRaw: Raw
+    MediaInfo:
+        Information: Information
+        Description: Description
+        Related: Related
+        Similar: Similar
     Search:
         Name: Search
         Action: Search
@@ -394,6 +399,7 @@ Items:
         anime: Anime
         manga: Manga
         ReleaseType:
+            _: Release type
             tv: TV series
             tv_13: TV (12 ep.)
             tv_24: TV (24 ep.)
@@ -410,6 +416,7 @@ Items:
             one_shot: One shot
             doujin: Doujin
         Status:
+            _: Status
             announced: Announced
             ongoing: Ongoing
             released: Released
@@ -451,6 +458,15 @@ Items:
         OnlyNChapters:
             - This manga only has $n chapter
             - This manga only has $n chapters
+        Episodes: Episodes
+        Chapters: Chapters
+        NextEpisode: Next episode
+        NextChapter: Next chapter
+        AnnouncedFor: Announced for $date
+        ReleasedOn: Released on $date
+        OngoingSince: Ongoing since $date
+        Studio: Studio
+        OtherNames: Other names
     Translation:
         NamePlural: Translations
         UnknownAuthor: Unknown author

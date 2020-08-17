@@ -53,18 +53,31 @@
                         </v-chip-group>
                     </div>
 
-                    <v-btn
-                        v-tooltip="$t('Items.Media.OpenExternal', { service: $t('Providers.' + dataProvider) })"
-                        target="_blank"
-                        :href="media.url"
-                        :small="mobileDisplay"
-                        class="ma-2 align-self-center"
-                        icon
-                    >
-                        <v-icon :small="mobileDisplay">
-                            mdi-open-in-new
-                        </v-icon>
-                    </v-btn>
+                    <div class="d-flex flex-column justify-space-around ma-2">
+                        <v-btn
+                            v-tooltip="$t('Items.Media.OpenExternal', { service: $t('Providers.' + dataProvider) })"
+                            target="_blank"
+                            :href="media.url"
+                            icon
+                        >
+                            <v-icon>
+                                mdi-open-in-new
+                            </v-icon>
+                        </v-btn>
+
+                        <MediaInfoDrawer :media="media">
+                            <template #activator="{ on }">
+                                <v-btn
+                                    icon
+                                    v-on="on"
+                                >
+                                    <v-icon>
+                                        mdi-more
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                        </MediaInfoDrawer>
+                    </div>
                 </div>
                 <v-skeleton-loader
                     v-else-if="loading"
@@ -188,10 +201,10 @@
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 import LoadableVue from '@/components/common/LoadableVue'
 import {
-    getMediaFullImage,
-    getMediaPreferredName,
-    getMediaSecondaryName,
-    getMediaSmallImage,
+    getFullImage,
+    getPreferredName,
+    getSecondaryName,
+    getSmallImage,
     processTranslations
 } from '@/utils/media-utils'
 import HeadlineWithLinkButton from '@/components/common/HeadlineWithLinkButton.vue'
@@ -223,9 +236,10 @@ import { Route } from 'vue-router'
 import { iziToastError } from '@/plugins/izitoast'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
 import { getProviderNow } from '@/api/providers'
+import MediaInfoDrawer from '@/components/media/MediaInfoDrawer.vue'
 
 @Component({
-    components: { VSimpleCard, ErrorAlert, ViewerControls, AuthorsList, PartsList, HeadlineWithLinkButton }
+    components: { MediaInfoDrawer, VSimpleCard, ErrorAlert, ViewerControls, AuthorsList, PartsList, HeadlineWithLinkButton }
 })
 export default class Viewer extends LoadableVue {
     @Prop({ type: String, required: true }) mediaType!: MediaType
@@ -269,19 +283,19 @@ export default class Viewer extends LoadableVue {
     }
 
     get fullImage (): string {
-        return this.media ? getMediaFullImage(this.media) : ''
+        return this.media ? getFullImage(this.media?.poster) : ''
     }
 
     get smallImage (): string | undefined {
-        return this.media ? getMediaSmallImage(this.media) : undefined
+        return this.media ? getSmallImage(this.media?.poster) : undefined
     }
 
     get name (): string {
-        return this.media ? getMediaPreferredName(this.media) : ''
+        return this.media ? getPreferredName(this.media?.name) : ''
     }
 
     get secondaryName (): string | undefined {
-        return this.media ? getMediaSecondaryName(this.media) : undefined
+        return this.media ? getSecondaryName(this.media?.name) : undefined
     }
 
     get translationsIndex (): Readonly<Record<number, Readonly<SingleTranslationData & { author: TranslationAuthor }>>> {

@@ -77,9 +77,10 @@ export interface ShikimoriBriefAnime extends ShikimoriBriefMedia {
 }
 
 export interface ShikimoriMedia extends ShikimoriBriefMedia {
-    english: string[]
-    japanese: string[]
-    synonyms: string[]
+    // shikimori api is weird
+    english: (string | null)[]
+    japanese: (string | null)[]
+    synonyms: (string | null)[]
     license_name_ru: string
     description: string
     description_html: string
@@ -117,4 +118,36 @@ export interface ShikimoriCalendarEntry {
     next_episode_at: string
     duration: number | null
     anime: ShikimoriBriefAnime
+}
+
+export interface ShikimoriPerson {
+    id: number
+    name: string
+    russian: string
+    image: ShikimoriImage
+    url: string
+}
+
+export interface ShikimoriRelation {
+    relation: string // english
+    relation_russian: string
+    anime: ShikimoriBriefAnime | null
+    manga: ShikimoriBriefManga | null
+}
+
+export interface ShikimoriVideo {
+    id: number
+    url: string
+    image_url: string
+    player_url: string
+    name: string
+    kind: string
+    hosting: string
+}
+
+export interface ShikimoriRole {
+    roles: string[]
+    roles_russian: string[]
+    character: ShikimoriPerson | null
+    person: ShikimoriPerson | null
 }

@@ -5,9 +5,9 @@ import {
     ShikimoriBriefAnime,
     ShikimoriBriefManga,
     ShikimoriBriefMedia,
-    ShikimoriCalendarEntry,
-    ShikimoriManga,
-    ShikimoriUser
+    ShikimoriCalendarEntry, ShikimoriImage,
+    ShikimoriManga, ShikimoriRelation, ShikimoriRole,
+    ShikimoriUser, ShikimoriVideo
 } from './types'
 import { ApiException, Pagination } from '@/types/api'
 import { UserRateStatus } from '@/types/user-rate'
@@ -42,6 +42,36 @@ export function shikimoriSearchByName (input: string, type: MediaType, page = 1)
 export function shikimoriGetSingleMedia (id: MediaId, type: MediaType): Promise<ShikimoriAnime | ShikimoriManga | null> {
     return shikimoriApi<any>({
         endpoint: `/${type}s/${id}`
+    }).catch(() => null)
+}
+
+export function shikimoriGetRelatedMedia (id: MediaId, type: MediaType): Promise<ShikimoriRelation[]> {
+    return shikimoriApi<any>({
+        endpoint: `/${type}s/${id}/related`
+    }).catch(() => null)
+}
+
+export function shikimoriGetSimilarMedia (id: MediaId, type: MediaType): Promise<(ShikimoriBriefAnime | ShikimoriBriefManga)[]> {
+    return shikimoriApi<any>({
+        endpoint: `/${type}s/${id}/similar`
+    }).catch(() => null)
+}
+
+export function shikimoriGetVideos (id: MediaId, type: MediaType): Promise<ShikimoriVideo[]> {
+    return shikimoriApi<any>({
+        endpoint: `/${type}s/${id}/videos`
+    }).catch(() => null)
+}
+
+export function shikimoriGetScreenshots (id: MediaId, type: MediaType): Promise<ShikimoriImage[]> {
+    return shikimoriApi<any>({
+        endpoint: `/${type}s/${id}/screenshots`
+    }).catch(() => null)
+}
+
+export function shikimoriGetRoles (id: MediaId, type: MediaType): Promise<ShikimoriRole[]> {
+    return shikimoriApi<any>({
+        endpoint: `/${type}s/${id}/roles`
     }).catch(() => null)
 }
 

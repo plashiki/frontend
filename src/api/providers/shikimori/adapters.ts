@@ -4,26 +4,61 @@ import {
     ShikimoriBriefManga,
     ShikimoriCalendarEntry,
     ShikimoriGenre,
+    ShikimoriImage,
     ShikimoriManga,
-    ShikimoriMedia
+    ShikimoriMedia,
+    ShikimoriPerson,
+    ShikimoriVideo
 } from './types'
-import { CalendarEntry, Media, MediaGenre, MediaStatus } from '@/types/media'
+import { CalendarEntry, ImageMeta, Media, MediaCharacter, MediaGenre, MediaStatus, VideoMeta } from '@/types/media'
 import { UserRateStatus } from '@/types/user-rate'
+import { fixRelativeUrl } from '@/utils/helpers'
+
+export function shikimoriVideoAdapter (video: ShikimoriVideo): VideoMeta {
+    return {
+        name: video.name,
+        poster: {
+            large: video.image_url
+        },
+        url: video.url
+    }
+}
+
+export function shikimoriImageAdapter (image: ShikimoriImage): ImageMeta | undefined {
+    if (image.original.match(/missing_original\.jpg/)) return undefined
+
+    return {
+        large: fixRelativeUrl(image.original, 'https://shikimori.one'),
+        small: fixRelativeUrl(image.preview, 'https://shikimori.one')
+    }
+}
+
+export function shikimoriPersonAdapter (character: ShikimoriPerson): MediaCharacter {
+    return {
+        name: {
+            russian: character.russian,
+            romaji: character.name
+        },
+        image: shikimoriImageAdapter(character.image),
+        url: 'https://shikimori.one' + character.url
+    }
+}
 
 export function shikimoriMediaAdapter (input: ShikimoriBriefAnime | ShikimoriBriefManga | ShikimoriAnime | ShikimoriManga): Media {
     let ret: Partial<Media> = {}
     let brief = input as ShikimoriBriefManga | ShikimoriBriefAnime
     ret.id = ret.malId = brief.id
-    if (!brief.image.original.match(/missing_original\.jpg/)) {
-        ret.poster = {
-            small: 'https://shikimori.one' + brief.image.preview,
-            large: 'https://shikimori.one' + brief.image.original
-        }
-    }
+    ret.poster = shikimoriImageAdapter(brief.image)
     ret.url = 'https://shikimori.one' + brief.url
     ret.name = {
         russian: brief.russian,
         romaji: brief.name
+    }
+    if (brief.aired_on) {
+        ret.airedOn = new Date(brief.aired_on)
+    }
+    if (brief.released_on) {
+        ret.releasedOn = new Date(brief.released_on)
     }
     ret.releaseType = brief.kind as any
     ret.score = parseFloat(brief.score)
@@ -49,15 +84,24 @@ export function shikimoriMediaAdapter (input: ShikimoriBriefAnime | ShikimoriBri
         ret.partsCount = anime.episodes
         ret.partsAired = anime.episodes_aired
     }
-    if ((brief as any).description !== undefined) {
+    if ((brief as any).description_html !== undefined) {
         let media = input as ShikimoriMedia
-        ret.description = media.description
-        ret.name.english = media.english[0]
-        ret.name.japanese = media.japanese[0]
+        ret.description = media.description_html
+        if (media.english[0]) {
+            ret.name.english = media.english[0]
+        }
+        if (media.japanese[0]) {
+            ret.name.japanese = media.japanese[0]
+        }
+        if (media.next_episode_at) {
+            ret.nextPartAt = new Date(media.next_episode_at)
+        }
 
         if ((media as any).studios !== undefined) {
             let anime = input as ShikimoriAnime
-            ret.studio = anime.studios[0]?.name
+            if (anime.studios.length) {
+                ret.studio = anime.studios[0].name
+            }
         }
         if ((media as any).publishers !== undefined) {
             let manga = input as ShikimoriManga

@@ -43,6 +43,8 @@
                     v-for="(item, j) in col"
                     :key="j"
                     :item="item"
+                    :height="itemHeight"
+                    :width="itemWidth"
                     class="mx-1 my-2"
                     fixed-size
                 />
@@ -66,9 +68,11 @@ export default class MediaCarousel extends Vue {
     @Prop({ type: String, default: '' }) noItemsText!: string
     @Prop({ type: Boolean, default: false }) loading!: boolean
     @Prop({ type: Number, default: 1 }) rows!: number
+    @Prop({ type: Number, default: 240 }) itemHeight!: number
+    @Prop({ type: Number, default: 180 }) itemWidth!: number
 
     get height (): number {
-        return (240 * this.rows
+        return (this.itemHeight * this.rows
             + 8 * (this.rows + 1)) // gaps - top, bottom + between rows
     }
 

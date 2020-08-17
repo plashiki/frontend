@@ -1,10 +1,10 @@
 <template>
     <v-card
-        :height="fixedSize ? 240 : undefined"
+        :height="fixedSize ? height : undefined"
         :ripple="!$r12s.isTouchDevice && !actions"
         :title="name"
         :to="noLink || actions ? undefined : `/${item.type}/${item.id}`"
-        :width="fixedSize ? 180 : undefined"
+        :width="fixedSize ? width : undefined"
         class="media-card"
         :class="{ 'media-card--has-actions': actions }"
         flat
@@ -12,10 +12,10 @@
         <v-hover #default="{ hover }">
             <v-img
                 :aspect-ratio="2/3"
-                :height="fixedSize ? 240 : undefined"
+                :height="fixedSize ? height : undefined"
                 :lazy-src="smallImage"
                 :src="fullImage"
-                :width="fixedSize ? 180 : undefined"
+                :width="fixedSize ? width : undefined"
                 class="fill-height d-flex align-end"
                 gradient="to bottom, rgba(0,0,0,0) 80%, rgba(0,0,0,.9) 100%"
             >
@@ -77,6 +77,8 @@ export default class MediaCard extends Vue {
     @Prop({ type: Boolean, default: false }) noLink!: boolean
     @Prop({ type: Boolean, default: false }) actions!: boolean
     @Prop({ type: Boolean, default: false }) fixedSize!: boolean
+    @Prop({ type: Number, default: 240 }) height!: number
+    @Prop({ type: Number, default: 180 }) width!: number
 
     get fullImage (): string {
         return getFullImage(this.item?.poster)

@@ -1,12 +1,12 @@
 import { VuexModule } from 'vuex-module-decorators'
 import { SharedMutation, VModule } from '@/utils/vuex-sugar'
-import { Media, MediaId, MediaStatus, MediaType } from '@/types/media'
+import { Media, MediaId, MediaStatus, MediaType, NameMeta } from '@/types/media'
 
 // yes i do know about DRY but bruh
 @VModule('CacheModule')
 export default class CacheModule extends VuexModule {
     media: Record<string, [Media, number]> = {}
-    mediaNames: Record<string, [Media['name'], number]> = {}
+    mediaNames: Record<string, [NameMeta, number]> = {}
 
     @SharedMutation()
     putMediaInCache (media: Media, ttl: number | null = null): void {

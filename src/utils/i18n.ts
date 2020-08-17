@@ -20,3 +20,8 @@ export const languages = Object.freeze([
         ? -1 : b.value === defaultLanguage
             ? 1 : a.value > b.value ? 1 : -1
 }))
+
+
+export function isRussian (locale: string): boolean {
+    return locale === 'ru'
+}

@@ -200,7 +200,7 @@ import {
     getTranslationsInGroup
 } from '@/api/moderation'
 import { Media, MediaId } from '@/types/media'
-import { getMediaPreferredName } from '@/utils/media-utils'
+import { getPreferredName } from '@/utils/media-utils'
 import { getMedias } from '@/api/media'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { uniqueBy } from '@/utils/object-utils'
@@ -339,7 +339,7 @@ export default class TranslationsTable extends Vue {
     }
 
     mediaName (item: Media): string {
-        return getMediaPreferredName(item)
+        return getPreferredName(item.name)
     }
 
     edit (it: Translation): void {

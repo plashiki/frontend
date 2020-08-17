@@ -2,7 +2,7 @@ import { TranslationKind, TranslationLanguage } from '@/types/translation'
 import { i18n } from '@/plugins/vue-i18n'
 import { ApiNotification, PushNotification } from '@/types/notification'
 import { getMediaNames } from '@/api/media'
-import { getMediaPreferredName } from '@/utils/media-utils'
+import { getPreferredName } from '@/utils/media-utils'
 import { MediaType } from '@/types/media'
 
 interface NewTranslationFormat {
@@ -84,7 +84,7 @@ export async function prepareNotification (item: ApiNotification<any>): Promise<
         if (body === 'NEW_TRANSLATION_BODY' || body === 'MOD_NEW_TR_BODY') {
             let fmt = format as NewTranslationFormat
             const name = await getMediaNames([fmt.mediaId], fmt.mediaType).then(i => i[fmt.mediaId])
-            const mediaName = name ? getMediaPreferredName({ name }) : ''
+            const mediaName = name ? getPreferredName(name) : ''
 
 
             if (fmt.mediaType === 'anime') {

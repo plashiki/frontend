@@ -48,10 +48,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import {
-    getMediaFullImage,
-    getMediaPreferredName,
-    getMediaSecondaryName,
-    getMediaSmallImage
+    getFullImage,
+    getPreferredName,
+    getSecondaryName,
+    getSmallImage
 } from '@/utils/media-utils'
 import { Media } from '@/types/media'
 
@@ -62,19 +62,19 @@ export default class MediaListItem extends Vue {
     @Prop({ default: false }) noLink!: boolean
 
     get fullImage (): string {
-        return getMediaFullImage(this.item)
+        return getFullImage(this.item?.poster)
     }
 
     get smallImage (): string | undefined {
-        return getMediaSmallImage(this.item)
+        return getSmallImage(this.item?.poster)
     }
 
     get name (): string {
-        return getMediaPreferredName(this.item)
+        return getPreferredName(this.item?.name)
     }
 
     get secondaryName (): string | undefined {
-        return getMediaSecondaryName(this.item)
+        return getSecondaryName(this.item?.name)
     }
 
     get metaInformation (): string[] {

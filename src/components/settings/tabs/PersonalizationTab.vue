@@ -94,7 +94,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import VColorField from '@/components/common/fields/VColorField.vue'
 import { authStore, configStore } from '@/store'
-import { Media } from '@/types/media'
+import { NameMeta } from '@/types/media'
 import ReorderList from '@/components/common/fields/ReorderList.vue'
 import { changeLanguage } from '@/plugins/vue-i18n'
 import { setUserLanguage } from '@/api/user'
@@ -172,11 +172,11 @@ export default class PersonalizationTab extends Vue {
         }))
     }
 
-    get preferredNameLanguage (): keyof Media['name'] {
+    get preferredNameLanguage (): Exclude<keyof NameMeta, 'other'> {
         return configStore.preferredNameLanguage
     }
 
-    set preferredNameLanguage (val: keyof Media['name']) {
+    set preferredNameLanguage (val: Exclude<keyof NameMeta, 'other'>) {
         configStore.merge({
             preferredNameLanguage: val
         })

@@ -3,49 +3,50 @@ import { i18n } from '@/plugins/vue-i18n'
 import { fallbackImage } from '@/config'
 import SortedArray from '@/utils/sorted-array'
 import { Translation, TranslationAuthor, TranslationData } from '@/types/translation'
-import { Media } from '@/types/media'
+import { ImageMeta, NameMeta } from '@/types/media'
+import { isRussian } from '@/utils/i18n'
 
-export function getMediaPreferredName (media?: { name: Media['name'] }): string {
-    if (!media) return ''
-    if (media.name[configStore.preferredNameLanguage]) {
-        return media.name[configStore.preferredNameLanguage]!
+export function getPreferredName (name?: NameMeta): string {
+    if (!name) return ''
+    if (name[configStore.preferredNameLanguage]) {
+        return name[configStore.preferredNameLanguage]!
     }
-    if (configStore.preferredNameLanguage === 'japanese' && media.name.romaji) {
-        return media.name.romaji
+    if (configStore.preferredNameLanguage === 'japanese' && name.romaji) {
+        return name.romaji
     }
-    if (i18n.locale === 'ru' && media.name.russian) {
-        return media.name.russian
+    if (isRussian(i18n.locale) && name.russian) {
+        return name.russian
     }
-    return media.name.english ?? media.name.romaji ?? media.name.japanese ?? ''
+    return name.english ?? name.romaji ?? name.japanese ?? ''
 }
 
-export function getMediaSecondaryName (media?: { name: Media['name'] }): string | undefined {
-    if (!media) return undefined
+export function getSecondaryName (name?: NameMeta): string | undefined {
+    if (!name) return undefined
     if (configStore.preferredNameLanguage === 'romaji') {
-        if (i18n.locale === 'ru' && media.name.russian) {
-            return media.name.russian
+        if (isRussian(i18n.locale) && name.russian) {
+            return name.russian
         }
-        return media.name.english ?? media.name.japanese
+        return name.english ?? name.japanese
     }
     if (configStore.preferredNameLanguage === 'japanese') {
-        if (media.name.romaji) {
-            return media.name.romaji
+        if (name.romaji) {
+            return name.romaji
         } else {
-            return media.name.english ?? media.name.russian
+            return name.english ?? name.russian
         }
     }
-    if (!media.name[configStore.preferredNameLanguage] && i18n.locale === 'ru' && media.name.russian) {
-        return media.name.romaji
+    if (!name[configStore.preferredNameLanguage] && i18n.locale === 'ru' && name.russian) {
+        return name.romaji
     }
-    return media.name.romaji ?? media.name.japanese
+    return name.romaji ?? name.japanese
 }
 
-export function getMediaFullImage (media: Media): string {
-    return media.poster?.large ?? media.poster?.small ?? fallbackImage
+export function getFullImage (image?: ImageMeta): string {
+    return image?.large ?? image?.small ?? fallbackImage
 }
 
-export function getMediaSmallImage (media: Media): string | undefined {
-    return media.poster?.small
+export function getSmallImage (image?: ImageMeta): string | undefined {
+    return image?.small
 }
 
 

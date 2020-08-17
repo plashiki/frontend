@@ -5,6 +5,20 @@ export interface ImageMeta {
     small?: string
 }
 
+export interface VideoMeta {
+    name?: string
+    poster: ImageMeta
+    url: string
+}
+
+export interface NameMeta {
+    russian?: string
+    english?: string
+    romaji?: string
+    japanese?: string
+    other?: string[]
+}
+
 export interface MediaGenre {
     id: number | string
     name: string
@@ -27,12 +41,7 @@ export interface Media {
     id: MediaId
     malId?: number
     type: MediaType
-    name: {
-        russian?: string
-        english?: string
-        romaji?: string
-        japanese?: string
-    }
+    name: NameMeta
     status?: MediaStatus
     description?: string
     partsCount?: number

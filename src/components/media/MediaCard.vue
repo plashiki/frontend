@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { getMediaFullImage, getMediaPreferredName, getMediaSmallImage } from '@/utils/media-utils'
+import { getFullImage, getPreferredName, getSmallImage } from '@/utils/media-utils'
 import { Media } from '@/types/media'
 
 @Component({})
@@ -79,15 +79,15 @@ export default class MediaCard extends Vue {
     @Prop({ type: Boolean, default: false }) fixedSize!: boolean
 
     get fullImage (): string {
-        return getMediaFullImage(this.item)
+        return getFullImage(this.item?.poster)
     }
 
     get smallImage (): string | undefined {
-        return getMediaSmallImage(this.item)
+        return getSmallImage(this.item?.poster)
     }
 
     get name (): string {
-        return getMediaPreferredName(this.item)
+        return getPreferredName(this.item?.name)
     }
 }
 </script>

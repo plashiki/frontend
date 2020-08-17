@@ -60,10 +60,10 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { nop } from '@/utils/helpers'
 import {
-    getMediaFullImage,
-    getMediaPreferredName,
-    getMediaSecondaryName,
-    getMediaSmallImage
+    getFullImage,
+    getPreferredName,
+    getSecondaryName,
+    getSmallImage
 } from '@/utils/media-utils'
 import { Debounced } from '@/utils/function-utils'
 import { getMedias, searchMediaByName } from '@/api/media'
@@ -110,19 +110,19 @@ export default class SearchFieldAutocomplete extends Vue {
     }
 
     fullImage (item: Media): string {
-        return getMediaFullImage(item)
+        return getFullImage(item.poster)
     }
 
     smallImage (item: Media): string | undefined {
-        return getMediaSmallImage(item)
+        return getSmallImage(item.poster)
     }
 
     name (item: Media): string {
-        return getMediaPreferredName(item)
+        return getPreferredName(item.name)
     }
 
     secondaryName (item: Media): string | undefined {
-        return getMediaSecondaryName(item)
+        return getSecondaryName(item.name)
     }
 
     openSearch (): void {

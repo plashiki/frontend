@@ -4,7 +4,7 @@ import { merge } from '@/utils/object-utils'
 import { DataProviderName } from '@/api/providers'
 import { TranslationPreferenceProperty } from '@/utils/user-preferences-utils'
 import { Vue } from 'vue-property-decorator'
-import { Media, MediaType } from '@/types/media'
+import { MediaType, NameMeta } from '@/types/media'
 import { AnyKV } from '@/types'
 import IndexedDBClient from '@/utils/indexed-db-client'
 import { isLocalStorageSupported, nop } from '@/utils/helpers'
@@ -56,7 +56,7 @@ export default class ConfigModule extends VuexModule {
     connectionIndicator = false
 
     // logic
-    preferredNameLanguage: keyof Media['name'] = defaultLanguage === 'ru' ? 'russian' : 'romaji'
+    preferredNameLanguage: Exclude<keyof NameMeta, 'other'> = defaultLanguage === 'ru' ? 'russian' : 'romaji'
     onlyOngoingsInRecent = true
     oneColumnInMediaList = false
     searchPresets: Record<string, AnyKV[]> = {}

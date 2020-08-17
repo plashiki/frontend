@@ -230,7 +230,7 @@ import MediaByIdField from '@/components/media/MediaByIdField.vue'
 import { requiredField, urlValidator } from '@/utils/validators'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import { lookupMalId } from '@/api/media'
-import { getMediaFullImage, getMediaSmallImage } from '@/utils/media-utils'
+import { getFullImage, getSmallImage } from '@/utils/media-utils'
 import { transparentPixel } from '@/utils/helpers'
 import VNumberField from '@/components/common/fields/VNumberField.vue'
 import { Translation, TranslationLanguage } from '@/types/translation'
@@ -284,7 +284,7 @@ export default class TranslationForm extends Vue {
     playerMetaLoading = false
 
     get posterSrc (): string {
-        return this.selectedMedia ? getMediaSmallImage(this.selectedMedia) ?? getMediaFullImage(this.selectedMedia) : transparentPixel
+        return this.selectedMedia ? getSmallImage(this.selectedMedia?.poster) ?? getFullImage(this.selectedMedia?.poster) : transparentPixel
     }
 
     get kinds (): any[] {

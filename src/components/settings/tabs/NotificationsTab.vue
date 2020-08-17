@@ -35,9 +35,9 @@ import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 import { authStore } from '@/store'
 import { uniqueBy } from '@/utils/object-utils'
 import { getMediaNames } from '@/api/media'
-import { Media, MediaId } from '@/types/media'
+import { MediaId, NameMeta } from '@/types/media'
 import { iziToastError } from '@/plugins/izitoast'
-import { getMediaPreferredName } from '@/utils/media-utils'
+import { getPreferredName } from '@/utils/media-utils'
 import { formatAnimeTranslationMeta } from '@/utils/notification-utils'
 import { unsubscribeFromTopics } from '@/api/notifications'
 
@@ -52,7 +52,7 @@ interface TopicMeta {
 export default class NotificationsTab extends Vue {
     unsubscribing: string | false = false
     loading = true
-    names: Record<MediaId, Media['name']> = {}
+    names: Record<MediaId, NameMeta> = {}
 
     get isAuthenticated (): boolean {
         return authStore.authenticated
@@ -80,7 +80,7 @@ export default class NotificationsTab extends Vue {
                 if (parts.length === 3) {
                     return {
                         display: this.$t('Pages.Settings.NotificationNewEpisodesOf', {
-                            name: getMediaPreferredName({ name: this.names[parts[2]] })
+                            name: getPreferredName(this.names[parts[2]])
                         }),
                         name
                     }
@@ -88,7 +88,7 @@ export default class NotificationsTab extends Vue {
                 if (parts.length === 5) {
                     return {
                         display: this.$t('Pages.Settings.NotificationNewEpisodesOfMeta', {
-                            name: getMediaPreferredName({ name: this.names[parts[2]] }),
+                            name: getPreferredName(this.names[parts[2]]),
                             meta: formatAnimeTranslationMeta({
                                 lang: parts[3] as any,
                                 kind: parts[4] as any

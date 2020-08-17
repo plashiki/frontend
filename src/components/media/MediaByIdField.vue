@@ -17,7 +17,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { Debounced } from '@/utils/function-utils'
 import { getMedias } from '@/api/media'
-import { getMediaPreferredName, getMediaSecondaryName } from '@/utils/media-utils'
+import { getPreferredName, getSecondaryName } from '@/utils/media-utils'
 import { Media, MediaType } from '@/types/media'
 import { nop } from '@/utils/helpers'
 import { getProviderNow } from '@/api/providers'
@@ -80,8 +80,8 @@ export default class MediaByIdField extends Vue {
 
     name (item?: Media): string {
         if (!item || !item.name) return ''
-        let pref = getMediaPreferredName(item)
-        let second = getMediaSecondaryName(item)
+        let pref = getPreferredName(item?.name)
+        let second = getSecondaryName(item?.name)
         return second ? `${pref} / ${second}` : pref
     }
 

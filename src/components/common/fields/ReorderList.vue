@@ -2,7 +2,7 @@
     <div class="d-flex flex-row">
         <div class="d-flex flex-column flex-shrink-1">
             <v-btn
-                :disabled="selected == null || selected === 0"
+                :disabled="selected == null || selected === 0 || disabled"
                 icon
                 @click="moveAbsolute(0)"
             >
@@ -11,7 +11,7 @@
                 </v-icon>
             </v-btn>
             <v-btn
-                :disabled="selected == null || selected === 0"
+                :disabled="selected == null || selected === 0 || disabled"
                 icon
                 @click="moveRelative(-1)"
             >
@@ -20,7 +20,7 @@
                 </v-icon>
             </v-btn>
             <v-btn
-                :disabled="selected == null || selected === internalValue.length - 1"
+                :disabled="selected == null || selected === internalValue.length - 1 || disabled"
                 icon
                 @click="moveRelative(1)"
             >
@@ -29,7 +29,7 @@
                 </v-icon>
             </v-btn>
             <v-btn
-                :disabled="selected == null || selected === internalValue.length - 1"
+                :disabled="selected == null || selected === internalValue.length - 1 || disabled"
                 icon
                 @click="moveAbsolute(-1)"
             >
@@ -39,6 +39,7 @@
             </v-btn>
         </div>
         <v-list
+            :disabled="disabled"
             class="flex-grow-1 elevation-5"
             v-bind="$attrs"
         >
@@ -54,8 +55,9 @@
                         :item="it"
                         name="item"
                     >
-                        <v-list-item active-class="primary--text">
+                        <v-list-item :active-class="disabled ? '' : 'primary--text'">
                             <v-list-item-title
+                                :class="{ 'grey--text': disabled }"
                                 v-text="it.text"
                             />
                         </v-list-item>
@@ -78,6 +80,7 @@ interface ReorderItem {
 @Component({})
 export default class ReorderList extends Vue {
     @Prop({ required: true }) value!: ReorderItem[]
+    @Prop({ type: Boolean, default: false }) disabled!: boolean
 
     selected: number | null = null
     internalValue: ReorderItem[] = []

@@ -162,7 +162,8 @@ import { Media, MediaType } from '@/types/media'
 import { ApiException, PaginatedData } from '@/types/api'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import { getMediaInList, getMedias, getRecommendations, getMediaUpdates } from '@/api/media'
-import { isElementInViewport } from '@/utils/helpers'
+import { isElementInViewport, nop } from '@/utils/helpers'
+import { Route } from 'vue-router'
 
 interface UiState {
     error: ApiException | null
@@ -258,6 +259,17 @@ export default class ListsPage extends Vue {
 
         if (state && oldState && state.items.length === oldState.items.length && state.more && oldState.more) {
             this.endReached()
+        }
+        this.$router.push({ name: 'lists', hash: `#${val}` }).catch(nop)
+    }
+
+    @Watch('$route')
+    routeChanged (val: Route, old?: Route) {
+        if (val.hash.length > 1 && val.hash !== old?.hash) {
+            const hash = val.hash.substr(1)
+            if (hash in this.state) {
+                this.selected = hash
+            }
         }
     }
 
@@ -378,6 +390,7 @@ export default class ListsPage extends Vue {
         appStore.merge({
             pageTitle: this.$t('Pages.Lists.Name')
         })
+        this.routeChanged(this.$route)
     }
 }
 </script>

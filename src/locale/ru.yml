@@ -107,6 +107,7 @@ Pages:
         OnlyOngoingsInRecentDescriptionOn: На главной странице в разделе "Недавние" будут отображаться только онгоинги
         OnlyOngoingsInRecentDescriptionOff: На главной странице в разделе "Недавние" будут отображаться все недавние переводы
         OneColumnInMediaList: Одна колонка в списке аниме/манги
+        UseSmartSorting: Использовать "умную" сортировку
         TranslationPreferenceOrder: Приоритет сортировки переводов
         Field_lang: Язык
         Field_kind: Тип

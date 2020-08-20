@@ -97,6 +97,7 @@ Pages:
         OnlyOngoingsInRecentDescriptionOn: On home page in "Recent" only ongoings will appear
         OnlyOngoingsInRecentDescriptionOff: On home page in "Recent" all recent translation will appear
         OneColumnInList: One column in media list view
+        UseSmartSorting: Use "smart" sorting
         TranslationPreferenceOrder: Translation preference order
         Field_lang: Language
         Field_kind: Kind

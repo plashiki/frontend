@@ -79,12 +79,21 @@
             persistent-hint
         />
 
+        <v-divider />
+
+        <v-switch
+            v-model="useSmartSorting"
+            :label="$t('Pages.Settings.UseSmartSorting')"
+            class="mb-1"
+        />
+
         <h3
             class="mb-2"
             v-html="$t('Pages.Settings.TranslationPreferenceOrder')"
         />
         <reorder-list
             v-model="translationPreferenceOrder"
+            :disabled="!useSmartSorting"
             dense
         />
     </div>
@@ -229,6 +238,16 @@ export default class PersonalizationTab extends Vue {
     set highlightUnknownAuthor (val: boolean) {
         configStore.merge({
             highlightUnknownAuthor: val
+        })
+    }
+
+    get useSmartSorting (): boolean {
+        return configStore.useSmartSorting
+    }
+
+    set useSmartSorting (val: boolean) {
+        configStore.merge({
+            useSmartSorting: val
         })
     }
 

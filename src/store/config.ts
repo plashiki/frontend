@@ -64,6 +64,7 @@ export default class ConfigModule extends VuexModule {
         anime: [] as number[],
         manga: [] as number[]
     }
+    useSmartSorting = true
 
     // user preferences
     translationPreferenceOrder: TranslationPreferenceProperty[] = ['lang', 'kind', 'author', 'player']

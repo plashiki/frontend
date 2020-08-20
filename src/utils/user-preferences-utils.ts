@@ -67,6 +67,8 @@ export function processAuthorName (name: string): {
  * @param data  TranslationData object
  */
 export function sortTranslations (data: TranslationData): TranslationData {
+    if (!configStore.useSmartSorting) return data
+
     // get final factors of all properties
     const factors = getPropertiesWeights()
 

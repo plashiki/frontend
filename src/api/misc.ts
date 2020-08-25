@@ -4,6 +4,10 @@ import { makeApiRequest } from '@/api/index'
 import { Donation } from '@/types/misc'
 import { ApiException } from '@/types/api'
 import { imgurClientId } from '@/config'
+import { lightFormat } from 'date-fns'
+import { i18n } from '@/plugins/vue-i18n'
+import { createIndex } from '@/utils/object-utils'
+import { isRussian } from '@/utils/i18n'
 
 export async function getDonations (): Promise<Donation[]> {
     const { data } = await axios.get('https://raw.githubusercontent.com/plashiki/data/master/donations.txt?_=' + Date.now(), {
@@ -53,5 +57,31 @@ export async function uploadToImgur (file: File, progressCallback?: (progress: n
         } else {
             return data.data.link
         }
+    })
+}
+
+export async function getCurrentMotd (): Promise<string | null> {
+    return axios.get('https://raw.githubusercontent.com/plashiki/data/master/motd.xml?_=' + Date.now()).then(({ data }) => {
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(data, 'text/xml')
+        const today = lightFormat(new Date(), 'yyyy-MM-dd')
+
+        for (let motd of doc.querySelectorAll('motd')) {
+            if (today > motd.getAttribute('start')! && today < motd.getAttribute('end')!) {
+                let languages = createIndex([...motd.querySelectorAll('text')], i => i.getAttribute('lang')!)
+                if (i18n.locale in languages) {
+                    return languages[i18n.locale].innerHTML
+                }
+                if (isRussian(i18n.locale) && 'ru' in languages) {
+                    return languages.ru.innerHTML
+                }
+                if ('en' in languages) {
+                    return languages.en.innerHTML
+                }
+                return languages[Object.keys(languages)[0]].innerHTML
+            }
+        }
+
+        return null
     })
 }

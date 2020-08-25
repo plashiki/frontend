@@ -1,6 +1,14 @@
 <template>
     <div>
         <ErrorAlert :error="error" />
+        <v-alert
+            transition="slide-y-transition"
+            elevation="2"
+            prominent
+            :value="motd != null"
+        >
+            <div v-html="motd || ''" />
+        </v-alert>
 
         <v-card class="my-2">
             <v-card-text>
@@ -69,10 +77,11 @@ import { appStore, configStore } from '@/store'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import HeadlineWithLinkButton from '@/components/common/HeadlineWithLinkButton.vue'
 import { Media, MediaType } from '@/types/media'
-import { ApiException, PaginatedData } from '@/types/api'
+import { ApiException } from '@/types/api'
 import OneTimeAlert from '@/components/common/OneTimeAlert.vue'
 import { getProviderNow } from '@/api/providers'
 import { IDataProvider } from '@/api/providers/types'
+import { getCurrentMotd } from '@/api/misc'
 
 
 @Component({
@@ -87,6 +96,7 @@ export default class IndexPage extends Vue {
     loading = false
     error: ApiException | null = null
     mediaType: MediaType = 'anime'
+    motd: string | null = null
 
     get dataProvider (): string {
         return configStore.dataProvider
@@ -120,8 +130,10 @@ export default class IndexPage extends Vue {
         Promise.all([
             getRecentUpdates(this.mediaType),
             getOngoings(this.mediaType),
-            getPopularReleased(this.mediaType)
-        ]).then(([updates, ongoings, released]) => {
+            getPopularReleased(this.mediaType),
+            getCurrentMotd()
+        ]).then(([updates, ongoings, released, motd]) => {
+            this.motd = motd
             this.items.recent = updates.map(update => ({
                 ...update.media,
                 statusText: this.$tc(update.media.type === 'anime' ? 'Items.Media.AddedNthEpisode' : 'Items.Media.AddedNthChapter', update.part)

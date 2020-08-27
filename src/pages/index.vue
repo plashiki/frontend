@@ -134,12 +134,12 @@ export default class IndexPage extends Vue {
             getCurrentMotd()
         ]).then(([updates, ongoings, released, motd]) => {
             this.motd = motd
-            this.items.recent = updates.map(update => ({
+            this.items.recent = updates!.map(update => ({
                 ...update.media,
                 statusText: this.$tc(update.media.type === 'anime' ? 'Items.Media.AddedNthEpisode' : 'Items.Media.AddedNthChapter', update.part)
             }))
-            this.items.ongoings = ongoings.items
-            this.items.released = released.items
+            this.items.ongoings = ongoings!.items
+            this.items.released = released!.items
         }).catch((err: ApiException) => {
             this.error = err
         }).finally(() => {

@@ -350,6 +350,7 @@ export default class SearchPage extends Vue {
         this.items = []
         this.error = null
         this.hasMore = true
+        this.searchAnchor = null
 
         let input = (Array.isArray(this.$route.query.q) ? this.$route.query.q[0] : this.$route.query.q) ?? ''
         if (input !== appStore.searchInput) {

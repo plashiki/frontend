@@ -10,55 +10,60 @@
             <div v-html="motd || ''" />
         </v-alert>
 
-        <v-card class="my-2">
+        <v-card
+            v-for="(meta, name) of sections"
+            :key="name"
+            class="my-2"
+        >
             <v-card-text>
                 <HeadlineWithLinkButton
-                    :text="recentOngoings ? $t('Pages.Index.RecentlyUpdatedOngoings') : $t('Pages.Index.RecentlyUpdated')"
-                    :to="recentLink"
+                    :text="meta.name"
+                    :to="meta.search"
                     :tooltip="$t('Pages.Index.OpenInSearch')"
                     class="my-2"
                 />
                 <MediaCarousel
-                    :items="items.recent"
-                    :loading="loading"
+                    :items="states[name].items"
+                    :loading="states[name].loading"
+                    :rows="meta.rows"
                     :no-items-text="$t('Common.Collection.NoItemsFound')"
                 />
             </v-card-text>
         </v-card>
 
-        <v-card class="my-2">
-            <v-card-text>
-                <HeadlineWithLinkButton
-                    :text="$t('Pages.Index.TopOngoings')"
-                    :to="topOngoingsLink"
-                    :tooltip="$t('Pages.Index.OpenInSearch')"
-                    class="my-2"
-                />
-                <MediaCarousel
-                    :items="items.ongoings"
-                    :loading="loading"
-                    :no-items-text="$t('Common.Collection.NoItemsFound')"
-                    :rows="2"
-                />
-            </v-card-text>
-        </v-card>
+        <!--        <v-card class="my-2">-->
+        <!--            <v-card-text>-->
+        <!--                <HeadlineWithLinkButton-->
+        <!--                    :text="$t('Pages.Index.TopOngoings')"-->
+        <!--                    :to="topOngoingsLink"-->
+        <!--                    :tooltip="$t('Pages.Index.OpenInSearch')"-->
+        <!--                    class="my-2"-->
+        <!--                />-->
+        <!--                <MediaCarousel-->
+        <!--                    :items="items.ongoings"-->
+        <!--                    :loading="loading"-->
+        <!--                    :no-items-text="$t('Common.Collection.NoItemsFound')"-->
+        <!--                    :rows="2"-->
+        <!--                />-->
+        <!--            </v-card-text>-->
+        <!--        </v-card>-->
 
-        <v-card class="my-2">
-            <v-card-text>
-                <HeadlineWithLinkButton
-                    :text="$t('Pages.Index.TopReleased')"
-                    :to="topReleasedLink"
-                    :tooltip="$t('Pages.Index.OpenInSearch')"
-                    class="my-2"
-                />
-                <MediaCarousel
-                    :items="items.released"
-                    :loading="loading"
-                    :no-items-text="$t('Common.Collection.NoItemsFound')"
-                    :rows="2"
-                />
-            </v-card-text>
-        </v-card>
+        <!--        <v-card class="my-2">-->
+        <!--            <v-card-text>-->
+        <!--                <HeadlineWithLinkButton-->
+        <!--                    :text="$t('Pages.Index.TopReleased')"-->
+        <!--                    :to="topReleasedLink"-->
+        <!--                    :tooltip="$t('Pages.Index.OpenInSearch')"-->
+        <!--                    class="my-2"-->
+        <!--                />-->
+        <!--                <MediaCarousel-->
+        <!--                    :items="items.released"-->
+        <!--                    :loading="loading"-->
+        <!--                    :no-items-text="$t('Common.Collection.NoItemsFound')"-->
+        <!--                    :rows="2"-->
+        <!--                />-->
+        <!--            </v-card-text>-->
+        <!--        </v-card>-->
 
         <p class="text-center body-2 text--secondary">
             {{ $t('Common.Collection.DataFrom', { provider: $t('Providers.' + dataProvider) }) }}
@@ -84,16 +89,33 @@ import { IDataProvider } from '@/api/providers/types'
 import { getCurrentMotd } from '@/api/misc'
 
 
+interface Section {
+    name: string
+    search: string | null
+    rows: number
+}
+
+type SectionName = 'recent' | 'ongoings' | 'released'
+
+interface SectionState {
+    loading: boolean
+    items: Media[]
+}
+
+const baseState: SectionState = {
+    loading: false,
+    items: [],
+}
+
 @Component({
-    components: { OneTimeAlert, HeadlineWithLinkButton, ErrorAlert, MediaCarousel, MediaCard, VirtualGrid, MediaList }
+    components: { OneTimeAlert, HeadlineWithLinkButton, ErrorAlert, MediaCarousel, MediaCard, VirtualGrid, MediaList },
 })
 export default class IndexPage extends Vue {
-    items: Record<string, Media[]> = {
-        recent: [],
-        ongoings: [],
-        released: []
+    states: Record<SectionName, SectionState> = {
+        recent: { ...baseState },
+        ongoings: { ...baseState },
+        released: { ...baseState },
     }
-    loading = false
     error: ApiException | null = null
     mediaType: MediaType = 'anime'
     motd: string | null = null
@@ -102,20 +124,27 @@ export default class IndexPage extends Vue {
         return configStore.dataProvider
     }
 
-    get recentLink (): string | null {
-        return this.searchLink('recentlyUpdatedSearchParams')
-    }
+    get sections (): Record<SectionName, Section> {
+        return {
+            recent: {
+                name: configStore.onlyOngoingsInRecent
+                    ? this.$t('Pages.Index.RecentlyUpdatedOngoings')
+                    : this.$t('Pages.Index.RecentlyUpdated'),
+                search: this.searchLink('recentlyUpdatedSearchParams'),
+                rows: 1,
+            },
+            ongoings: {
+                name: this.$t('Pages.Index.TopOngoings'),
+                search: this.searchLink('topOngoingsSearchParams'),
+                rows: 2,
+            },
+            released: {
+                name: this.$t('Pages.Index.TopReleased'),
+                search: this.searchLink('topReleasedSearchParams'),
+                rows: 2,
+            },
 
-    get topOngoingsLink (): string | null {
-        return this.searchLink('topOngoingsSearchParams')
-    }
-
-    get topReleasedLink (): string | null {
-        return this.searchLink('topReleasedSearchParams')
-    }
-
-    get recentOngoings (): boolean {
-        return configStore.onlyOngoingsInRecent
+        }
     }
 
     searchLink (featureName: keyof IDataProvider): string | null {
@@ -126,33 +155,48 @@ export default class IndexPage extends Vue {
 
     updateItems (): void {
         this.error = null
-        this.loading = true
-        Promise.all([
-            getRecentUpdates(this.mediaType),
-            getOngoings(this.mediaType),
-            getPopularReleased(this.mediaType),
-            getCurrentMotd()
-        ]).then(([updates, ongoings, released, motd]) => {
-            this.motd = motd
-            this.items.recent = updates!.map(update => ({
-                ...update.media,
-                statusText: this.$tc(update.media.type === 'anime' ? 'Items.Media.AddedNthEpisode' : 'Items.Media.AddedNthChapter', update.part)
-            }))
-            this.items.ongoings = ongoings!.items
-            this.items.released = released!.items
-        }).catch((err: ApiException) => {
+
+        this.states.recent.loading = true
+        getRecentUpdates(this.mediaType).then((updates) => {
+            this.states.recent.items = updates.map(update => (
+                {
+                    ...update.media,
+                    statusText: this.$tc(update.media.type === 'anime'
+                        ? 'Items.Media.AddedNthEpisode'
+                        : 'Items.Media.AddedNthChapter', update.part),
+                }
+            ))
+        }).catch((err) => {
             this.error = err
         }).finally(() => {
-            this.loading = false
+            this.states.recent.loading = false
+        })
+
+        this.states.ongoings.loading = true
+        getOngoings(this.mediaType).then((ongoings) => {
+            this.states.ongoings.items = ongoings.items
+        }).catch((err) => {
+            this.error = err
+        }).finally(() => {
+            this.states.ongoings.loading = false
+        })
+
+        this.states.released.loading = true
+        getPopularReleased(this.mediaType).then((released) => {
+            this.states.released.items = released.items
+        }).catch((err) => {
+            this.error = err
+        }).finally(() => {
+            this.states.released.loading = false
+        })
+
+        getCurrentMotd().then((motd) => {
+            this.motd = motd
+        }).catch((err) => {
+            this.error = err
         })
     }
 
-    @Watch('$nuxt.isOnline')
-    onOnlineStatusChange (isOnline: boolean): void {
-        if (isOnline) {
-            this.updateItems()
-        }
-    }
 
     requestUpdate (): void {
         this.updateItems()
@@ -163,7 +207,7 @@ export default class IndexPage extends Vue {
 
         appStore.merge({
             showUpdateButton: true,
-            showSearch: true
+            showSearch: true,
         })
     }
 }

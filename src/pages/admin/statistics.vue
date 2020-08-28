@@ -164,7 +164,6 @@
 
 <script lang="ts">
 import { Component, Ref } from 'vue-property-decorator'
-import { eachDayOfInterval } from 'date-fns'
 import LineChart from '@/components/charts/LineChart'
 import DonutChart from '@/components/charts/DonutChart'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
@@ -176,7 +175,14 @@ import { iziToastError } from '@/plugins/izitoast'
 import VListItemIconText from '@/components/common/VListItemIconText.vue'
 import { ChartData } from 'chart.js'
 import { getPallete } from '@/vendor/pallete'
-import { formatDate } from '@/utils/stats-utils'
+import {
+    createIndexedStatistics,
+    daysInRange,
+    getSubtypeDistributionForTypesInDateRange,
+    getTrendForTypesInDateRange,
+    IndexedStatistics,
+    SubtypeDistribution,
+} from '@/utils/stats-utils'
 import DateRangeInput from '@/components/misc/DateRangeInput.vue'
 
 @Component({
@@ -187,12 +193,12 @@ export default class StatisticsPage extends LoadableVue {
     rangeFrom = ''
     rangeTo = ''
 
-    data: Record<string, Record<string, number>> = {}
+    data: IndexedStatistics = {}
 
     // data getters //
 
     get userTrendData (): ChartData {
-        let data = this._getTotalOfTypeInRange(['login', 'registration'])
+        let data = this._getTrendForTypes(['login:', 'registration:'])
 
         return {
             labels: this._daysInRange,
@@ -200,19 +206,19 @@ export default class StatisticsPage extends LoadableVue {
                 {
                     label: this.$t('Pages.Statistics.Registration'),
                     borderColor: '#dd0000',
-                    data: data.registration
+                    data: data['registration:']
                 },
                 {
                     label: this.$t('Pages.Statistics.Login'),
                     borderColor: '#00dd00',
-                    data: data.login
+                    data: data['login:']
                 }
             ]
         }
     }
 
     get userSourceData (): ChartData {
-        let data = this._getTotalOfSubtypeInRange(['login', 'registration'])
+        let data = this._getSubtypeDistributionForTypes(['login', 'registration'])
 
         return {
             labels: data.labels,
@@ -226,7 +232,7 @@ export default class StatisticsPage extends LoadableVue {
     }
 
     get translationsTrendData (): ChartData {
-        let data = this._getTotalOfTypeInRange(['tr-added', 'tr-rem'])
+        let data = this._getTrendForTypes(['tr-added:', 'tr-rem:'])
 
         return {
             labels: this._daysInRange,
@@ -234,20 +240,20 @@ export default class StatisticsPage extends LoadableVue {
                 {
                     label: this.$t('Pages.Statistics.TranslationsAdded'),
                     borderColor: '#00dd00',
-                    data: data['tr-added']
+                    data: data['tr-added:']
                 },
                 {
 
                     label: this.$t('Pages.Statistics.TranslationsRemoved'),
                     borderColor: '#dd0000',
-                    data: data['tr-rem']
+                    data: data['tr-rem:']
                 }
             ]
         }
     }
 
     get translationsAdditionSourceData (): ChartData {
-        let data = this._getTotalOfSubtypeInRange(['tr-added'])
+        let data = this._getSubtypeDistributionForTypes(['tr-added'])
 
         return {
             labels: data.labels,
@@ -261,7 +267,7 @@ export default class StatisticsPage extends LoadableVue {
     }
 
     get translationsRemovalSourceData (): ChartData {
-        let data = this._getTotalOfSubtypeInRange(['tr-rem'])
+        let data = this._getSubtypeDistributionForTypes(['tr-rem'])
 
         return {
             labels: data.labels,
@@ -311,7 +317,7 @@ export default class StatisticsPage extends LoadableVue {
     }
 
     get moderationTrendData (): ChartData {
-        let data = this._getTotalOfTypeInRange(['moder-new', 'moder-accept', 'moder-decline'])
+        let data = this._getTrendForTypes(['moder-new:', 'moder-accept:', 'moder-decline:'])
 
         return {
             labels: this._daysInRange,
@@ -319,24 +325,24 @@ export default class StatisticsPage extends LoadableVue {
                 {
                     label: this.$t('Pages.Statistics.ModerationSent'),
                     borderColor: '#2222dd',
-                    data: data['moder-new']
+                    data: data['moder-new:']
                 },
                 {
                     label: this.$t('Pages.Statistics.ModerationAccepted'),
                     borderColor: '#00dd00',
-                    data: data['moder-accept']
+                    data: data['moder-accept:']
                 },
                 {
                     label: this.$t('Pages.Statistics.ModerationDeclined'),
                     borderColor: '#dd0000',
-                    data: data['moder-decline']
+                    data: data['moder-decline:']
                 }
             ]
         }
     }
 
     get sendersData (): ChartData {
-        let data = this._getTotalOfSubtypeInRange(['moder-new'])
+        let data = this._getSubtypeDistributionForTypes(['moder-new'])
 
         return {
             labels: data.labels.map(i => 'ID ' + i),
@@ -350,7 +356,7 @@ export default class StatisticsPage extends LoadableVue {
     }
 
     get moderatorsData (): ChartData {
-        let data = this._getTotalOfSubtypeInRange(['moder-accept', 'moder-decline'])
+        let data = this._getSubtypeDistributionForTypes(['moder-accept', 'moder-decline'])
 
         return {
             labels: data.labels.map(i => 'ID ' + i),
@@ -363,12 +369,8 @@ export default class StatisticsPage extends LoadableVue {
         }
     }
 
-    private get _daysInRange (): string[] {
-        if (!this.rangeFrom || !this.rangeTo) return []
-        return eachDayOfInterval({
-            start: new Date(this.rangeFrom),
-            end: new Date(this.rangeTo)
-        }).map(i => formatDate(i))
+    get _daysInRange (): string[] {
+        return daysInRange(this.rangeFrom, this.rangeTo)
     }
 
     load (): void {
@@ -377,13 +379,7 @@ export default class StatisticsPage extends LoadableVue {
         this.loading = true
         getRawStatistics(this.rangeFrom, this.rangeTo)
             .then((data) => {
-                let ret: Record<string, Record<string, number>> = {}
-
-                for (let obj of data) {
-                    ret[obj.day] = obj.data
-                }
-
-                this.data = ret
+                this.data = createIndexedStatistics(data)
             })
             .catch(iziToastError)
             .finally(() => {
@@ -400,63 +396,12 @@ export default class StatisticsPage extends LoadableVue {
         this.load()
     }
 
-    private _getTotalOfTypeInRange<T extends string> (types: T[]): Record<T, number[]> {
-        let ret: Record<string, number[]> = {}
-        let i = 0
-        for (let day of this._daysInRange) {
-            for (let type of types) {
-                if (!(type in ret)) ret[type] = []
-                ret[type].push(0)
-            }
-
-            const data = this.data[day] || {}
-            for (let key of Object.keys(data)) {
-                for (let type of types) {
-                    if (key.startsWith(type + ':')) {
-                        ret[type][i] += data[key]
-                    }
-                }
-            }
-
-            i++
-        }
-
-        return ret
+    private _getTrendForTypes<T extends string> (types: T[]): Record<T, number[]> {
+        return getTrendForTypesInDateRange(this._daysInRange, this.data, types)
     }
 
-    private _getTotalOfSubtypeInRange<T extends string> (types: T[]): {
-        labels: string[]
-        data: number[]
-        colors: string[]
-    } {
-        let obj: Record<string, number> = {}
-        for (let day of this._daysInRange) {
-            const data = this.data[day] || {}
-            for (let key of Object.keys(data)) {
-                for (let type of types) {
-                    if (key.startsWith(type + ':')) {
-                        let subtype = key.split(':')[1]
-                        if (!obj[subtype]) obj[subtype] = 0
-                        obj[subtype] += data[key]
-                    }
-                }
-            }
-        }
-
-        let ret = {
-            labels: [] as string[],
-            data: [] as number[],
-            colors: [] as string[]
-        }
-
-        for (let [name, value] of Object.entries(obj)) {
-            ret.labels.push(name)
-            ret.data.push(value)
-        }
-
-        ret.colors = getPallete(ret.labels.length)
-
-        return ret
+    private _getSubtypeDistributionForTypes<T extends string> (types: T[]): SubtypeDistribution {
+        return getSubtypeDistributionForTypesInDateRange(this._daysInRange, this.data, types)
     }
 }
 </script>

@@ -1,4 +1,5 @@
 import { User } from '@/types/user'
+import { RawStatistics } from '@/utils/stats-utils'
 
 export interface Donation {
     date: string
@@ -25,7 +26,7 @@ export interface OauthApp {
 
 export interface StatisticsDay {
     day: string
-    data: Record<string, number>
+    data: RawStatistics
 }
 
 export interface DeleteResult {

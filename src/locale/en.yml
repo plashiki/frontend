@@ -332,8 +332,8 @@ Pages:
         Name: Users
     AdminTranslations:
         Name: Translations
-        Group: Group
-        LeaveBlankForAll: Leave blank to display all translations
+    Parsers:
+        Name: Parsers
 Items:
     User:
         Anonymous: Anonymous
@@ -581,6 +581,7 @@ Items:
 Common:
     Yes: yes
     No: no
+    Pcs: шт.
     Clear: Clear
     NeedAuth: Authentication is required
     Description: Description
@@ -602,6 +603,7 @@ Common:
         Select: Select
         Deselect: Deselect
         WithSelected: With selected
+        Selected: 'Selected: $n'
     Action:
         TryAgain: Try again
         Update: Update

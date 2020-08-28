@@ -287,6 +287,11 @@ export default class AppNavigation extends Vue {
             path: '/admin/translations',
             name: 'Pages.AdminTranslations.Name',
             icon: 'mdi-translate'
+        },
+        {
+            path: '/admin/parsers',
+            name: 'Pages.Parsers.Name',
+            icon: 'mdi-code-braces'
         }
     ]
 

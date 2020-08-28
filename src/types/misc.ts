@@ -32,3 +32,25 @@ export interface StatisticsDay {
 export interface DeleteResult {
     affected: number
 }
+
+export interface Parser {
+    uid: string
+    provide: string[]
+    disabled: boolean
+    public: string
+    cri: boolean
+}
+
+export interface ParsersKindState {
+    running: boolean
+    states: {
+        // value:
+        // 'waiting' - not yet running, queued
+        // 'preparing' - loading code and basic stuff
+        // 'running|N' - running, yielded N items so far
+        // 'finished|N' - finished, yielded N items
+        // 'error\nStack...' - finished with error, stack is in lines 1 and after
+        [key: string]: string
+    }
+}
+export type ParsersState = Record<'mappers' | 'importers' | 'cleaners', ParsersKindState>

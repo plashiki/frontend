@@ -363,6 +363,8 @@ Pages:
         Name: Переводы
         Group: Группа
         LeaveBlankForAll: Оставьте пустым чтобы отобразить все переводы
+    Parsers:
+        Name: Парсеры
 Items:
     User:
         Anonymous: Аноним
@@ -608,6 +610,7 @@ Items:
 Common:
     Yes: да
     No: нет
+    Pcs: $n шт.
     Clear: Очистить
     NeedAuth: Необходима авторизация
     Description: Описание
@@ -632,6 +635,7 @@ Common:
         Select: Выбрать
         Deselect: Снять выделение
         WithSelected: С выбранными
+        Selected: 'Выбрано: $n'
     Action:
         TryAgain: Попробуйте еще раз
         Update: Обновить

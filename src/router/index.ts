@@ -163,6 +163,12 @@ const routes: any[] = [
         component: () => import(/* webpackChunkName: "admin-translations" */ '@/pages/admin/translations.vue'),
         meta: { admin: true }
     },
+    {
+        path: '/admin/parsers',
+        name: 'admin-parsers',
+        component: () => import(/* webpackChunkName: "admin-parsers" */ '@/pages/admin/parsers.vue'),
+        meta: { admin: true }
+    },
     // redirects
     {
         path: '/translation(s)?/:id(\\d+)',

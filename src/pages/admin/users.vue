@@ -10,7 +10,7 @@
                             :loading="userLoading"
                             :readonly="userLoading"
                         />
-                        {{ $t('Pages.UsersAdmin.FindBy') }}
+                        Find by:
                         <a
                             href="#"
                             @click="search('id')"

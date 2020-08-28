@@ -19,14 +19,14 @@
             </DateRangeInput>
 
             <div class="text--secondary caption">
-                {{ $t('Pages.Statistics.LightMode') }}
+                Graphs look better in light UI mode.
             </div>
         </v-simple-card>
 
         <!-- USERS STATS -->
 
         <h2 class="mt-4 mb-n2">
-            {{ $t('Pages.Statistics.Users') }}
+            Users
         </h2>
         <v-row class="d-flex justify-space-between">
             <v-col
@@ -35,9 +35,7 @@
                 sm="6"
             >
                 <v-simple-card>
-                    <LineChart
-                        :data="userTrendData"
-                    />
+                    <LineChart :data="userTrendData" />
                 </v-simple-card>
             </v-col>
             <v-col
@@ -46,9 +44,7 @@
                 sm="6"
             >
                 <v-simple-card>
-                    <DonutChart
-                        :data="userSourceData"
-                    />
+                    <DonutChart :data="userSourceData" />
                 </v-simple-card>
             </v-col>
         </v-row>
@@ -56,7 +52,7 @@
         <!-- TRANSLATIONS STATS -->
 
         <h2 class="mt-4 mb-n2">
-            {{ $t('Pages.Statistics.Translations') }}
+            Translations
         </h2>
         <v-row class="d-flex justify-space-between">
             <v-col
@@ -65,9 +61,7 @@
                 sm="6"
             >
                 <v-simple-card class="pt-5">
-                    <LineChart
-                        :data="translationsTrendData"
-                    />
+                    <LineChart :data="translationsTrendData" />
                 </v-simple-card>
             </v-col>
             <v-col
@@ -76,7 +70,7 @@
                 sm="6"
             >
                 <v-simple-card>
-                    <h3>{{ $t('Pages.Statistics.TranslationsAdditionSource') }}</h3>
+                    <h3>Added by</h3>
 
                     <DonutChart
                         :data="translationsAdditionSourceData"
@@ -90,7 +84,7 @@
                 sm="6"
             >
                 <v-simple-card>
-                    <h3>{{ $t('Pages.Statistics.TranslationsRemovalSource') }}</h3>
+                    <h3>Deleted by</h3>
 
                     <DonutChart
                         :data="translationsRemovalSourceData"
@@ -103,7 +97,7 @@
 
         <!-- MODERATION -->
         <h2 class="mt-4 mb-2">
-            {{ $t('Pages.Statistics.Moderation') }}
+            Moderation
         </h2>
         <v-row>
             <v-col
@@ -112,9 +106,7 @@
                 sm="6"
             >
                 <v-simple-card class="pt-5">
-                    <LineChart
-                        :data="moderationTrendData"
-                    />
+                    <LineChart :data="moderationTrendData" />
                 </v-simple-card>
             </v-col>
             <v-col
@@ -123,7 +115,7 @@
                 sm="6"
             >
                 <v-simple-card>
-                    <h3>{{ $t('Pages.Statistics.Senders') }}</h3>
+                    <h3>Senders</h3>
 
                     <DonutChart
                         :data="sendersData"
@@ -137,7 +129,7 @@
                 sm="6"
             >
                 <v-simple-card>
-                    <h3>{{ $t('Pages.Statistics.Moderators') }}</h3>
+                    <h3>Moderators</h3>
 
                     <DonutChart
                         :data="moderatorsData"
@@ -151,7 +143,7 @@
         <!-- IMPORTERS -->
 
         <h2 class="mt-4 mb-2">
-            {{ $t('Pages.Statistics.ImportersEfficiency') }}
+            Importers efficiency
         </h2>
         <v-simple-card>
             <LineChart
@@ -204,12 +196,12 @@ export default class StatisticsPage extends LoadableVue {
             labels: this._daysInRange,
             datasets: [
                 {
-                    label: this.$t('Pages.Statistics.Registration'),
+                    label: 'Registration',
                     borderColor: '#dd0000',
                     data: data['registration:']
                 },
                 {
-                    label: this.$t('Pages.Statistics.Login'),
+                    label: 'Login',
                     borderColor: '#00dd00',
                     data: data['login:']
                 }
@@ -238,13 +230,13 @@ export default class StatisticsPage extends LoadableVue {
             labels: this._daysInRange,
             datasets: [
                 {
-                    label: this.$t('Pages.Statistics.TranslationsAdded'),
+                    label: 'Added',
                     borderColor: '#00dd00',
                     data: data['tr-added:']
                 },
                 {
 
-                    label: this.$t('Pages.Statistics.TranslationsRemoved'),
+                    label: 'Removed',
                     borderColor: '#dd0000',
                     data: data['tr-rem:']
                 }
@@ -323,17 +315,17 @@ export default class StatisticsPage extends LoadableVue {
             labels: this._daysInRange,
             datasets: [
                 {
-                    label: this.$t('Pages.Statistics.ModerationSent'),
+                    label: 'Sent',
                     borderColor: '#2222dd',
                     data: data['moder-new:']
                 },
                 {
-                    label: this.$t('Pages.Statistics.ModerationAccepted'),
+                    label: 'Accepted',
                     borderColor: '#00dd00',
                     data: data['moder-accept:']
                 },
                 {
-                    label: this.$t('Pages.Statistics.ModerationDeclined'),
+                    label: 'Declined',
                     borderColor: '#dd0000',
                     data: data['moder-decline:']
                 }

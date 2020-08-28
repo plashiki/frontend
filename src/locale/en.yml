@@ -320,7 +320,6 @@ Pages:
         Name: Admin
     Statistics:
         Name: Statistics
-        LightMode: Graphs look better in light UI mode.
         DateRangeFrom: Date range start
         DateRangeTo: Date range end
         Today: Today
@@ -329,31 +328,8 @@ Pages:
         LastMonth: Last month
         LastYear: Last year
         AllTime: All time
-        Users: Users
-        Registration: Registration
-        Login: Login
-        Moderation: Moderation
-        ModerationSent: Sent
-        ModerationAccepted: Accepted
-        ModerationDeclined: Declined
-        Senders: Senders
-        Moderators: Moderators
-        Translations: Translations
-        TranslationsAdded: Added
-        TranslationsRemoved: Deleted
-        TranslationsAdditionSource: Added by
-        TranslationsRemovalSource: Deleted by
-        ImportersEfficiency: Importers efficiency
     UsersAdmin:
         Name: Users
-        FindBy: 'Find by:'
-        Budget: Budget
-        Expense: Expense (-)
-        Donation: (+) Donation
-        Amount: Amount
-        ChangeTime: Change time
-        Comment: Comment
-        From: from
     AdminTranslations:
         Name: Translations
         Group: Group

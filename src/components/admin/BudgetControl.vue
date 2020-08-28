@@ -1,28 +1,28 @@
 <template>
     <div>
-        <h2>{{ $t('Pages.UsersAdmin.Budget') }}</h2>
+        <h2>Budget</h2>
         <TwoOptionSwitch
             v-model="isDonation"
-            :false-label="$t('Pages.UsersAdmin.Expense')"
-            :true-label="$t('Pages.UsersAdmin.Donation')"
+            false-label="Expense"
+            true-label="Donation"
         />
         <v-number-field
             v-model="amount"
-            :label="$t('Pages.UsersAdmin.Amount')"
+            label="Amount"
             :predicate="v => v > 0"
             :step="100"
             prefix="₽"
         />
         <v-text-field
             v-model="date"
-            :label="$t('Pages.UsersAdmin.ChangeTime')"
+            label="Change time"
             append-icon="mdi-calendar-today"
             @click:append="now"
         />
         <v-text-field
             v-model="comment"
-            :label="isDonation ? undefined : $t('Pages.UsersAdmin.Comment')"
-            :prefix="isDonation ? $t('Pages.UsersAdmin.From') : undefined"
+            :label="isDonation ? undefined : 'Comment'"
+            :prefix="isDonation ? 'From' : undefined"
         />
         <div class="text-center">
             <v-btn
@@ -73,7 +73,7 @@ export default class BudgetControl extends Vue {
     }
 
     now (): void {
-        this.date = lightFormat(new Date(), 'dd.MM.yyyy в HH:mm')
+        this.date = lightFormat(new Date(), 'dd.MM.yyyy at HH:mm')
     }
 }
 </script>

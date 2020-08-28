@@ -349,7 +349,6 @@ Pages:
         Name: Управление
     Statistics:
         Name: Статистика
-        LightMode: Графики отображаются лучше всего в светлой теме интерфейса
         DateRangeFrom: Начало периода
         DateRangeTo: Конец периода
         Today: Сегодня
@@ -358,31 +357,8 @@ Pages:
         LastMonth: Последний месяц
         LastYear: Последний год
         AllTime: Все время
-        Users: Пользователи
-        Registration: Регистрация
-        Login: Вход
-        Moderation: Модерация
-        ModerationSent: Отправлено на модерацию
-        ModerationAccepted: Принято
-        ModerationDeclined: Отклонено
-        Senders: Отправители
-        Moderators: Модераторы
-        Translations: Переводы
-        TranslationsAdded: Добавлено переводов
-        TranslationsRemoved: Удалено переводов
-        TranslationsAdditionSource: Добавление
-        TranslationsRemovalSource: Удаление
-        ImportersEfficiency: Эффективность импортеров
     UsersAdmin:
         Name: Пользователи
-        FindBy: 'Найти по:'
-        Budget: Бюджет
-        Expense: Расход (-)
-        Donation: (+) Донат
-        Amount: Размер
-        ChangeTime: Время изменения
-        Comment: Комментарий
-        From: от
     AdminTranslations:
         Name: Переводы
         Group: Группа

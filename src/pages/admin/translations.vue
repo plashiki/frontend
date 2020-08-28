@@ -17,8 +17,8 @@
                 <v-text-field
                     v-model="group"
                     :disabled="groupDeleting"
-                    :hint="$t('Pages.AdminTranslations.LeaveBlankForAll')"
-                    :label="$t('Pages.AdminTranslations.Group')"
+                    hint="Leave blank to display all translations"
+                    label="Group"
                     persistent-hint
                 />
                 <v-btn

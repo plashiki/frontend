@@ -1,98 +1,23 @@
 <template>
     <div class="card-layout-bg">
         <v-simple-card>
-            <v-row>
-                <v-col
-                    cols="6"
-                    sm="4"
+            <DateRangeInput
+                ref="dateRange"
+                :from.sync="rangeFrom"
+                :to.sync="rangeTo"
+                :disabled="loading"
+            >
+                <v-btn
+                    :disabled="loading"
+                    color="primary"
+                    outlined
+                    rounded
+                    @click="load"
                 >
-                    <v-date-field
-                        v-model="rangeFrom"
-                        :disabled="loading"
-                        :label="$t('Pages.Statistics.DateRangeFrom')"
-                        hide-details
-                    />
-                </v-col>
-                <v-col
-                    cols="6"
-                    sm="4"
-                >
-                    <v-date-field
-                        v-model="rangeTo"
-                        :disabled="loading"
-                        :label="$t('Pages.Statistics.DateRangeTo')"
-                        hide-details
-                    />
-                </v-col>
-                <v-col
-                    class="d-flex align-center"
-                    cols="10"
-                    sm="3"
-                >
-                    <v-btn
-                        :disabled="loading"
-                        color="primary"
-                        outlined
-                        rounded
-                        @click="load"
-                    >
-                        {{ $t('Common.Load') }}
-                    </v-btn>
-                </v-col>
-                <v-col
-                    class="d-flex justify-end align-center"
-                    cols="2"
-                    sm="1"
-                >
-                    <v-menu>
-                        <template #activator="{ on }">
-                            <v-btn
-                                icon
-                                small
-                                v-on="on"
-                            >
-                                <v-icon small>
-                                    mdi-dots-vertical
-                                </v-icon>
-                            </v-btn>
-                        </template>
+                    {{ $t('Common.Load') }}
+                </v-btn>
+            </DateRangeInput>
 
-
-                        <v-list dense>
-                            <VListItemIconText
-                                :title="$t('Pages.Statistics.Today')"
-                                icon="mdi-calendar"
-                                @click="setToday"
-                            />
-                            <VListItemIconText
-                                :title="$t('Pages.Statistics.Yesterday')"
-                                icon="mdi-calendar"
-                                @click="setYesterday"
-                            />
-                            <VListItemIconText
-                                :title="$t('Pages.Statistics.LastWeek')"
-                                icon="mdi-calendar"
-                                @click="setLastNDays(7)"
-                            />
-                            <VListItemIconText
-                                :title="$t('Pages.Statistics.LastMonth')"
-                                icon="mdi-calendar"
-                                @click="setLastNDays(31)"
-                            />
-                            <VListItemIconText
-                                :title="$t('Pages.Statistics.LastYear')"
-                                icon="mdi-calendar"
-                                @click="setLastNDays(365)"
-                            />
-                            <VListItemIconText
-                                :title="$t('Pages.Statistics.AllTime')"
-                                icon="mdi-calendar"
-                                @click="setAllTime"
-                            />
-                        </v-list>
-                    </v-menu>
-                </v-col>
-            </v-row>
             <div class="text--secondary caption">
                 {{ $t('Pages.Statistics.LightMode') }}
             </div>
@@ -238,8 +163,8 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
-import { eachDayOfInterval, formatISO, subDays } from 'date-fns'
+import { Component, Ref } from 'vue-property-decorator'
+import { eachDayOfInterval } from 'date-fns'
 import LineChart from '@/components/charts/LineChart'
 import DonutChart from '@/components/charts/DonutChart'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
@@ -251,17 +176,14 @@ import { iziToastError } from '@/plugins/izitoast'
 import VListItemIconText from '@/components/common/VListItemIconText.vue'
 import { ChartData } from 'chart.js'
 import { getPallete } from '@/vendor/pallete'
-
-function formatDate (date: Date): string {
-    return formatISO(date, {
-        representation: 'date'
-    })
-}
+import { formatDate } from '@/utils/stats-utils'
+import DateRangeInput from '@/components/misc/DateRangeInput.vue'
 
 @Component({
-    components: { VListItemIconText, VDateField, VSimpleCard, LineChart, DonutChart }
+    components: { DateRangeInput, VListItemIconText, VDateField, VSimpleCard, LineChart, DonutChart }
 })
 export default class StatisticsPage extends LoadableVue {
+    @Ref() dateRange!: any
     rangeFrom = ''
     rangeTo = ''
 
@@ -469,32 +391,12 @@ export default class StatisticsPage extends LoadableVue {
             })
     }
 
-    setAllTime (): void {
-        this.setToday()
-        this.rangeFrom = '2020-06-01'
-    }
-
-    // date picker //
-
-    setLastNDays (n: number): void {
-        this.setToday()
-        this.rangeFrom = formatDate(subDays(new Date(), n))
-    }
-
-    setYesterday (): void {
-        this.rangeTo = this.rangeFrom = formatDate(subDays(new Date(), 1))
-    }
-
-    setToday (): void {
-        this.rangeTo = this.rangeFrom = formatDate(new Date())
-    }
-
     mounted (): void {
         appStore.merge({
             pageTitle: this.$t('Pages.Statistics.Name')
         })
 
-        this.setLastNDays(7)
+        this.dateRange.setLastNDays(7)
         this.load()
     }
 

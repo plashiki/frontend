@@ -1,4 +1,4 @@
-import { Parser, ParsersState, StatisticsDay } from '@/types/misc'
+import { KeyValue, Parser, ParsersState, StatisticsDay } from '@/types/misc'
 import { makeApiRequest } from '@/api/index'
 import { PaginatedResponse, PaginationSort } from '@/types/api'
 import { User } from '@/types/user'
@@ -61,5 +61,32 @@ export function startParsers (kind: string, only: string[] = []): Promise<void> 
     return makeApiRequest({
         path: '/v2/parsers/start',
         query: { kind, only: only.length ? only.join(',') : undefined }
+    })
+}
+
+export function getKeyValueStorage (pagination: PaginationSort, search = '', parserUid = ''): Promise<PaginatedResponse<KeyValue>> {
+    return makeApiRequest({
+        path: '/v2/parsers/storage',
+        query: {
+            ...pagination,
+            search,
+            uid: parserUid
+        }
+    })
+}
+
+export function updateKeyValueStorage (key: string, value: any): Promise<void> {
+    return makeApiRequest({
+        path: '/v2/parsers/storage',
+        query: { key },
+        body: value
+    })
+}
+
+export function deleteFromKeyValueStorage (key: string): Promise<void> {
+    return makeApiRequest({
+        path: '/v2/parsers/storage',
+        method: 'DELETE',
+        query: { key }
     })
 }

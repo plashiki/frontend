@@ -4,6 +4,30 @@
             v-model="statsDialog"
             :parser-uid="selectedForDialog"
         />
+        <v-dialog
+            v-if="selectedForDialog"
+            v-model="storageDialog"
+            scrollable
+        >
+            <v-card>
+                <v-card-title>
+                    {{ selectedForDialog.uid }} storage
+                    <v-spacer />
+                    <v-btn
+                        icon
+                        @click="storageDialog = false"
+                    >
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-card-title>
+
+                <v-card-text>
+                    <KeyValueStorage
+                        :parser="selectedForDialog"
+                    />
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
         <v-simple-card>
             <v-text-field
@@ -126,10 +150,17 @@
             >
                 <template #item._actions="{ item }">
                     <v-btn
+                        v-tooltip="'Storage'"
+                        icon
+                        @click="openStorage(item)"
+                    >
+                        <v-icon>mdi-database</v-icon>
+                    </v-btn>
+                    <v-btn
                         v-show="isRunnable(item)"
                         v-tooltip="'Statistics'"
                         icon
-                        @click="openStats(item.uid)"
+                        @click="openStats(item)"
                     >
                         <v-icon>mdi-chart-line</v-icon>
                     </v-btn>
@@ -216,16 +247,18 @@ import { getParsers, getParsersState, startParsers, toggleParsers } from '@/api/
 import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 import { Passthru } from '@/components/common/passthru'
 import ParsersStatisticsDialog from '@/components/admin/ParsersStatisticsDialog.vue'
+import KeyValueStorage from '@/components/admin/KeyValueStorage.vue'
 
 @Component({
-    components: { ParsersStatisticsDialog, VSimpleCard, Passthru },
+    components: { KeyValueStorage, ParsersStatisticsDialog, VSimpleCard, Passthru },
 })
 export default class ParsersPage extends Vue {
     selected: Parser[] = []
     searchInput = ''
 
-    selectedForDialog: string | null = null
+    selectedForDialog: Parser | null = null
     statsDialog = false
+    storageDialog = false
 
     state: ParsersState | null = null
     stateTimer: number | null = null
@@ -287,9 +320,14 @@ export default class ParsersPage extends Vue {
         return this.selected.length === 0 && !!this.searchInput.match(/^(importers|mappers|cleaners)\/\*$/i)
     }
 
-    openStats (uid: string) {
-        this.selectedForDialog = uid
+    openStats (parser: Parser) {
+        this.selectedForDialog = parser
         this.statsDialog = true
+    }
+
+    openStorage (parser: Parser) {
+        this.selectedForDialog = parser
+        this.storageDialog = true
     }
 
     parseStatus (item: Parser): any {

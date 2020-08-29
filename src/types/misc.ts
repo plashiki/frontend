@@ -35,6 +35,7 @@ export interface DeleteResult {
 
 export interface Parser {
     uid: string
+    storage: string[]
     provide: string[]
     disabled: boolean
     public: string
@@ -54,3 +55,8 @@ export interface ParsersKindState {
     }
 }
 export type ParsersState = Record<'mappers' | 'importers' | 'cleaners', ParsersKindState>
+
+export interface KeyValue<T = any> {
+    key: string
+    value: T
+}

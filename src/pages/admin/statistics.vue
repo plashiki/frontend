@@ -138,19 +138,6 @@
                 </v-simple-card>
             </v-col>
         </v-row>
-
-
-        <!-- IMPORTERS -->
-
-        <h2 class="mt-4 mb-2">
-            Importers efficiency
-        </h2>
-        <v-simple-card>
-            <LineChart
-                :data="importersTrendData"
-                :options="{ legend: { display: false }, maintainAspectRatio: false }"
-            />
-        </v-simple-card>
     </div>
 </template>
 
@@ -166,7 +153,6 @@ import { getRawStatistics } from '@/api/admin'
 import { iziToastError } from '@/plugins/izitoast'
 import VListItemIconText from '@/components/common/VListItemIconText.vue'
 import { ChartData } from 'chart.js'
-import { getPallete } from '@/vendor/pallete'
 import {
     createIndexedStatistics,
     daysInRange,
@@ -269,42 +255,6 @@ export default class StatisticsPage extends LoadableVue {
                     backgroundColor: data.colors
                 }
             ]
-        }
-    }
-
-    get importersTrendData (): ChartData {
-        // maybe not the most efficient way, but im tired
-        let obj: Record<string, number[]> = {}
-        for (let d of Object.values(this.data)) {
-            for (let key of Object.keys(d)) {
-                if (key.startsWith('efficiency:importers/')) {
-                    obj[key] = []
-                }
-            }
-        }
-        let keys = Object.keys(obj)
-
-
-        for (let day of this._daysInRange) {
-            for (let key of keys) {
-                if (this.data[day] && key in this.data[day]) {
-                    obj[key].push(this.data[day][key])
-                } else {
-                    obj[key].push(0)
-
-                }
-            }
-        }
-
-        let colors = getPallete(keys.length)
-
-        return {
-            labels: this._daysInRange,
-            datasets: keys.map((key, i) => ({
-                label: key.split(':')[1],
-                borderColor: colors[i],
-                data: obj[key]
-            }))
         }
     }
 

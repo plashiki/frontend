@@ -59,9 +59,10 @@
                     mdi-delete
                 </v-icon>
             </v-btn>
-            <DeclineReasonMenu
+            <PopupTextInput
                 v-if="moderator && this.originalTranslation && this.originalTranslation.uploader_id && this.originalTranslation.status !== 'declined'"
                 #default="{ on }"
+                :label="$t('Pages.Moderation.DeclineReason')"
                 @send="decline"
             >
                 <v-btn
@@ -71,7 +72,7 @@
                 >
                     {{ $t('Pages.Moderation.Decline') }}
                 </v-btn>
-            </DeclineReasonMenu>
+            </PopupTextInput>
 
             <v-btn
                 v-if="reportId !== -1"
@@ -111,10 +112,10 @@ import {
     resolveReportDelete,
     updateTranslation
 } from '@/api/moderation'
-import DeclineReasonMenu from '@/components/moderation/DeclineReasonMenu.vue'
+import PopupTextInput from '@/components/misc/PopupTextInput.vue'
 
 @Component({
-    components: { DeclineReasonMenu, TranslationForm, ErrorAlert }
+    components: { PopupTextInput, TranslationForm, ErrorAlert }
 })
 export default class TranslationEditDialog extends Vue {
     @Prop() value!: boolean

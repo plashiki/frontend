@@ -11,10 +11,10 @@
         <v-simple-card>
             <v-text-field
                 ref="input"
-                v-model="reasonInput"
-                :label="$t('Pages.Moderation.DeclineReason')"
+                v-model="textInput"
                 dense
                 hide-details
+                v-bind="$attrs"
                 @keyup.enter="send"
             >
                 <template #prepend>
@@ -24,11 +24,10 @@
                         @click="send"
                     >
                         <v-icon
-                            color="success"
+                            :color="iconColor"
                             small
-                        >
-                            mdi-check
-                        </v-icon>
+                            v-text="icon"
+                        />
                     </v-btn>
                 </template>
             </v-text-field>
@@ -37,28 +36,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
+import { VueConstructor } from 'vue'
+import { VTextField } from 'vuetify/lib'
 
 @Component({
     components: { VSimpleCard }
 })
-export default class DeclineReasonMenu extends Vue {
+export default class PopupTextInput extends Vue {
+    @Prop({ type: String, default: 'mdi-check' }) icon!: string
+    @Prop({ type: String, default: 'success' }) iconColor!: string
+
     @Ref() input!: Vue
 
-    reasonInput = ''
+    textInput = ''
     visible = false
 
 
     send (): void {
-        this.$emit('send', this.reasonInput)
+        this.$emit('send', this.textInput)
         this.visible = false
     }
 
     @Watch('visible')
     visibilityChanged (val: boolean): void {
         if (!val) {
-            this.reasonInput = ''
+            this.textInput = ''
         } else {
             this.$nextTick(() => (this.input.$el as HTMLElement).focus())
         }

@@ -57,8 +57,9 @@
                             </v-icon>
                         </v-btn>
 
-                        <DeclineReasonMenu
+                        <PopupTextInput
                             #default="{ on }"
+                            :label="$t('Pages.Moderation.DeclineReason')"
                             @send="decline(item, $event)"
                         >
                             <v-btn
@@ -72,7 +73,7 @@
                                     mdi-close
                                 </v-icon>
                             </v-btn>
-                        </DeclineReasonMenu>
+                        </PopupTextInput>
                     </template>
                     <template v-else>
                         <v-btn
@@ -206,15 +207,15 @@ import TranslationEditDialog from '@/components/moderation/TranslationEditDialog
 import { uniqueBy } from '@/utils/object-utils'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
 import UserChip from '@/components/user/UserChip.vue'
-import DeclineReasonMenu from '@/components/moderation/DeclineReasonMenu.vue'
 import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 import { convertDataTableOptionsToPagination } from '@/utils/helpers'
 import { formatDistance } from 'date-fns'
 import { dateFnLocale } from '@/plugins/vue-i18n'
 import { getProviderNow } from '@/api/providers'
+import PopupTextInput from '@/components/misc/PopupTextInput.vue'
 
 @Component({
-    components: { DeclineReasonMenu, UserChip, ErrorAlert, TranslationEditDialog }
+    components: { PopupTextInput, UserChip, ErrorAlert, TranslationEditDialog }
 })
 export default class TranslationsTable extends Vue {
     @Prop({ default: () => [] }) value!: any[]

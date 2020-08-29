@@ -3,12 +3,13 @@
         v-model="visible"
         :close-on-content-click="false"
         top
+        :min-width="width"
     >
         <template #activator="{ on }">
             <slot :on="on" />
         </template>
 
-        <v-simple-card>
+        <v-simple-card class="pt-3">
             <v-text-field
                 ref="input"
                 v-model="textInput"
@@ -38,13 +39,13 @@
 <script lang="ts">
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
-import { VueConstructor } from 'vue'
-import { VTextField } from 'vuetify/lib'
 
 @Component({
     components: { VSimpleCard }
 })
 export default class PopupTextInput extends Vue {
+    @Prop({ type: String, default: '' }) default!: string
+    @Prop({ type: Number, default: 240 }) width!: number
     @Prop({ type: String, default: 'mdi-check' }) icon!: string
     @Prop({ type: String, default: 'success' }) iconColor!: string
 
@@ -66,6 +67,11 @@ export default class PopupTextInput extends Vue {
         } else {
             this.$nextTick(() => (this.input.$el as HTMLElement).focus())
         }
+    }
+
+    @Watch('default')
+    mounted () {
+        this.textInput = this.default
     }
 
 }

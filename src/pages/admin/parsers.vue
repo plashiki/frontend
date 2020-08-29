@@ -1,5 +1,10 @@
 <template>
     <div>
+        <ParsersStatisticsDialog
+            v-model="statsDialog"
+            :parser-uid="selectedForDialog"
+        />
+
         <v-simple-card>
             <v-text-field
                 v-model="searchInput"
@@ -121,7 +126,15 @@
             >
                 <template #item._actions="{ item }">
                     <v-btn
-                        v-if="isRunnable(item)"
+                        v-show="isRunnable(item)"
+                        v-tooltip="'Statistics'"
+                        icon
+                        @click="openStats(item.uid)"
+                    >
+                        <v-icon>mdi-chart-line</v-icon>
+                    </v-btn>
+                    <v-btn
+                        v-show="isRunnable(item)"
                         v-tooltip="item.disabled ? 'Enable' : 'Disable'"
                         icon
                         @click="toggle(item.disabled ? 'enable' : 'disable', [item.uid])"
@@ -131,7 +144,7 @@
                         </v-icon>
                     </v-btn>
                     <v-btn
-                        v-if="isRunnable(item)"
+                        v-show="isRunnable(item)"
                         v-tooltip="'Start'"
                         :disabled="item.disabled || isRunning(item.uid.split('/')[0])"
                         icon
@@ -202,13 +215,17 @@ import { convertDataTableOptionsToPagination } from '@/utils/helpers'
 import { getParsers, getParsersState, startParsers, toggleParsers } from '@/api/admin'
 import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 import { Passthru } from '@/components/common/passthru'
+import ParsersStatisticsDialog from '@/components/admin/ParsersStatisticsDialog.vue'
 
 @Component({
-    components: { VSimpleCard, Passthru },
+    components: { ParsersStatisticsDialog, VSimpleCard, Passthru },
 })
 export default class ParsersPage extends Vue {
     selected: Parser[] = []
     searchInput = ''
+
+    selectedForDialog: string | null = null
+    statsDialog = false
 
     state: ParsersState | null = null
     stateTimer: number | null = null
@@ -268,6 +285,11 @@ export default class ParsersPage extends Vue {
 
     get entireRunnableKindVisible (): boolean {
         return this.selected.length === 0 && !!this.searchInput.match(/^(importers|mappers|cleaners)\/\*$/i)
+    }
+
+    openStats (uid: string) {
+        this.selectedForDialog = uid
+        this.statsDialog = true
     }
 
     parseStatus (item: Parser): any {

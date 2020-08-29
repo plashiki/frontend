@@ -435,6 +435,7 @@ export default class ParsersPage extends Vue {
     @Watch('searchInput')
     @Debounced(500)
     doSearch () {
+        this.options.page = 1
         this.update()
     }
 

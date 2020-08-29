@@ -63,15 +63,19 @@ export default class PopupTextInput extends Vue {
     @Watch('visible')
     visibilityChanged (val: boolean): void {
         if (!val) {
-            this.textInput = ''
+            this.textInput = this.default
         } else {
             this.$nextTick(() => (this.input.$el as HTMLElement).focus())
         }
     }
 
     @Watch('default')
-    mounted () {
+    defaultChanged () {
         this.textInput = this.default
+    }
+
+    mounted () {
+        this.defaultChanged()
     }
 
 }

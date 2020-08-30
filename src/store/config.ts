@@ -21,11 +21,11 @@ if (!isLocalStorageSupported() || !('plashiki-local' in localStorage)) {
 
 let defaultLanguageFilters: Record<string, true> = {}
 
-if ((!isLocalStorageSupported() || !('plashiki-local' in localStorage)) && defaultLanguage !== 'ru') {
-    defaultLanguageFilters['ru'] = true
-    defaultLanguageFilters['by'] = true
-    defaultLanguageFilters['ua'] = true
-}
+// if ((!isLocalStorageSupported() || !('plashiki-local' in localStorage)) && defaultLanguage !== 'ru') {
+//     defaultLanguageFilters['ru'] = true
+//     defaultLanguageFilters['by'] = true
+//     defaultLanguageFilters['ua'] = true
+// }
 
 export type ListViewMode = 'cards' | 'items'
 

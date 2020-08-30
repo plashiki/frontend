@@ -381,8 +381,10 @@ export default class TranslationsTable extends Vue {
         let pagination = convertDataTableOptionsToPagination(this.options, true)
         if (this.admin && this.group) {
             prom = getTranslationsInGroup(this.group, pagination)
+        } else if (this.moderator || this.admin) {
+            prom = getRecentlySubmittedTranslations(pagination, this.admin)
         } else {
-            prom = (this.moderator || this.admin ? getRecentlySubmittedTranslations : getSubmittedTranslations)(pagination)
+            prom = getSubmittedTranslations(pagination)
         }
 
         return prom

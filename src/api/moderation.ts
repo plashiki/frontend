@@ -34,10 +34,10 @@ export function getSubmittedReports (pagination?: Pagination): Promise<Paginated
 }
 
 // im like reaally bad at naming. these <Recently> are for moderators
-export function getRecentlySubmittedTranslations (pagination?: Pagination): Promise<PaginatedResponse<Translation>> {
+export function getRecentlySubmittedTranslations (pagination?: Pagination, all = false): Promise<PaginatedResponse<Translation>> {
     return makeApiRequest({
         path: '/v2/submissions/recent',
-        query: pagination,
+        query: { ...pagination, all },
         timeout: 15000 // slow yep
     })
 }

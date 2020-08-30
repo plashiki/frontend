@@ -2,7 +2,7 @@
     <div>
         <ParsersStatisticsDialog
             v-model="statsDialog"
-            :parser-uid="selectedForDialog"
+            :parser-uid="selectedForDialog ? selectedForDialog.uid : ''"
         />
         <v-dialog
             v-if="selectedForDialog"

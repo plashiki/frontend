@@ -84,7 +84,7 @@
             </v-btn>
 
             <v-btn
-                :disabled="loading || !valid"
+                :disabled="loading || (editableTranslation && !valid)"
                 color="success"
                 text
                 @click="save"
@@ -158,27 +158,27 @@ export default class TranslationEditDialog extends Vue {
     }
 
     save (): void {
-        if (!this.originalTranslation || !this.editableTranslation) return;
-        (this.$refs.form as any).applyPendingChanges()
+        if ((!this.originalTranslation || !this.editableTranslation) && this.reportId === -1) return;
+        (this.$refs.form as any)?.applyPendingChanges()
 
         this.loading = true
         this.error = null
         let method
-        if (this.moderator && this.originalTranslation.status !== TranslationStatus.Added) {
-            method = acceptTranslation
-        } else if (this.reportId !== -1) {
+        if (this.reportId !== -1) {
             method = resolveReport
+        } else if (this.moderator && this.originalTranslation!.status !== TranslationStatus.Added) {
+            method = acceptTranslation
         } else {
             method = updateTranslation
         }
 
         method(
-            this.reportId !== -1 ? this.reportId : this.originalTranslation.id,
-            shallowDiff(this.originalTranslation, this.editableTranslation)
+            this.reportId !== -1 ? this.reportId : this.originalTranslation!.id,
+            this.originalTranslation && this.editableTranslation ? shallowDiff(this.originalTranslation, this.editableTranslation) : {}
         ).then((tr) => {
             if (this.initTranslation) merge(this.initTranslation, tr)
             this.$emit('update', tr)
-            this.$emit('media', (this.$refs.form as any).selectedMedia)
+            this.$emit('media', (this.$refs.form as any)?.selectedMedia)
             this.close()
         }).catch((err) => {
             this.error = err

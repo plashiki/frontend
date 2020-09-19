@@ -52,13 +52,6 @@
                         />
                     </td>
                 </tr>
-                <tr>
-                    <td>{{ $t('Pages.Settings.Moderators') }}</td>
-                    <td>
-                        <a href="//shikimori.one/kiolli" target="_blank">kiolli</a>,
-                        <a href="//shikimori.one/DisboardTetta" target="_blank">DisboardTetta</a>,
-                        <a href="//weryskok.space" target="_blank">WerySkok</a></td>
-                </tr>
             </tbody>
         </v-simple-table>
 

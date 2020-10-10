@@ -502,8 +502,6 @@ Items:
             cnraw: Chinese raw
             koraw: Korean raw
             otherraw: Raw in other language
-        IsHq: High quality
-        IsHqShort: HQ?
         Author: Translation author
         LeaveBlankIfUnknown: Leave blank if author is unknown
         Url: URL

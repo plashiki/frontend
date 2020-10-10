@@ -149,7 +149,6 @@ export default class AddTranslationPage extends LoadableVue {
         // fix random problems with missing fields
         let form: Partial<Translation> = { ...this.form }
         if (form.author == null) form.author = ''
-        if (form.hq == null) form.hq = false;
         this.formEl.applyPendingChanges()
 
         submitTranslation(form).then((tr) => {

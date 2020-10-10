@@ -41,7 +41,6 @@ export interface Translation {
     part: number
     kind: TranslationKind
     lang: TranslationLanguage
-    hq: boolean
     author: string
     uploader_id: number
     uploader?: User | number
@@ -64,7 +63,6 @@ export interface SingleTranslationData {
     name: string
     url: string
     rawUrl?: string
-    hq: boolean
     uploader: User | number | null
 }
 
@@ -76,7 +74,6 @@ export interface TranslationAuthor {
     lang: TranslationLanguage
     translations: SingleTranslationData[]
 
-    hqCount: number
     metaTag: string
     key: string
 }

@@ -12,12 +12,6 @@
                 small
                 @click="itemClicked(tr, $event)"
             >
-                <v-avatar
-                    v-if="tr.hq"
-                    :color="itemActive(tr) ? 'white' : 'primary'"
-                    class="mr-2"
-                    size="8"
-                />
                 {{ tr.name }}
             </v-btn>
         </transition-group>
@@ -89,7 +83,7 @@ export default class TranslationsList extends Vue {
         let timesFiltered: Record<string, number> = {}
 
         for (let it of this.preFilteredData) {
-            const name = (it.hq ? 'HQ ' : '') + it.name
+            const name = it.name
             if (!(name in times)) {
                 times[name] = 0
             }
@@ -98,7 +92,7 @@ export default class TranslationsList extends Vue {
 
 
         for (let it of this.filteredData) {
-            const name = (it.hq ? 'HQ ' : '') + it.name
+            const name = it.name
             if (!(name in timesFiltered)) {
                 timesFiltered[name] = 0
             }

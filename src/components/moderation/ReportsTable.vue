@@ -279,13 +279,6 @@ export default class ReportsTable extends Vue {
                         }
                     }
 
-                    if (key === 'hq') {
-                        return {
-                            display: [this.$t('Items.Translation.IsHqShort'), this.$t(value ? 'Common.Yes' : 'Common.No')],
-                            object
-                        }
-                    }
-
                     if (key === 'target_id' || key === 'target_type') {
                         return {
                             display: [this.$t('Items.Translation.Target'), value],

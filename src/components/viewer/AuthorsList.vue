@@ -217,7 +217,7 @@ export default class AuthorsList extends Vue {
         let times: Record<string, number> = {}
 
         for (let it of preFilteredData) {
-            const name = (it.hq ? 'HQ ' : '') + it.name
+            const name = it.name
             if (!(name in times)) {
                 times[name] = 0
             }

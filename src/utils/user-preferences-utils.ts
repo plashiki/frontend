@@ -84,9 +84,8 @@ export function sortTranslations (data: TranslationData): TranslationData {
         // resulting map for current part: author meta-tag --> final weight
         const totalAuthorWeights: Record<string, number> = {}
 
-        // initial hq + link-count + alphabetical sort
+        // initial link-count + alphabetical sort
         authors.sort((a, b) => {
-            if (b.hqCount !== a.hqCount) return (b.hqCount - a.hqCount)
             if (a.name === '') return 1
             if (b.name === '') return -1
             return (b.translations.length - a.translations.length) || (b.name < a.name ? 1 : -1)
@@ -99,9 +98,6 @@ export function sortTranslations (data: TranslationData): TranslationData {
 
             for (let translation of author.translations) {
                 totalPlayerWeight += playerWeights[translation.name] ?? 0
-                if (translation.hq) {
-                    totalPlayerWeight += (playerWeights[translation.name] ?? 0.5) * 3
-                }
             }
 
             author.translations.sort((a, b) => {

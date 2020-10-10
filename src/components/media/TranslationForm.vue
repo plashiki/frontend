@@ -111,13 +111,6 @@
                 />
             </v-col>
         </v-row>
-        <v-checkbox
-            v-model="form.hq"
-            :disabled="disabled"
-            :label="$t('Items.Translation.IsHq')"
-            class="mt-0"
-            hide-details
-        />
         <v-combobox
             v-model="form.author"
             :disabled="disabled"
@@ -246,7 +239,6 @@ import { getProviderNow } from '@/api/providers'
 const formDefaults = {
     author: '',
     url: '',
-    hq: false
 } as any
 
 type TranslationFormData = {
@@ -351,7 +343,7 @@ export default class TranslationForm extends Vue {
 
     @Watch('form')
     initForm (): void {
-        ['target_id', 'target_type', 'part', 'kind', 'lang', 'hq', 'author', 'url'].forEach((key) => {
+        ['target_id', 'target_type', 'part', 'kind', 'lang', 'author', 'url'].forEach((key) => {
             if (!(key in this.form)) {
                 this.$set(this.form, key,
                     key === 'target_type' ? this.mediaType :

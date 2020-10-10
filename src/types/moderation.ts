@@ -16,7 +16,7 @@ export enum ReportStatus {
     Discarded = 'discarded'
 }
 
-export type EditableTranslationFields = 'kind' | 'lang' | 'hq' | 'target_id' | 'target_type' | 'part' | 'author' | 'url'
+export type EditableTranslationFields = 'kind' | 'lang' | 'target_id' | 'target_type' | 'part' | 'author' | 'url'
 
 export interface Report {
     id: number

@@ -156,12 +156,6 @@
                     </v-icon>
                 </div>
             </template>
-            <template #item.hq="{ value }">
-                <v-simple-checkbox
-                    :value="value"
-                    disabled
-                />
-            </template>
             <template #item.author="{ value }">
                 <span
                     v-tooltip="value || $t('Items.Translation.UnknownAuthor')"
@@ -270,11 +264,6 @@ export default class TranslationsTable extends Vue {
                 value: '_kind',
                 sortable: false,
                 width: 70
-            },
-            {
-                text: this.$t('Items.Translation.IsHqShort'),
-                value: 'hq',
-                width: 110
             },
             {
                 text: this.$t('Items.Translation.Author'),

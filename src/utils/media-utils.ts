@@ -148,7 +148,6 @@ export function processTranslations (translations: Translation[]): TranslationDa
                 lang: tr.lang,
                 name: tr.author,
                 translations: [],
-                hqCount: 0,
                 metaTag,
                 key
             }
@@ -165,12 +164,8 @@ export function processTranslations (translations: Translation[]): TranslationDa
             name: playerHost,
             url,
             rawUrl,
-            hq: tr.hq,
             uploader: tr.uploader ?? null
         })
-        if (tr.hq) {
-            index[fullTag].hqCount++
-        }
     })
 
     return ret

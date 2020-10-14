@@ -31,40 +31,6 @@
             </v-card-text>
         </v-card>
 
-        <!--        <v-card class="my-2">-->
-        <!--            <v-card-text>-->
-        <!--                <HeadlineWithLinkButton-->
-        <!--                    :text="$t('Pages.Index.TopOngoings')"-->
-        <!--                    :to="topOngoingsLink"-->
-        <!--                    :tooltip="$t('Pages.Index.OpenInSearch')"-->
-        <!--                    class="my-2"-->
-        <!--                />-->
-        <!--                <MediaCarousel-->
-        <!--                    :items="items.ongoings"-->
-        <!--                    :loading="loading"-->
-        <!--                    :no-items-text="$t('Common.Collection.NoItemsFound')"-->
-        <!--                    :rows="2"-->
-        <!--                />-->
-        <!--            </v-card-text>-->
-        <!--        </v-card>-->
-
-        <!--        <v-card class="my-2">-->
-        <!--            <v-card-text>-->
-        <!--                <HeadlineWithLinkButton-->
-        <!--                    :text="$t('Pages.Index.TopReleased')"-->
-        <!--                    :to="topReleasedLink"-->
-        <!--                    :tooltip="$t('Pages.Index.OpenInSearch')"-->
-        <!--                    class="my-2"-->
-        <!--                />-->
-        <!--                <MediaCarousel-->
-        <!--                    :items="items.released"-->
-        <!--                    :loading="loading"-->
-        <!--                    :no-items-text="$t('Common.Collection.NoItemsFound')"-->
-        <!--                    :rows="2"-->
-        <!--                />-->
-        <!--            </v-card-text>-->
-        <!--        </v-card>-->
-
         <p class="text-center body-2 text--secondary">
             {{ $t('Common.Collection.DataFrom', { provider: $t('Providers.' + dataProvider) }) }}
         </p>

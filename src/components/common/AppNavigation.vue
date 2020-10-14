@@ -1,78 +1,51 @@
 <template>
     <v-navigation-drawer
+        ref="drawer"
         v-model="isVisible"
+        class="fix-drawer-labels"
+        :mini-variant="mini"
+        :permanent="mini"
+        :expand-on-hover="expandOnHover"
         app
+        @mouseenter.native="onMouseEnter"
+        @mouseleave.native="onMouseLeave"
     >
         <template #prepend>
-            <v-list dense>
-                <v-list-item>
-                    <v-list-item-avatar>
-                        <img
-                            :src="userAvatar"
-                            alt=""
-                        >
-                    </v-list-item-avatar>
-                    <v-icon
-                        v-for="(galo4ka, i) in userGalo4ki"
-                        :key="i"
-                        v-tooltip="$t(galo4ka.info)"
-                        :color="galo4ka.color || 'primary'"
-                        small
-                    >
-                        {{ galo4ka.icon }}
-                    </v-icon>
-                    <v-spacer />
-                    <v-list-item-action>
-                        <v-row>
-                            <v-btn
-                                v-tooltip="$t(isDark ? 'Pages.Settings.DisableDarkMode' : 'Pages.Settings.EnableDarkMode')"
-                                class="mx-2"
-                                icon
-                                @click="toggleDark"
-                            >
-                                <v-fade-transition>
-                                    <v-icon v-if="isDark">
-                                        mdi-white-balance-sunny
-                                    </v-icon>
-                                    <v-icon v-else>
-                                        mdi-moon-waning-crescent
-                                    </v-icon>
-                                </v-fade-transition>
-                            </v-btn>
-
-                            <SettingsDialog
-                                v-if="$r12s.screenWidth >= 768"
-                                #default="{ on }"
-                            >
-                                <v-btn
-                                    v-tooltip="$t('Pages.Settings.Name')"
-                                    class="mr-2"
-                                    icon
-                                    v-on="on"
-                                >
-                                    <v-icon>mdi-cog</v-icon>
-                                </v-btn>
-                            </SettingsDialog>
-                            <v-btn
-                                v-else
-                                v-tooltip="$t('Pages.Settings.Name')"
-                                active-class="primary--text"
-                                class="mr-2"
-                                icon
-                                to="/settings"
-                            >
-                                <v-icon>mdi-cog</v-icon>
-                            </v-btn>
-                        </v-row>
-                    </v-list-item-action>
-                </v-list-item>
-                <v-list-group>
+            <VListItemIconText
+                v-if="mini"
+                title="PlaShiki"
+                icon="mdi-menu"
+                dense
+                @click="forceExpand"
+            />
+            <v-list
+                dense
+                class="py-0"
+            >
+                <v-list-group class="fix-drawer-avatar">
                     <template #activator>
-                        <v-list-item class="text-truncate">
+                        <v-list-item-avatar>
+                            <img
+                                :src="userAvatar"
+                                alt=""
+                            >
+                        </v-list-item-avatar>
+                        <v-list-item-content>
                             <v-list-item-title>
                                 {{ userDisplayName }}
                             </v-list-item-title>
-                        </v-list-item>
+                            <v-list-item-subtitle>
+                                <v-icon
+                                    v-for="(galo4ka, i) in userGalo4ki"
+                                    :key="i"
+                                    v-tooltip="$t(galo4ka.info)"
+                                    :color="galo4ka.color || 'primary'"
+                                    small
+                                >
+                                    {{ galo4ka.icon }}
+                                </v-icon>
+                            </v-list-item-subtitle>
+                        </v-list-item-content>
                     </template>
 
                     <VListItemIconText
@@ -100,18 +73,23 @@
 
         <v-divider />
         <SearchFieldAutocomplete
+            ref="search"
             background-color="transparent"
+            media-type="anime"
+            :mini="mini && !expandOnHover"
             flat
             hide-details
             links
-            media-type="anime"
             solo
+            @focusin.native="onSearchFieldFocus"
+            @focusout.native="onSearchFieldBlur"
+            @navigation="onSearchFieldBlur"
         />
         <v-divider />
 
         <v-list
             dense
-            nav
+            :nav="!mini"
         >
             <template v-if="!userscriptInstalled && canInstallUserscript">
                 <InstallUserscriptDialog #default="{ on }">
@@ -142,8 +120,9 @@
                     :title="$t(item.name)"
                     :to="item.path"
                     active-class="primary--text"
-                    class="pl-8"
+                    :class="{ 'pl-8': !mini }"
                 />
+                <v-divider />
             </v-list-group>
 
             <VListItemIconText
@@ -157,34 +136,46 @@
         </v-list>
 
         <template #append>
-            <v-footer
-                class="justify-center caption"
+            <VListItemIconText
+                :title="$t(isDark ? 'Pages.Settings.DisableDarkMode' : 'Pages.Settings.EnableDarkMode')"
+                dense
+                @click="toggleDark"
             >
-                <div class="text-center">
-                    <span class="text-truncate">
-                        <a
-                            href="https://telegram.dog/PlashikiSupport"
-                            target="_blank"
-                            v-text="$t('Pages.Support.Name')"
-                        />
-                        &nbsp;|&nbsp;
-                        <router-link
-                            to="/legal"
-                            v-text="$t('Pages.Legal.Name')"
-                        />
-                    </span>
-                    <br>
-                    &copy; PlaShiki
-                    <span v-tooltip="versionInfo">v{{ version }}</span>
-                    2019-{{ new Date().getFullYear() }}
-                </div>
-            </v-footer>
+                <template #icon>
+                    <v-fade-transition>
+                        <v-icon v-if="isDark">
+                            mdi-white-balance-sunny
+                        </v-icon>
+                        <v-icon v-else>
+                            mdi-moon-waning-crescent
+                        </v-icon>
+                    </v-fade-transition>
+                </template>
+            </VListItemIconText>
+            <SettingsDialog
+                v-if="$r12s.screenWidth >= 768"
+                #default="{ on }"
+            >
+                <VListItemIconText
+                    icon="mdi-cog"
+                    :title="$t('Pages.Settings.Name')"
+                    dense
+                    v-on="on"
+                />
+            </SettingsDialog>
+            <VListItemIconText
+                v-else
+                icon="mdi-cog"
+                to="/settings"
+                :title="$t('Pages.Settings.Name')"
+                dense
+            />
         </template>
     </v-navigation-drawer>
 </template>
 
 <script lang="ts">
-import { Component, Prop, PropSync, Vue } from 'vue-property-decorator'
+import { Component, Prop, PropSync, Ref, Vue } from 'vue-property-decorator'
 import { authStore, configStore } from '@/store'
 import { buildDate, currentCommit, defaultAvatar, version } from '@/config'
 import AppSettings from '@/components/settings/AppSettings.vue'
@@ -215,13 +206,15 @@ interface PageMeta {
         SearchFieldAutocomplete,
         VListItemIconText,
         AppSettings,
-        ShikimoriIcon
-    }
+        ShikimoriIcon,
+    },
 })
 export default class AppNavigation extends Vue {
     @PropSync('visible') isVisible!: boolean
     @Prop({ type: String }) currentTitle!: string
+    @Prop({ type: Boolean }) mini!: boolean
 
+    @Ref() drawer!: any
     loginVia = loginVia
 
     version = version
@@ -230,70 +223,75 @@ export default class AppNavigation extends Vue {
         {
             path: '/',
             name: 'Pages.Index.Name',
-            icon: 'mdi-home'
+            icon: 'mdi-home',
         },
         {
             path: '/search',
             name: 'Pages.Search.Name',
-            icon: 'mdi-magnify'
+            icon: 'mdi-magnify',
         },
         {
             path: '$current',
             name: '$current',
             nameFallback: 'Pages.Viewer.Name',
             icon: 'mdi-play',
-            routeGroup: 'viewer-anime'
+            routeGroup: 'viewer-anime',
         },
         {
             path: '/lists',
             name: 'Pages.Lists.Name',
-            icon: 'mdi-format-list-checks'
+            icon: 'mdi-format-list-checks',
         },
         {
             path: '/calendar',
             name: 'Pages.Calendar.Name',
-            icon: 'mdi-calendar'
+            icon: 'mdi-calendar',
         },
         {
             path: '/moderation',
             name: 'Pages.Moderation.Name',
             icon: 'mdi-fingerprint',
-            flag: 'moderator'
+            flag: 'moderator',
         },
         {
             path: '/add',
             name: 'Pages.AddTranslation.Name',
             icon: 'mdi-file-plus-outline',
-            auth: true
+            auth: true,
         },
         {
             path: '/donate',
             name: 'Pages.Donate.Name',
-            icon: 'mdi-currency-usd'
-        }
+            icon: 'mdi-currency-usd',
+        },
     ]
     adminGroup: PageMeta[] = [
         {
             path: '/admin/statistics',
             name: 'Pages.Statistics.Name',
-            icon: 'mdi-chart-line'
+            icon: 'mdi-chart-line',
         },
         {
             path: '/admin/users',
             name: 'Pages.UsersAdmin.Name',
-            icon: 'mdi-account'
+            icon: 'mdi-account',
         },
         {
             path: '/admin/translations',
             name: 'Pages.AdminTranslations.Name',
-            icon: 'mdi-translate'
+            icon: 'mdi-translate',
         },
         {
             path: '/admin/parsers',
             name: 'Pages.Parsers.Name',
-            icon: 'mdi-code-braces'
-        }
+            icon: 'mdi-code-braces',
+        },
     ]
+
+    expandOnHover = false
+    timer: number | null = null
+    searchFieldFocused = false
+    collapseOnceSearchFieldUnfocused = false
 
     get visibleNavigation (): PageMeta[] {
         return this.navigation.filter(it => {
@@ -312,8 +310,11 @@ export default class AppNavigation extends Vue {
             : this.$r12s.isTouchDevice
                 // windows/macos/x11 (linux) with touchscreen are probably running full-featured browser
                 ? !!navigator.userAgent.match(/windows nt|mac os x|X11/i)
-                    // firefox and yandex browser on android support plugins
-                    || (!!navigator.userAgent.match(/firefox\/|YaBrowser\/|Yowser\//i) && !!navigator.userAgent.match(/android/i))
+                // firefox and yandex browser on android support plugins
+                || (
+                    !!navigator.userAgent.match(/firefox\/|YaBrowser\/|Yowser\//i) &&
+                    !!navigator.userAgent.match(/android/i)
+                )
                 : true
     }
 
@@ -345,9 +346,72 @@ export default class AppNavigation extends Vue {
         return authStore.userGalo4ki
     }
 
+    onMouseEnter (): void {
+        if (!this.mini || this.timer) return
+        if (this.searchFieldFocused && this.collapseOnceSearchFieldUnfocused) {
+            this.collapseOnceSearchFieldUnfocused = false
+            return
+        }
+        if (this.expandOnHover) return
+
+        this.timer = setTimeout(() => {
+            this.timer = null
+            this.forceExpand()
+        }, 500)
+    }
+
+    forceExpand (): void {
+        if (!this.mini) return
+        if (this.timer) {
+            clearTimeout(this.timer)
+            this.timer = null
+        }
+        this.expandOnHover = true
+        this.$nextTick(() => {
+            if (this.drawer) this.drawer.isMouseover = true
+        })
+    }
+
+    onMouseLeave (evt?: MouseEvent): void {
+        if (!this.mini) return
+        console.log('mouseleave')
+        if (this.timer) {
+            clearTimeout(this.timer)
+            this.timer = null
+        }
+        if (this.searchFieldFocused) {
+            this.collapseOnceSearchFieldUnfocused = true
+            if (evt) {
+                evt.stopPropagation()
+                evt.stopImmediatePropagation()
+                evt.preventDefault()
+            }
+            return
+        }
+
+        console.log('mouseleave handler')
+        this.expandOnHover = false
+        this.$nextTick(() => {
+            if (this.drawer) this.drawer.isMouseover = false
+        })
+    }
+
+    onSearchFieldFocus (): void {
+        this.forceExpand()
+        this.searchFieldFocused = true
+    }
+
+    onSearchFieldBlur (): void {
+        this.searchFieldFocused = false
+        if (this.collapseOnceSearchFieldUnfocused) {
+            this.onMouseLeave()
+            this.collapseOnceSearchFieldUnfocused = false
+        }
+    }
+
     toggleDark (): void {
         configStore.merge({
-            dark: !this.isDark
+            dark: !this.isDark,
         })
     }
 
@@ -360,5 +424,27 @@ export default class AppNavigation extends Vue {
 </script>
 
 <style>
+.fix-drawer-avatar > .v-list-item {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+}
 
+.v-navigation-drawer--mini-variant.fix-drawer-labels .v-list-item > *:not(:first-child) {
+    position: revert !important;
+    height: revert !important;
+    width: revert !important;
+    overflow: revert !important;
+    clip: revert !important;
+    white-space: revert !important;
+    display: flex !important;
+}
+
+.v-navigation-drawer--mini-variant.fix-drawer-labels .v-list-item > *:first-child {
+    margin-left: revert !important;
+    margin-right: 32px !important;
+}
+.v-navigation-drawer--mini-variant.fix-drawer-labels .fix-drawer-avatar > .v-list-item > *:first-child {
+    margin-left: revert !important;
+    margin-right: 16px !important;
+}
 </style>

@@ -61,6 +61,21 @@
             target="_blank"
             v-text="$t('Pages.Tos.Name')"
         />
+        /
+        <a
+            class="mt-2 caption"
+            href="/legal"
+            target="_blank"
+            v-text="$t('Pages.Legal.Name')"
+        />
+        /
+        <a
+            class="mt-2 caption"
+            href="https://telegram.dog/PlashikiSupport"
+            target="_blank"
+            v-text="$t('Pages.Support.Name')"
+        />
+
     </div>
 </template>
 

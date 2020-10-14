@@ -72,8 +72,8 @@ Pages:
     Settings:
         Name: Настройки
         DarkMode: Темная тема
-        EnableDarkMode: Включить темную тему
-        DisableDarkMode: Выключить темную тему
+        EnableDarkMode: Темная тема
+        DisableDarkMode: Светлая тема
         AccountTab: Аккаунт
         NetworkTab: Сеть
         PersonalizationTab: Персонализация

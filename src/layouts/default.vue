@@ -4,17 +4,19 @@
             v-if="showAppBar && showNavBar"
             :current-title="navTitle"
             :visible.sync="navigationVisible"
+            :mini="$r12s.screenWidth > 1264"
         />
 
         <v-app-bar
             v-if="showAppBar"
             :hide-on-scroll="$r12s.isMobileByWidth || $r12s.screenHeight < 480"
             :dark="isDark"
+            dense
             flat
             app
         >
             <v-app-bar-nav-icon
-                v-if="showNavBar"
+                v-if="showNavBar && $r12s.screenWidth <= 1264"
                 class="mr-1"
                 @click="navigationVisible = !navigationVisible"
             />
@@ -30,6 +32,7 @@
                 :label="$t('Pages.Search.Name')"
                 class="search-field"
                 append-icon="mdi-magnify"
+                dense
                 solo
                 flat
                 hide-details
@@ -197,6 +200,11 @@ export default class DefaultLayout extends Vue {
 
         // set vuetify colors
         merge(this.$vuetify.theme.themes[val ? 'dark' : 'light'], val ? configStore.darkColors : configStore.lightColors)
+    }
+
+    @Watch('$r12s.screenWidth')
+    onScreenWidthChanged () {
+        if (window.innerWidth > 1264) this.navigationVisible = true
     }
 
     doSearch (): void {

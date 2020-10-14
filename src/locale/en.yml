@@ -63,8 +63,8 @@ Pages:
     Settings:
         Name: Settings
         DarkMode: Dark mode
-        EnableDarkMode: Enable dark mode
-        DisableDarkMode: Disable dark mode
+        EnableDarkMode: Dark mode
+        DisableDarkMode: Light mode
         AccountTab: Account
         NetworkTab: Network
         PersonalizationTab: Personalization

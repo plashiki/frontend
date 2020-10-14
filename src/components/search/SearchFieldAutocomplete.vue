@@ -18,6 +18,13 @@
         @keyup.enter="links && openSearch()"
     >
         <template
+            v-if="mini"
+            #label
+        >
+            <v-icon class="ml-1">mdi-magnify</v-icon>
+        </template>
+
+        <template
             v-if="links"
             #selection
         >
@@ -77,6 +84,7 @@ export default class SearchFieldAutocomplete extends Vue {
     @Prop({ required: true }) mediaType!: MediaType
     @Prop({ type: Boolean, default: false }) links!: boolean
     @Prop({ type: Boolean, default: false }) required!: boolean
+    @Prop({ type: Boolean, default: false }) mini!: boolean
 
     requiredField = requiredField
 
@@ -97,6 +105,7 @@ export default class SearchFieldAutocomplete extends Vue {
         if (this.selected && this.links) {
             this.$router.push(`/${this.mediaType}/${this.selected}`)
             this.selected = null
+            this.$emit('navigation')
         }
     }
 

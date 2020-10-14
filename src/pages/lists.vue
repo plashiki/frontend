@@ -388,7 +388,8 @@ export default class ListsPage extends Vue {
 
         this.initState()
         appStore.merge({
-            pageTitle: this.$t('Pages.Lists.Name')
+            pageTitle: this.$t('Pages.Lists.Name'),
+            showSearch: true,
         })
         this.routeChanged(this.$route)
     }

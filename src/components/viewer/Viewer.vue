@@ -478,7 +478,8 @@ export default class Viewer extends LoadableVue {
             innerTitle: '',
             pageTitle: this.name,
             navTitle: this.name,
-            showUpdateButton: true
+            showUpdateButton: true,
+            showSearch: true,
         })
     }
 

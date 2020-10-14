@@ -93,11 +93,11 @@
             />
         </v-app-bar>
 
-        <v-content>
+        <v-main>
             <v-container>
                 <slot />
             </v-container>
-        </v-content>
+        </v-main>
 
         <Notification
             :item="currentNotification"
@@ -153,7 +153,6 @@ export default class DefaultLayout extends Vue {
     get connectionIndicator (): boolean {
         return configStore.connectionIndicator
     }
-
 
     get innerTitle (): string {
         return appStore.innerTitle ?? appStore.pageTitle ?? ''

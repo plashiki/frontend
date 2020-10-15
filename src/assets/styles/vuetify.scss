@@ -3,7 +3,7 @@
 // remove last width breakpoint
 @media (min-width: 1904px) {
     .container {
-        max-width: 1185px!important;
+        max-width: 1185px !important;
     }
 }
 
@@ -17,13 +17,13 @@
 
 // change v-app-bar style to match drawer
 .theme--dark.v-app-bar.v-toolbar.v-sheet {
-    background-color: #363636!important;
-    border-bottom: 1px solid #4e4e4e!important;
+    background-color: #363636 !important;
+    border-bottom: 1px solid #4e4e4e !important;
 }
 
 .theme--light.v-app-bar.v-toolbar.v-sheet {
-    background-color: #ffffff!important;
-    border-bottom: 1px solid #e0e0e0!important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e0e0e0 !important;
 }
 
 // smaller badges (optional)
@@ -117,4 +117,10 @@ html.dark.overflow-y-hidden {
 // disable active bg for v-list (optional)
 .fix-active-bg .theme--light.v-list-item--active::before {
     opacity: 0;
+}
+
+// apparently this was removed in some update
+.v-icon--svg {
+    height: 24px;
+    width: 24px
 }

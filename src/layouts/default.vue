@@ -97,9 +97,10 @@
         </v-app-bar>
 
         <v-main>
-            <v-container>
+            <v-container v-if="useContainer">
                 <slot />
             </v-container>
+            <slot v-else />
         </v-main>
 
         <Notification
@@ -192,6 +193,10 @@ export default class DefaultLayout extends Vue {
             return this.$tc('Common.Network.ReconnectingInN', webSocketStatus.attemptIn + 1) as string
         }
         return ''
+    }
+
+    get useContainer (): boolean {
+        return !this.$route.meta.full
     }
 
     @Watch('isDark')

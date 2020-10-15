@@ -4,7 +4,7 @@
             data.class,
             data.staticClass
         ]"
-        class="v-card v-simple-card"
+        class="v-card v-simple-card elevation-3"
         v-bind="data.attrs"
     >
         <div :class="props.textClass" class="v-card__text">

@@ -374,7 +374,6 @@ export default class AppNavigation extends Vue {
 
     onMouseLeave (evt?: MouseEvent): void {
         if (!this.mini) return
-        console.log('mouseleave')
         if (this.timer) {
             clearTimeout(this.timer)
             this.timer = null
@@ -389,7 +388,6 @@ export default class AppNavigation extends Vue {
             return
         }
 
-        console.log('mouseleave handler')
         this.expandOnHover = false
         this.$nextTick(() => {
             if (this.drawer) this.drawer.isMouseover = false

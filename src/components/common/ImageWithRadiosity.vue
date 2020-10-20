@@ -32,6 +32,7 @@ export default class ImageWithRadiosity extends Vue {
     }
 
     &--fx {
+        user-select: none;
         position: absolute;
         transform: scale(.92) translateY(calc(4% + 14px));
         filter: blur(30px) brightness(130%);

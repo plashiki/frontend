@@ -116,7 +116,8 @@ const routes: any[] = [
         component: () => import(/* webpackChunkName: "player" */ '@/pages/player.vue'),
         meta: {
             layout: 'empty',
-            noapi: true
+            noapi: true,
+            full: true
         }
     },
     {
@@ -125,7 +126,8 @@ const routes: any[] = [
         component: () => import(/* webpackChunkName: "player-anilibria" */ '@/pages/player/anilibria.vue'),
         meta: {
             layout: 'empty',
-            noapi: true
+            noapi: true,
+            full: true
         }
     },
     {
@@ -233,6 +235,11 @@ router.beforeResolve((to, from, next) => {
         appStore.reset({
             keepSearch: to.name === 'search'
         })
+    }
+    if (to.meta.full) {
+        document.documentElement.classList.add('fullscreen-page')
+    } else {
+        document.documentElement.classList.remove('fullscreen-page')
     }
     if ((from.meta.noapi || !apiInitialized) && !to.meta.noapi) {
         initApi()

@@ -5,7 +5,7 @@
             class="smooth-slide-group--btn mr-1"
         >
             <v-btn
-                :disabled="isBegin"
+                :disabled="disabled || isBegin"
                 icon
                 @click="scroll(-1)"
             >
@@ -17,6 +17,7 @@
         <div
             ref="group"
             class="smooth-slide-group"
+            :style="{ 'height': (height + ($r12s.isTouchDevice ? 0 : 6)) + 'px' }"
         >
             <slot name="content">
                 <div class="smooth-slide-group--items">
@@ -29,7 +30,7 @@
             class="smooth-slide-group--btn ml-1"
         >
             <v-btn
-                :disabled="isEnd"
+                :disabled="disabled || isEnd"
                 icon
                 @click="scroll(1)"
             >
@@ -51,6 +52,7 @@ export default class SmoothSlideGroup extends Vue {
     @Prop({ type: Number, required: true }) count!: number
 
     @Prop({ type: Boolean, default: true }) showButtons!: boolean
+    @Prop({ type: Boolean, default: false }) disabled!: boolean
     // portion of viewport which will be scrolled for one button click
     @Prop({ type: Number, default: 0.6 }) strength!: number
 
@@ -63,6 +65,8 @@ export default class SmoothSlideGroup extends Vue {
     private _spring!: Spring
 
     scroll (direction: number, overrideDelta: number | null = null): void {
+        if (this.disabled) return
+
         let delta = overrideDelta ?? (this.group.clientWidth * this.strength * direction)
 
         let oldScroll = this._spring.getEndValue()
@@ -78,14 +82,19 @@ export default class SmoothSlideGroup extends Vue {
         return this.group.scrollWidth - this.group.offsetWidth
     }
 
+    @Watch('disabled')
     @Watch('count')
     countChanged (): void {
-        this.$nextTick(() => this.updateButtons())
+        this.$nextTick(() => {
+            // one more to support virtual grids lol
+            this.$nextTick(() => {
+                this.updateButtons()
+            })
+        })
     }
 
     updateButtons (): void {
         if (!this.group) return
-
         let s = this.group.scrollLeft
 
         this.isBegin = s === 0
@@ -137,7 +146,6 @@ export default class SmoothSlideGroup extends Vue {
     overflow-x: scroll;
     width: 100%;
     height: 100%;
-    padding-bottom: 15px;
 
     display: flex;
     flex-grow: 1;
@@ -154,6 +162,7 @@ export default class SmoothSlideGroup extends Vue {
     &--items {
         display: flex;
         flex-direction: row;
+        flex: 1;
     }
 
     &--btn {

@@ -3,65 +3,75 @@
         ref="slider"
         :show-buttons="$r12s.isDesktopByWidth"
         :height="height"
-        :count="cols.length"
+        :count="loading || transitionPending ? -1 : items.length"
+        :disabled="loading"
     >
-        <template
-            v-if="items.length === 0 || loading"
-            #content
-        >
-            <v-row
-                :style="{ height: height + 'px' }"
-                align="center"
-                class="fill-height ma-0"
-                justify="center"
-            >
-                <v-progress-circular
-                    v-if="loading"
-                    color="primary"
-                    indeterminate
-                    size="32"
-                    width="2"
-                />
-                <h3
-                    v-else
-                    class="grey--text font-weight-bold"
-                >
-                    {{ noItemsText }}
-                </h3>
-            </v-row>
-        </template>
-        <template
-            v-else
-            #default
+        <transition
+            mode="out-in"
+            name="fade-transition"
+            @before-leave="transitionPending = true"
+            @before-enter="transitionPending = false"
         >
             <div
-                v-for="(col, i) in cols"
-                :key="i"
-                class="pa-0 ma-0"
+                v-if="loading"
+                class="d-flex flex-row overflow-hidden fill-height ma-0 align-left justify-center media-carousel-loader"
             >
-                <MediaCard
-                    v-for="(item, j) in col"
-                    :key="j"
-                    :item="item"
-                    :height="itemHeight"
-                    :width="itemWidth"
-                    class="mx-1 my-2"
-                    fixed-size
-                />
+                <div
+                    v-for="i in 8"
+                    :key="i"
+                    class="d-flex flex-column"
+                >
+                    <v-skeleton-loader
+                        v-for="i in rows"
+                        :key="i"
+                        type="image"
+                        class="ma-2"
+                        :style="{ width: itemWidth + 'px', height: itemHeight + 'px' }"
+                    />
+                </div>
             </div>
-        </template>
+            <v-row
+                v-else-if="items.length === 0"
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+                :style="{ height: height + 'px' }"
+            >
+                <h3 class="grey--text font-weight-bold" v-text="noItemsText" />
+            </v-row>
+            <VirtualGrid
+                v-else
+                direction="horizontal"
+                :items="items"
+                :fixed-width="itemWidth"
+                :fixed-height="itemHeight"
+                :min-cell-height="itemHeight"
+                :gap-x="8"
+                :gap-y="8"
+                :rows="rows"
+            >
+                <template #default="{ item }">
+                    <MediaCard
+                        :item="item"
+                        :height="itemHeight"
+                        :width="itemWidth"
+                        fixed-size
+                    />
+                </template>
+            </VirtualGrid>
+        </transition>
     </smooth-slide-group>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import MediaCard from '@/components/media/MediaCard.vue'
-import { chunksArray } from '@/utils/object-utils'
 import { Media } from '@/types/media'
 import SmoothSlideGroup from '@/components/common/SmoothSlideGroup.vue'
+import VirtualGrid from '@/components/common/VirtualGrid.vue'
 
 @Component({
-    components: { SmoothSlideGroup, MediaCard }
+    components: { VirtualGrid, SmoothSlideGroup, MediaCard }
 })
 export default class MediaCarousel extends Vue {
     @Prop({ required: true }) items!: Media[]
@@ -71,16 +81,14 @@ export default class MediaCarousel extends Vue {
     @Prop({ type: Number, default: 240 }) itemHeight!: number
     @Prop({ type: Number, default: 180 }) itemWidth!: number
 
+    transitionPending = false
+
     get height (): number {
         return (this.itemHeight * this.rows
             + 8 * (this.rows + 1)) // gaps - top, bottom + between rows
     }
 
-    get cols (): Media[][] {
-        return chunksArray(this.items, this.rows)
-    }
-
-    @Watch('cols')
+    @Watch('items')
     @Watch('loading')
     update (): void {
         this.$nextTick(() => {
@@ -91,8 +99,7 @@ export default class MediaCarousel extends Vue {
 </script>
 
 <style>
-.media-carousel__placeholder {
-    height: 240px;
-    width: 180px;
+.media-carousel-loader .v-skeleton-loader__image {
+    height: 100%!important;
 }
 </style>

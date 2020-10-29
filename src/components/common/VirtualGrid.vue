@@ -54,11 +54,13 @@ export default class VirtualGrid extends Vue {
     @Prop({ type: Number, default: 3 / 2 }) aspectRatio!: number
     @Prop({ type: Number, default: 2 }) minColumns!: number
     @Prop({ type: Number, default: 6 }) maxColumns!: number
+    @Prop({ type: Number, default: 1 }) rows!: number
     @Prop({ type: Number, default: -1 }) fixedHeight!: number
     @Prop({ type: Number, default: -1 }) fixedWidth!: number
     @Prop({ type: Number, default: 0 }) gapX!: number
     @Prop({ type: Number, default: 0 }) gapY!: number
     @Prop({ type: Number, default: 150 }) minCellWidth!: number
+    @Prop({ type: Number, default: 150 }) minCellHeight!: number
     @Prop({ default: 'vertical' }) direction!: 'horizontal' | 'vertical'
     @Prop({ type: Boolean, default: true }) pageMode!: boolean
 
@@ -83,8 +85,8 @@ export default class VirtualGrid extends Vue {
 
     get style (): Partial<CSSStyleDeclaration> {
         return {
-            height: this.direction === 'vertical' ? this.totalHeight + 'px' : undefined,
-            width: this.direction === 'horizontal' ? this.totalWidth + 'px' : undefined
+            height: this.totalHeight + 'px',
+            width: this.totalWidth + 'px'
         }
     }
 
@@ -99,12 +101,20 @@ export default class VirtualGrid extends Vue {
     }
 
     get columnCount (): number {
-        let abs = Math.floor(this.innerWidth / this.minCellWidth)
-        return Math.min(Math.max(abs, this.minColumns), this.maxColumns)
+        if (this.direction === 'vertical') {
+            let abs = Math.floor(this.innerWidth / this.minCellWidth)
+            return Math.min(Math.max(abs, this.minColumns), this.maxColumns)
+        } else {
+            return Math.ceil(this.items.length / this.rowCount)
+        }
     }
 
     get rowCount (): number {
-        return Math.ceil(this.items.length / this.columnCount)
+        if (this.direction === 'horizontal') {
+            return this.rows
+        } else {
+            return Math.ceil(this.items.length / this.columnCount)
+        }
     }
 
     cellStyle (index: number): Partial<CSSStyleDeclaration> {
@@ -119,8 +129,8 @@ export default class VirtualGrid extends Vue {
 
     cellPosition (index: number): Point {
         return {
-            x: (this.cellWidth + this.gapX) * (this.direction === 'vertical' ? index % this.columnCount : index),
-            y: this.direction === 'horizontal' ? 0 : (this.cellHeight + this.gapY) * Math.floor(index / this.columnCount)
+            x: (this.cellWidth + this.gapX) * (this.direction === 'vertical' ? index % this.columnCount : Math.floor(index / this.rowCount)),
+            y: (this.cellHeight + this.gapY) * (this.direction === 'horizontal' ? index % this.rowCount : Math.floor(index / this.columnCount))
         }
     }
 
@@ -164,11 +174,15 @@ export default class VirtualGrid extends Vue {
 
         const scroll = this.getScroll()
 
-        let startRow = ~~(scroll.start / (this.cellHeight + this.gapY)) - 2
-        let endRow = Math.ceil(scroll.end / (this.cellHeight + this.gapY)) + 2
+        let size = this.direction === 'vertical' ? this.cellHeight + this.gapY: this.cellWidth + this.gapX
 
-        startIndex = Math.max(0, startRow * this.columnCount)
-        endIndex = Math.min(count, endRow * this.columnCount)
+        let startMainAxis = ~~(scroll.start / size) - 2
+        let endMainAxis = Math.ceil(scroll.end / size) + 2
+
+        let secondaryAxisCount = this.direction === 'vertical' ? this.columnCount : this.rowCount
+
+        startIndex = Math.max(0, startMainAxis * secondaryAxisCount)
+        endIndex = Math.min(count, endMainAxis * secondaryAxisCount)
 
         if (this.$listeners.visibilitychange && (this.prevStartIndex !== startIndex || this.prevEndIndex !== endIndex) || forceNotify) {
             this.notifyUpdateVisibility(startIndex, endIndex, scroll)
@@ -296,10 +310,8 @@ export default class VirtualGrid extends Vue {
                 ? (this.$el as HTMLDivElement).clientWidth
                 : window.innerWidth
 
-        const count = this.items.length
-
-        this.totalWidth = Math.max(0, (this.cellWidth + this.gapX) * (this.direction === 'horizontal' ? count : this.columnCount) - this.gapX)
-        this.totalHeight = Math.max(0, (this.cellHeight + this.gapY) * (this.direction === 'horizontal' ? this.cellHeight : this.rowCount) - this.gapY)
+        this.totalWidth = Math.max(0, (this.cellWidth + this.gapX) * this.columnCount - this.gapX)
+        this.totalHeight = Math.max(0, (this.cellHeight + this.gapY) * this.rowCount - this.gapY)
 
         if (this.ready) {
             this.updateVisibleItems(true)

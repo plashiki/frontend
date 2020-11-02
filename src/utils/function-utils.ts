@@ -6,6 +6,11 @@ export interface DebounceOptions {
     before?: boolean
 }
 
+export interface ThrottleOptions {
+    delay: number
+    before?: boolean
+}
+
 /**
  * Simple debounce function, based on lodash.
  *
@@ -40,8 +45,13 @@ export function debounce<T extends Function> (func: T, options: number | Debounc
     } as any
 }
 
-export function throttle<T extends Function> (func: T, delay: number): T {
+export function throttle<T extends Function> (func: T, options: number | DebounceOptions): T {
     let timeout: number | null
+    if (typeof options === 'number') {
+        options = {
+            delay: options
+        }
+    }
 
     return function (this: any) {
         if (timeout) {
@@ -51,10 +61,14 @@ export function throttle<T extends Function> (func: T, delay: number): T {
         const args = arguments
         const later = function (): void {
             timeout = null
+            if (!(options as DebounceOptions).before) {
+                func.apply(self, args)
+            }
+        }
+        timeout = setTimeout(later, (options as DebounceOptions).delay) as any
+        if ((options as DebounceOptions).before) {
             func.apply(self, args)
         }
-        timeout = setTimeout(later, delay) as any
-        func.apply(self, args)
     } as any
 }
 
@@ -91,11 +105,11 @@ export function Debounced (options: number | DebounceOptions): MethodDecorator {
     }
 }
 
-export function Throttled (delay: number): MethodDecorator {
+export function Throttled (options: number | DebounceOptions): MethodDecorator {
     return <T> (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): void => {
         if (typeof descriptor.value !== 'function') {
             throw Error('Trying to debounce a non-function')
         }
-        descriptor.value = throttle(descriptor.value, delay)
+        descriptor.value = throttle(descriptor.value, options)
     }
 }

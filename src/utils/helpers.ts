@@ -28,6 +28,11 @@ export function isElementInViewport (el: Element | Vue) {
     return (vertInView && horInView)
 }
 
+export function isPointInsideElement (el: HTMLElement, x: number, y: number) {
+    const rect = el.getBoundingClientRect()
+    return x > rect.left && x < rect.right && y > rect.top && y < rect.bottom
+}
+
 export function setHtmlThemeColor (color: string) {
     let element = document.querySelector('meta[name=theme-color]')
     if (!element) {

@@ -30,6 +30,7 @@
 // heavily based on https://github.com/Akryum/vue-virtual-scroller/blob/master/src/components/RecycleScroller.vue
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import scrollParent from 'scrollparent'
+import { Throttled } from '@/utils/function-utils'
 
 let uid = 0
 
@@ -318,6 +319,7 @@ export default class VirtualGrid extends Vue {
         }
     }
 
+    @Throttled({ delay: 50, before: true })
     onScroll (): void {
         if (!this.scrollDirty) {
             this.scrollDirty = true

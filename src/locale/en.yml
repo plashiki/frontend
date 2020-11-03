@@ -170,7 +170,16 @@ Pages:
         TabSub: Subtitled
         TabDub: Dubbed
         TabRaw: Raw
+        TheaterMode: Theater mode
+        NormalMode: Normal mode
+        List: List
+        NPeople:
+            - $n person
+            - $n people
+        RippedBy: by $name
     MediaInfo:
+        Name_anime: About anime
+        Name_manga: About manga
         Information: Information
         Description: Description
         Related: Related

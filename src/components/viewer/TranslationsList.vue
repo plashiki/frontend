@@ -13,6 +13,11 @@
                 @click="itemClicked(tr, $event)"
             >
                 {{ tr.name }}
+                <span
+                    v-if="tr.ripper"
+                    class="ripper-name"
+                    v-text="$t('Pages.Viewer.RippedBy', { name: tr.ripper })"
+                />
             </v-btn>
         </transition-group>
         <span
@@ -30,12 +35,12 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator'
 import { filterVisibleTranslations } from '@/utils/user-preferences-utils'
 import { configStore } from '@/store'
-import { SingleTranslationData, TranslationAuthor } from '@/types/translation'
+import { SingleTranslationData, TranslationDataAuthor } from '@/types/translation'
 
 @Component({})
 export default class TranslationsList extends Vue {
     @Prop({ default: () => [] }) data!: SingleTranslationData[]
-    @Prop({ default: () => ({}) }) authors!: TranslationAuthor[]
+    @Prop({ default: () => ({}) }) authors!: TranslationDataAuthor[]
     @Prop({ default: '' }) keyPrefix!: string
     @PropSync('translation') selectedTranslation!: number
 
@@ -120,19 +125,37 @@ export default class TranslationsList extends Vue {
 
         if (this.translationSelectionMode) {
             if (event.shiftKey && this.selectedTranslations.length) {
-                let first = this.selectedTranslations[this.selectedTranslations.length - 1]
-                let last = it.id
+                let lastSelected = this.selectedTranslations[this.selectedTranslations.length - 1]
+                let newlySelected = it.id
 
-                if (first > last) {
-                    let tmp = last
-                    last = first
-                    first = tmp
+                // determine which appears first
+                let first = NaN
+                let last = NaN
+                outer:
+                for (let author of this.authors) {
+                    if (configStore.languageFilters[author.lang] === true) continue
+                    for (let tr of author.translations) {
+                        if (configStore.playersFilters[tr.name] === true) continue
+
+                        if (tr.id === lastSelected || tr.id === newlySelected) {
+                            if (isNaN(first)) first = tr.id
+                            else {
+                                last = tr.id
+                                break outer
+                            }
+                        }
+                    }
                 }
 
+                if (isNaN(first) || isNaN(last)) return
+
+                // loop again and set selection (probably it could be optimized by storing indexes of `first`, but
+                // maybe sometime later :p)
                 let inside = false
 
                 outer:
                 for (let author of this.authors) {
+                    if (configStore.languageFilters[author.lang] === true) continue
                     for (let tr of author.translations) {
                         if (configStore.playersFilters[tr.name] === true) continue
 
@@ -174,5 +197,11 @@ export default class TranslationsList extends Vue {
     padding: 2px 10px !important;
     margin: 4px 6px !important;
     letter-spacing: normal !important;
+}
+
+.ripper-name {
+    font-size: 10px;
+    margin-left: 4px;
+    align-self: flex-end;
 }
 </style>

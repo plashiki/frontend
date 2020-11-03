@@ -1,7 +1,13 @@
 import { appStore, configStore } from '@/store'
 import { merge, sum } from '@/utils/object-utils'
 import { i18n } from '@/plugins/vue-i18n'
-import { SingleTranslationData, TranslationAuthor, TranslationData, TranslationKind } from '@/types/translation'
+import {
+    SingleTranslationData,
+    TranslationDataAuthor,
+    TranslationData,
+    TranslationKind,
+    SinglePartTranslations
+} from '@/types/translation'
 import { AuthorsTab, TabToKind } from '@/types/media'
 
 export type TranslationPreferenceProperty = 'kind' | 'lang' | 'author' | 'player'
@@ -166,7 +172,7 @@ export function filterVisibleTranslations (translations: SingleTranslationData[]
 }
 
 // not sure if its really called telemetry but it sounds cool, lmao
-export function collectTelemetry (translation: SingleTranslationData & { author: TranslationAuthor }) {
+export function collectTelemetry (translation: SingleTranslationData & { author: TranslationDataAuthor }) {
     let authorPreferences: Record<string, number> = {}
     let { studio, names } = processAuthorName(translation.author.name)
     for (let it of [studio, ...names]) {
@@ -189,8 +195,7 @@ export function collectTelemetry (translation: SingleTranslationData & { author:
 }
 
 export function getDefaultTranslation (
-    translations: TranslationData | null,
-    partNumber: number,
+    translations: SinglePartTranslations | null,
     tab: AuthorsTab = AuthorsTab.All,
     ignoreAuthor = false
 ): {
@@ -199,7 +204,7 @@ export function getDefaultTranslation (
 } {
     // this.data?.[val]?.authors?.[0]?.translations?.[0]?.id ?? null
     let { playersFilters, languageFilters } = configStore
-    let authors = translations?.[partNumber]?.authors
+    let authors = translations?.authors
     let { lastAuthor, lastKind, lastPlayer } = appStore
     if (!authors) return { translation: null }
 
@@ -225,11 +230,11 @@ export function getDefaultTranslation (
     }
 
     if (!ignoreAuthor) {
-        return getDefaultTranslation(translations, partNumber, tab, true)
+        return getDefaultTranslation(translations, tab, true)
     }
 
     if (tab !== AuthorsTab.All) {
-        let { translation } = getDefaultTranslation(translations, partNumber, AuthorsTab.All, ignoreAuthor)
+        let { translation } = getDefaultTranslation(translations, AuthorsTab.All, ignoreAuthor)
         return {
             translation,
             allTab: true

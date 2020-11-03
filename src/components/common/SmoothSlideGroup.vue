@@ -69,13 +69,21 @@ export default class SmoothSlideGroup extends Vue {
 
         let delta = overrideDelta ?? (this.group.clientWidth * this.strength * direction)
 
-        let oldScroll = this._spring.getEndValue()
-        let newScroll = oldScroll + delta
+        this.scrollTo(this._spring.getEndValue() + delta)
+    }
 
-        if (newScroll < 0) newScroll = 0
-        if (newScroll > this.maxScroll()) newScroll = this.maxScroll()
+    scrollTo (position: number): void {
+        if (position < 0) position = 0
+        if (position > this.maxScroll()) position = this.maxScroll()
 
-        this._spring.setEndValue(newScroll)
+        this._spring.setEndValue(position)
+    }
+
+    jumpTo (position: number): void {
+        if (position < 0) position = 0
+        if (position > this.maxScroll()) position = this.maxScroll()
+
+        this._spring.setCurrentValue(position)
     }
 
     maxScroll (): number {

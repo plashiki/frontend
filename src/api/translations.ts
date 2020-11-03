@@ -17,11 +17,17 @@ export function getTranslations (ids: number[]): Promise<Translation[]> {
     })
 }
 
+export function getAvailableParts (mediaId: number, mediaType: MediaType): Promise<number[]> {
+    return makeApiRequest({
+        path: `/v2/translations/${mediaType}/${mediaId}/parts`
+    })
+}
 export function getTranslationsFor (mediaId: number, mediaType: MediaType, part?: number): Promise<Translation[]> {
     return makeApiRequest({
-        path: `/v2/translations/${mediaType}/${mediaId}` + (part ? '/part/' + part : ''),
+        path: `/v2/translations/${mediaType}/${mediaId}` + (part ? '/parts/' + part : ''),
         query: {
             raw: '',
+            fullAuthor: '',
             external: 'proto'
         }
     })

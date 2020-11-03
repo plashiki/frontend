@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { TranslationAuthor, TranslationData, TranslationKind, TranslationLanguage } from '@/types/translation'
+import { TranslationDataAuthor, TranslationData, TranslationKind, TranslationLanguage } from '@/types/translation'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
 import SortedArray from '@/utils/sorted-array'
 import { configStore } from '@/store'
@@ -83,7 +83,7 @@ export default class AuthorAvailabilityPopup extends Vue {
     get availabilityData (): AvailabilityData[] {
         // create indexes
         // meta tag (w/out episode) -> episodes -> true
-        let index: Record<string, Record<number, true> & { author: TranslationAuthor }> = {}
+        let index: Record<string, Record<number, true> & { author: TranslationDataAuthor }> = {}
         // author -> number of available episodes
         let counts: Record<string, number> = {}
 

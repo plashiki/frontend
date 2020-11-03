@@ -1,40 +1,36 @@
 <template>
-    <div>
-        <slot name="activator" :on="{ click: () => visible = true }"/>
+    <v-navigation-drawer
+        v-model="vmodel"
+        temporary
+        app
+        right
+        :width="modalWidth"
+    >
+        <div class="pa-2 d-flex flex-row align-center">
+            <v-btn
+                icon
+                @click="vmodel = false"
+            >
+                <v-icon>
+                    mdi-arrow-left
+                </v-icon>
+            </v-btn>
+            <v-spacer />
+            <span class="text-center body-2 text--secondary">
+                {{ $t('Common.Collection.DataFrom', { provider: $t('Providers.' + dataProvider) }) }}
+            </span>
+        </div>
+        <v-divider />
 
-        <v-navigation-drawer
-            v-model="visible"
-            temporary
-            app
-            right
-            :width="modalWidth"
-        >
-            <div class="pa-2 d-flex flex-row align-center">
-                <v-btn
-                    icon
-                    @click="visible = false"
-                >
-                    <v-icon>
-                        mdi-arrow-left
-                    </v-icon>
-                </v-btn>
-                <v-spacer />
-                <span class="text-center body-2 text--secondary">
-                    {{ $t('Common.Collection.DataFrom', { provider: $t('Providers.' + dataProvider) }) }}
-                </span>
-            </div>
-            <v-divider />
-
-            <div class="pa-4 overflow-y-auto">
-                <MediaInfo
-                    ref="info"
-                    :media="media"
-                    :is-full="isFull"
-                    lazy
-                />
-            </div>
-        </v-navigation-drawer>
-    </div>
+        <div class="pa-4 overflow-y-auto">
+            <MediaInfo
+                ref="info"
+                :media="media"
+                :is-full="isFull"
+                lazy
+            />
+        </div>
+    </v-navigation-drawer>
 </template>
 
 <script lang="ts">
@@ -48,11 +44,22 @@ import { configStore } from '@/store'
     components: { MediaInfo },
 })
 export default class MediaInfoDrawer extends Vue {
+    @Prop({ default: false }) value!: boolean
     @Prop({ required: true }) media!: Media
     @Prop({ type: Boolean, default: false }) isFull!: boolean
     @Ref('info') info: any
 
-    visible = false
+    get vmodel (): boolean {
+        return this.value
+    }
+
+    set vmodel (val: boolean) {
+        this.$emit('input', val)
+
+        if (val && !this.info.fullMedia) {
+            this.info.load()
+        }
+    }
 
     get dataProvider (): DataProviderName {
         return configStore.dataProvider
@@ -65,13 +72,6 @@ export default class MediaInfoDrawer extends Vue {
         if (this.$r12s.screenWidth < 1200) return '60%'
 
         return '800px'
-    }
-
-    @Watch('visible')
-    visibilityChanged (val: boolean): void {
-        if (val && !this.info.fullMedia) {
-            this.info.load()
-        }
     }
 }
 </script>

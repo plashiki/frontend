@@ -15,7 +15,7 @@
                 bottom
                 class="small-badge"
                 overlap
-                right
+                left
             >
                 <v-btn
                     icon
@@ -101,14 +101,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { configStore } from '@/store'
-import { TranslationAuthor } from '@/types/translation'
+import { TranslationDataAuthor } from '@/types/translation'
 import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 
 @Component({
     components: { NoItemsPlaceholder }
 })
 export default class AuthorsFiltersMenu extends Vue {
-    @Prop({ default: () => [] }) data!: TranslationAuthor[]
+    @Prop({ default: () => [] }) data!: TranslationDataAuthor[]
 
     tab = 0
 
@@ -118,7 +118,7 @@ export default class AuthorsFiltersMenu extends Vue {
 
     get availablePlayers (): string[] {
         let ret: Record<string, boolean> = {}
-        this.data.forEach((author) => {
+        this.data?.forEach((author) => {
             author.translations.forEach((tr) => {
                 ret[tr.name] = true
             })
@@ -128,7 +128,7 @@ export default class AuthorsFiltersMenu extends Vue {
 
     get availableLanguages (): string[] {
         let ret: Record<string, boolean> = {}
-        this.data.forEach((author) => {
+        this.data?.forEach((author) => {
             ret[author.lang] = true
         })
         return Object.keys(ret)
@@ -137,7 +137,7 @@ export default class AuthorsFiltersMenu extends Vue {
     get filteredCount (): number {
         let ret = 0
 
-        this.data.forEach(it => {
+        this.data?.forEach(it => {
             if (configStore.languageFilters[it.lang] === true) {
                 ret += it.translations.length
             } else {

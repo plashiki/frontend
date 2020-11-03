@@ -47,21 +47,30 @@ const routes: any[] = [
         name: 'viewer-anime-id',
         component: () => import(/* webpackChunkName: "viewer" */ '@/components/viewer/Viewer.vue'),
         props: { mediaType: 'anime' },
-        meta: { group: 'viewer-anime' }
+        meta: {
+            group: 'viewer-anime',
+            full: true
+        }
     },
     {
         path: '/anime/:id(\\d+)/episodes/:part(\\d+)',
         name: 'viewer-anime-id-episode',
         component: () => import(/* webpackChunkName: "viewer" */ '@/components/viewer/Viewer.vue'),
         props: { mediaType: 'anime' },
-        meta: { group: 'viewer-anime' }
+        meta: {
+            group: 'viewer-anime',
+            full: true
+        }
     },
     {
         path: '/anime/:id(\\d+)/episodes/:part(\\d+)/translations/:translationId(\\d+)',
         name: 'viewer-anime-id-episode-translation',
         component: () => import(/* webpackChunkName: "viewer" */ '@/components/viewer/Viewer.vue'),
         props: { mediaType: 'anime' },
-        meta: { group: 'viewer-anime' }
+        meta: {
+            group: 'viewer-anime',
+            full: true
+        }
     },
     {
         path: '/animes/:predicate([a-z]*\\d+[a-zA-Z0-9\\-]*)',

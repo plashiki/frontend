@@ -1,285 +1,500 @@
 <template>
-    <div>
-        <ErrorAlert :error="error" />
+    <div
+        class="viewer-container"
+        :class="'viewer-container--' + displayMode"
+    >
+        <MediaInfoDrawer
+            v-model="mediaInfoVisible"
+            :media="media"
+        />
 
-        <v-simple-card text-class="pa-0">
-            <transition mode="out-in" name="fade-transition">
-                <div
-                    v-if="media != null"
-                    class="d-flex flex-row flex-nowrap"
-                >
-                    <v-img
-                        v-show="$r12s.screenWidth >= 360"
-                        class="viewer-poster"
-                        :class="{ 'viewer-poster--small': mobileDisplay }"
+        <v-dialog
+            v-model="reportDialog"
+            max-width="1000"
+            scrollable
+        >
+            <ReportForm
+                v-if="translation"
+                :media="media"
+                :media-type="mediaType"
+                :translation="translation"
+                @close="reportDialog = false"
+                @update="$emit('update')"
+            />
+        </v-dialog>
+
+        <v-dialog
+            v-if="isModerator"
+            v-model="editDialog"
+            max-width="800"
+            scrollable
+        >
+            <TranslationEditDialog
+                v-if="translation !== null && editDialog"
+                :translation-id="translation.id"
+                show-meta
+                @close="editDialog = false"
+                @delete="requestUpdate"
+                @update="requestUpdate"
+            />
+        </v-dialog>
+
+        <!--        <v-dialog-->
+        <!--            v-model="editMultipleDialog"-->
+        <!--            max-width="800"-->
+        <!--        >-->
+        <!--            <MultipleTranslationEditDialog-->
+        <!--                v-if="editMultipleDialog"-->
+        <!--                :translation-ids="selectedTranslations"-->
+        <!--                @close="editMultipleDialog = false"-->
+        <!--                @update="requestUpdate"-->
+        <!--            />-->
+        <!--        </v-dialog>-->
+
+        <div v-show="displayMode !== 'theater'">
+            <div class="viewer-header">
+                <transition mode="out-in" name="fade-transition">
+                    <v-skeleton-loader
+                        v-if="loading"
+                        type="image"
+                        class="ma-4 mr-0"
+                    />
+                    <ImageWithRadiosity
+                        v-else
+                        class="viewer-poster ma-4 mr-0"
+                        :width="80"
+                        :max-width="80"
+                        :height="120"
                         :aspect-ratio="2/3"
                         :lazy-src="smallImage"
                         :src="fullImage"
-                        :gradient="'to right, #00000000 90%, #' + (isDark ? '1e1e1e' : 'ffffff') + ' 100%'"
                     />
-
-                    <div class="d-flex flex-column flex pa-4 pb-0 pr-0 text-truncate">
-                        <h1
-                            :class="{
-                                'subtitle-05 pb-1': mobileDisplay,
-                                'lh-2 mb-1': !mobileDisplay
-                            }"
-                            class="text-truncate"
+                </transition>
+                <transition mode="out-in" name="fade-transition">
+                    <v-skeleton-loader
+                        v-if="loading"
+                        type="heading, text"
+                        class="flex ml-8 my-4"
+                    />
+                    <div
+                        v-else
+                        class="d-flex flex-column ml-8 flex text-truncate my-4"
+                    >
+                        <h2
+                            class="lh-2 mb-1 text-truncate"
                             :title="name"
                             v-text="name"
                         />
                         <h3
                             v-show="!!secondaryName"
                             class="grey--text text-truncate"
-                            :class="{ 'subtitle-025': mobileDisplay }"
                             :title="secondaryName"
                             v-text="secondaryName"
                         />
 
                         <v-spacer />
 
-                        <v-chip-group
-                            v-if="media.genres !== undefined"
-                            :show-arrows="!mobileDisplay"
-                        >
+                        <v-chip-group v-if="media && media.genres">
                             <v-chip
                                 v-for="genre in media.genres"
                                 :key="genre.id"
+                                class="elevation-1"
                                 :href="genreLink(genre)"
-                                :small="mobileDisplay"
+                                :small="false"
                             >
                                 {{ $t(genre.name) }}
                             </v-chip>
                         </v-chip-group>
                     </div>
+                </transition>
 
-                    <div class="d-flex flex-column justify-space-around ma-2">
-                        <v-btn
-                            v-tooltip="$t('Items.Media.OpenExternal', { service: $t('Providers.' + dataProvider) })"
-                            target="_blank"
-                            :href="media.url"
-                            icon
-                        >
-                            <v-icon>
-                                mdi-open-in-new
-                            </v-icon>
-                        </v-btn>
-
-                        <MediaInfoDrawer :media="media">
-                            <template #activator="{ on }">
-                                <v-btn
-                                    icon
-                                    v-on="on"
-                                >
-                                    <v-icon>
-                                        mdi-more
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                        </MediaInfoDrawer>
-                    </div>
-                </div>
-                <v-skeleton-loader
-                    v-else-if="loading"
-                    type="list-item-two-line"
-                />
-            </transition>
-        </v-simple-card>
-
-        <v-row class="ma-0 mt-2" no-gutters>
-            <v-col class="d-flex flex-column justify-center">
-                <v-responsive
-                    :aspect-ratio="16/9"
-                    class="viewer-frame--wrap elevation-2"
-                >
-                    <v-simple-card
-                        class="viewer-frame--card"
-                        text-class="pa-0"
+                <div class="d-flex flex-column ma-2">
+                    <v-btn
+                        v-tooltip="$t('Items.Media.OpenExternal', { service: $t('Providers.' + dataProvider) })"
+                        target="_blank"
+                        :href="media ? media.url : '#'"
+                        :disabled="!media"
+                        icon
                     >
-                        <iframe
-                            ref="iframe"
-                            :src="iframeUrl"
-                            allowfullscreen
-                            allow="autoplay, encrypted-media"
-                            class="viewer-iframe"
-                            @load="onIframeLoad"
-                        />
-                        <v-layout
-                            class="viewer-iframe__overlay"
-                        >
-                            <v-progress-linear
-                                :active="iframeLoading"
-                                color="primary"
-                                height="4"
-                                indeterminate
-                            />
-                        </v-layout>
-                    </v-simple-card>
-                </v-responsive>
-            </v-col>
-        </v-row>
+                        <v-icon>
+                            mdi-open-in-new
+                        </v-icon>
+                    </v-btn>
 
-        <ViewerControls
-            :data="data"
-            :media="media"
-            :media-id="mediaId"
-            :media-type="mediaType"
-            :part.sync="partNumber"
-            :rate.sync="userRate"
-            :selected-translations="selectedTranslations"
-            :selection-mode.sync="translationSelectionMode"
-            :translation="currentTranslation"
-            :user-rate-loading="userRateLoading"
-            @rate-update="userRate = $event"
-            @update="requestUpdate"
-            @use-extension="useExtensionChanged"
-        />
+                    <v-btn
+                        v-tooltip="$t('Pages.MediaInfo.Name_' + mediaType)"
+                        icon
+                        :disabled="!media"
+                        @click="mediaInfoVisible = true"
+                    >
+                        <v-icon>
+                            mdi-information
+                        </v-icon>
+                    </v-btn>
 
-        <!-- 2000iq -->
-        <component
-            :is="mobileDisplay ? 'transition' : 'div'"
-            :mode="mobileDisplay ? 'out-in' : undefined"
-            :name="mobilePage === 'parts' ? 'scroll-x-transition' : 'scroll-x-reverse-transition'"
-            :tag="mobileDisplay ? 'div' : undefined"
-            class="row"
-        >
-            <v-col
-                v-if="!mobileDisplay || mobilePage === 'parts'"
-                key="1"
-                :class="{ 'px-0': mobileDisplay }"
-                :cols="mobileDisplay ? 12 : 6"
-            >
-                <PartsList
-                    ref="parts"
-                    :data="data"
-                    :loading="loading"
-                    :media-type="mediaType"
-                    :part.sync="partNumber"
-                    :user-rate="userRate"
-                    @item-click="mobilePage = 'authors'"
-                />
-            </v-col>
-            <v-col
-                v-if="!mobileDisplay || mobilePage === 'authors'"
-                key="2"
-                :class="{ 'px-0': mobileDisplay }"
-                :cols="mobileDisplay ? 12 : 6"
-            >
-                <AuthorsList
-                    ref="authors"
-                    :data="data && data[partNumber] && data[partNumber].authors"
-                    :loading="loading"
-                    :media-type="mediaType"
-                    :selected-translations="selectedTranslations"
-                    :translation-selection-mode="translationSelectionMode"
-                    :translation.sync="translationId"
-                    :translations-index="translationsIndex"
-                >
-                    <template #left>
+                    <template v-show="displayMode !== 'mobile'">
+                        <v-spacer />
+
                         <v-btn
-                            v-show="mobileDisplay"
-                            :icon="$r12s.screenWidth <= 500"
-                            :text="$r12s.screenWidth > 500"
-                            rounded
-                            @click="mobilePage = 'parts'"
+                            v-tooltip="$t('Pages.Viewer.TheaterMode')"
+                            icon
+                            @click="setTheaterMode(true)"
                         >
-                            <v-icon :left="$r12s.screenWidth > 500">
-                                mdi-arrow-left
-                            </v-icon>
-                            <span
-                                v-text="($r12s.screenWidth > 500) ? (mediaType === 'anime' ? $t('Pages.Viewer.Episodes') : $t('Pages.Viewer.Chapters')) : ''"
-                            />
+                            <v-icon>mdi-arrow-expand</v-icon>
                         </v-btn>
                     </template>
-                </AuthorsList>
-            </v-col>
-        </component>
+                </div>
+            </div>
+
+            <v-divider class="mx-4" />
+        </div>
+
+        <div class="viewer-player-row">
+            <div class="viewer-player-col">
+                <FixedAspectRatio
+                    ref="aspect"
+                    :aspect-ratio="16/9"
+                >
+                    <BetterIframe
+                        ref="iframe"
+                        class="viewer-iframe"
+                        :class="{ 'elevation-2': displayMode === 'normal' }"
+                        :url="iframeUrl"
+                    />
+
+                    <template
+                        v-if="displayMode === 'theater'"
+                        #append
+                    >
+                        <div class="viewer-player-overlay">
+                            <v-btn
+                                v-show="!sidebarVisible"
+                                color="primary"
+                                fab
+                                absolute
+                                right
+                                small
+                                @click="setTheaterMode(false)"
+                            >
+                                <v-icon small>mdi-arrow-collapse</v-icon>
+                            </v-btn>
+                        </div>
+                    </template>
+                </FixedAspectRatio>
+                <div class="viewer-player-controls">
+                    <v-btn
+                        :dark="displayMode === 'theater'"
+                        text
+                        @click="reportDialog = true"
+                    >
+                        <v-icon left>mdi-alert-decagram</v-icon>
+                        {{ $t('Pages.Report.Name') }}
+                    </v-btn>
+
+                    <v-spacer />
+
+                    <TranslationSubscribeMenu
+                        #default="{ on }"
+                        :media-id="mediaId"
+                        :media-type="mediaType"
+                        :translation="translation"
+                        offset-y
+                        top
+                        transition="slide-y-transition"
+                    >
+                        <v-btn
+                            v-show="media && authenticated"
+                            v-tooltip="$t('Items.Notification.NamePlural')"
+                            :dark="displayMode === 'theater'"
+                            icon
+                            v-on="on"
+                        >
+                            <v-icon>
+                                mdi-bell
+                            </v-icon>
+                        </v-btn>
+                    </TranslationSubscribeMenu>
+
+                    <v-btn
+                        v-tooltip="$t(mediaType === 'anime' ? 'Pages.Viewer.PrevEpisode' : 'Pages.Viewer.PrevChapter')"
+                        :disabled="partNumber <= 1"
+                        :dark="displayMode === 'theater'"
+                        icon
+                        @click="partNumber -= 1"
+                    >
+                        <v-icon>mdi-arrow-left</v-icon>
+                    </v-btn>
+
+                    <v-layout
+                        column
+                        justify-center
+                        mx-2
+                        style="max-width: 90px;"
+                    >
+                        <v-text-field
+                            :label="$t('anime' === 'anime' ? 'Items.Media.Episode' : 'Items.Media.Chapter')"
+                            :value="partNumber"
+                            :suffix="media && media.partsCount ? $t('Pages.Viewer.OutOf', { n: media.partsCount }) : undefined"
+                            :dark="displayMode === 'theater'"
+                            class="mt-2 mb-1 text-right"
+                            height="24"
+                            hide-details
+                            @change="episodeInputDone"
+                        />
+                        <a
+                            :href="iframeUrl"
+                            class="text-center text-truncate"
+                            style="font-size: 11px;"
+                            target="_blank"
+                        >
+                            {{ $t('Pages.Viewer.DirectLink') }}
+                        </a>
+                    </v-layout>
+
+                    <v-btn
+                        v-tooltip="$t(mediaType === 'anime' ? 'Pages.Viewer.NextEpisode' : 'Pages.Viewer.NextChapter')"
+                        :disabled="media && (media.partsCount === 0 ? false : partNumber >= media.partsCount)"
+                        :dark="displayMode === 'theater'"
+                        icon
+                        @click="partNumber += 1"
+                    >
+                        <v-icon>mdi-arrow-right</v-icon>
+                    </v-btn>
+
+                    <v-btn
+                        v-tooltip="{ content: $t(`Items.UserRate.ControlButton.${userRateStatus}-${mediaType}`), trigger: 'hover click focus' }"
+                        :color="userRateStatus === 'old-part' ? 'success' : undefined"
+                        :disabled="!authenticated || userRateLoading"
+                        :loading="userRateControlLoading"
+                        :dark="displayMode === 'theater'"
+                        icon
+                        @click="userRateControlClicked"
+                    >
+                        <v-icon>{{ userRateIcon }}</v-icon>
+                    </v-btn>
+
+                    <v-menu
+                        v-model="userRateEditMenu"
+                        :close-on-content-click="false"
+                        :disabled="userRateLoading"
+                        max-width="250"
+                        top
+                        transition="slide-x-transition"
+                    >
+                        <template #activator="{ on }">
+                            <v-btn
+                                v-show="userRate !== null"
+                                v-tooltip="$t('Items.UserRate.EditEntry')"
+                                :disabled="!authenticated || !userRate"
+                                :dark="displayMode === 'theater'"
+                                icon
+                                v-on="on"
+                            >
+                                <v-icon>mdi-playlist-edit</v-icon>
+                            </v-btn>
+                        </template>
+
+                        <UserRateEditForm
+                            v-if="userRate !== null"
+                            :media="media"
+                            :rate.sync="userRate"
+                            :visible="userRateEditMenu"
+                            @close="userRateEditMenu = false"
+                            @rate-update="userRate = $event"
+                        />
+                    </v-menu>
+
+                    <v-spacer />
+
+                    <v-btn
+                        :dark="displayMode === 'theater'"
+                        text
+                        @click="sidebarVisible = !sidebarVisible"
+                    >
+                        {{ $t('Pages.Viewer.List') }}
+                        <v-icon right>mdi-format-list-bulleted</v-icon>
+                    </v-btn>
+                </div>
+            </div>
+            <v-divider
+                v-show="displayMode !== 'theater'"
+                class="ml-2"
+                vertical
+            />
+            <ResizableDiv
+                v-show="sidebarVisible"
+                persistent-id="viewer-list"
+                :minimum-width="400"
+                :maximum-width="$r12s.screenWidth * 0.5"
+                @resize="() => { resizeIframe(); this.$refs.sidebar.onResize() }"
+                @resizestart="$el.classList.add('resize-pending')"
+                @resizeend="$el.classList.remove('resize-pending')"
+            >
+                <div
+                    class="flex-row align-center"
+                    :class="displayMode === 'theater' ? 'd-flex' : 'd-none'"
+                >
+                    <v-btn
+                        v-tooltip="$t('Items.Media.OpenExternal', { service: $t('Providers.' + dataProvider) })"
+                        target="_blank"
+                        :disabled="!media"
+                        :href="media ? media.url : '#'"
+                        icon
+                    >
+                        <v-icon>
+                            mdi-open-in-new
+                        </v-icon>
+                    </v-btn>
+
+                    <v-btn
+                        v-tooltip="$t('Pages.MediaInfo.Name_' + mediaType)"
+                        icon
+                        :disabled="!media"
+                        @click="mediaInfoVisible = true"
+                    >
+                        <v-icon>
+                            mdi-information
+                        </v-icon>
+                    </v-btn>
+
+                    <div
+                        class="flex text-truncate body-1 mx-2"
+                        v-text="name"
+                    />
+
+                    <v-btn
+                        v-tooltip="$t('Pages.Viewer.NormalMode')"
+                        icon
+                        @click="setTheaterMode(false)"
+                    >
+                        <v-icon v-text="'mdi-arrow-collapse'" />
+                    </v-btn>
+                </div>
+
+                <ViewerSidebar
+                    ref="sidebar"
+                    :translation-id.sync="translationId"
+                    :part-number.sync="partNumber"
+                    :user-rate="userRate"
+                    :media-id="mediaId"
+                    :media-type="mediaType"
+                    :media="media"
+                    @iframe="iframeUrl = $event"
+                    @translation="translation = $event"
+                />
+            </ResizableDiv>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Ref, Watch } from 'vue-property-decorator'
 import LoadableVue from '@/components/common/LoadableVue'
-import {
-    getFullImage,
-    getPreferredName,
-    getSecondaryName,
-    getSmallImage,
-    processTranslations
-} from '@/utils/media-utils'
-import HeadlineWithLinkButton from '@/components/common/HeadlineWithLinkButton.vue'
 import { appStore, authStore, configStore } from '@/store'
-import PartsList from '@/components/viewer/PartsList.vue'
-import AuthorsList from '@/components/viewer/AuthorsList.vue'
-import {
-    collectTelemetry,
-    getDefaultTranslation,
-    processAuthorName,
-    sortTranslations
-} from '@/utils/user-preferences-utils'
-import ViewerControls from '@/components/viewer/ViewerControls.vue'
+import ImageWithRadiosity from '@/components/common/ImageWithRadiosity.vue'
 import { Media, MediaGenre, MediaType } from '@/types/media'
-import {
-    ExtendedSingleTranslationData,
-    SingleTranslationData,
-    TranslationAuthor,
-    TranslationData
-} from '@/types/translation'
+import { DataProviderName, getProviderNow } from '@/api/providers'
+import VSimpleCard from '@/components/common/VSimpleCard.vue'
+import BetterIframe from '@/components/common/BetterIframe.vue'
+import FixedAspectRatio from '@/components/common/FixedAspectRatio.vue'
+import ResizableDiv from '@/components/common/ResizableDiv.vue'
+import { isPointInsideElement, nop } from '@/utils/helpers'
 import { UserRate, UserRateStatus } from '@/types/user-rate'
 import { getSingleMedia } from '@/api/media'
 import { ApiException } from '@/types/api'
-import ErrorAlert from '@/components/common/ErrorAlert.vue'
-import { getTranslationsFor } from '@/api/translations'
-import { getUserRates } from '@/api/user-rates'
-import { nop } from '@/utils/helpers'
-import { Route } from 'vue-router'
+import { getUserRates, updateUserRate, createUserRate } from '@/api/user-rates'
 import { iziToastError } from '@/plugins/izitoast'
-import VSimpleCard from '@/components/common/VSimpleCard.vue'
-import { getProviderNow } from '@/api/providers'
+import { getPreferredName, getSecondaryName, getSmallImage } from '@/utils/media-utils'
+import { getFullImage } from '@/utils/media-utils'
 import MediaInfoDrawer from '@/components/media/MediaInfoDrawer.vue'
+import TranslationSubscribeMenu from '@/components/notifications/TranslationSubscribeMenu.vue'
+import { merge } from '@/utils/object-utils'
+import UserRateEditForm from '@/components/user-rates/UserRateEditForm.vue'
+import ViewerSidebar from '@/components/viewer/ViewerSidebar.vue'
+import ReportForm from '@/components/moderation/ReportForm.vue'
+import { ExtendedSingleTranslationData } from '@/types/translation'
+import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
+import { Route } from 'vue-router'
+
+type ViewerDisplayMode = 'mobile' | 'normal' | 'theater'
+type UserRateControlStatus = 'new' | 'new-part' | 'start-repeat' | 'old-part'
+const userRateIconMap: Record<UserRateControlStatus, string> = {
+    new: 'mdi-playlist-plus',
+    'new-part': 'mdi-check',
+    'start-repeat': 'mdi-repeat',
+    'old-part': 'mdi-check',
+}
 
 @Component({
-    components: { MediaInfoDrawer, VSimpleCard, ErrorAlert, ViewerControls, AuthorsList, PartsList, HeadlineWithLinkButton }
+    components: {
+        TranslationEditDialog,
+        ReportForm,
+        ViewerSidebar,
+        UserRateEditForm,
+        TranslationSubscribeMenu,
+        MediaInfoDrawer,
+        ResizableDiv,
+        FixedAspectRatio,
+        BetterIframe,
+        VSimpleCard,
+        ImageWithRadiosity,
+    },
 })
 export default class Viewer extends LoadableVue {
     @Prop({ type: String, required: true }) mediaType!: MediaType
     @Ref() iframe!: HTMLIFrameElement
-    @Ref() authors!: any
-    @Ref() parts!: Vue
+    @Ref() sidebar!: any
 
-    dataProvider = configStore.dataProvider
     error: ApiException | null = null
-
-    iframeLoading = false
     userRateLoading = false
+    userRateControlLoading = false
+    userRateEditMenu = false
+
+    reportDialog = false
+    editDialog = false
+    editMultipleDialog = false
+
+    mediaInfoVisible = false
 
     mediaId = -1
     media: Media | null = null
-    data: Readonly<TranslationData> | null = null
     userRate: UserRate | null = null
+    translationId: number | null = null
+    translation: ExtendedSingleTranslationData | null = null
+
     partNumber = NaN
     unsetPartNumber = false
-    translationId: number | null = null
+    episodeInput = ''
+
     iframeUrl = 'about:blank'
-
-    selectedTranslations: number[] = []
-    translationSelectionMode = false
-
-    telemetryTimeout: number | null = null
-
-    // mobile layout
-    mobilePage = 'parts'
 
     get authenticated (): boolean {
         return authStore.authenticated
+    }
+
+    get isModerator (): boolean {
+        return authStore.user?.moderator ?? false
     }
 
     get isDark (): boolean {
         return configStore.dark
     }
 
-    get mobileDisplay (): boolean {
-        return this.$r12s.screenWidth < 730
+    get dataProvider (): DataProviderName {
+        return configStore.dataProvider
+    }
+
+    get displayMode (): ViewerDisplayMode {
+        return this.$r12s.screenWidth < 480 ? 'mobile' : configStore.viewerTheaterMode ? 'theater' : 'normal'
+    }
+
+    get sidebarVisible (): boolean {
+        return configStore.sidebarVisible
+    }
+
+    set sidebarVisible (val: boolean) {
+        configStore.merge({ sidebarVisible: val })
+        this.resizeIframe()
     }
 
     get fullImage (): string {
@@ -298,178 +513,183 @@ export default class Viewer extends LoadableVue {
         return this.media ? getSecondaryName(this.media?.name) : undefined
     }
 
-    get translationsIndex (): Readonly<Record<number, Readonly<SingleTranslationData & { author: TranslationAuthor }>>> {
-        if (!this.data || !this.data[this.partNumber]) return {}
-        let ret: Record<number, SingleTranslationData & { author: TranslationAuthor }> = {}
-
-        for (let author of this.data[this.partNumber].authors) {
-            for (let tr of author.translations) {
-                ret[tr.id] = Object.freeze({ ...tr, author })
-            }
+    get userRateStatus (): UserRateControlStatus {
+        if (!this.userRate || !this.authenticated) {
+            return 'new'
+        } else if (this.userRate.parts < this.partNumber) {
+            return 'new-part'
+        } else if (this.userRate.parts === this.media?.partsCount && this.partNumber === 1) {
+            return 'start-repeat'
+        } else {
+            return 'old-part'
         }
-
-        return Object.freeze(ret)
     }
 
-    get currentTranslation (): ExtendedSingleTranslationData | null {
-        return this.translationId !== null ? this.translationsIndex[this.translationId] ?? null : null
+    get userRateIcon (): string {
+        return userRateIconMap[this.userRateStatus]
+    }
+
+    @Watch('displayMode')
+    resizeIframe (): void {
+        this.$nextTick(() => {
+            (
+                this.$refs.aspect as any
+            ).onResize()
+        })
     }
 
     @Watch('partNumber')
-    onPartNumberChanged (val: number): void {
-        if (!this.data) return
-
-        if (this.authors) {
-            if (this.currentTranslation === null) {
-                const { translation, allTab } = getDefaultTranslation(this.data, val, this.authors.currentTab)
-                this.translationId = translation?.id ?? null
-                if (allTab) {
-                    this.authors.currentTab = 0
-                }
-            } else {
-                // index was re-populated, notifying AuthorsList about it
-                const notify = () => {
-                    if (this.authors) {
-                        this.authors.selectedTranslationChanged()
-                    } else {
-                        setTimeout(notify, 50)
-                    }
-                }
-                this.$nextTick(notify)
-            }
-        } else setTimeout(() => this.onPartNumberChanged(val), 50)
+    partChanged (): void {
+        this.episodeInput = this.partNumber + ''
     }
 
     @Watch('translationId')
     onTranslationIdChanged (): void {
         let action: 'push' | 'replace' = this.$route.name === 'viewer-anime-id' ? 'replace' : 'push'
-
         this.$router[action]({
-            name: 'viewer-anime-id-episode' + (this.translationId ? '-translation' : ''),
+            name: 'viewer-anime-id-episode' + (
+                this.translationId ? '-translation' : ''
+            ),
             params: {
                 id: this.mediaId + '',
                 part: this.partNumber + '',
-                translationId: this.translationId + ''
-            }
+                translationId: this.translationId + '',
+            },
         }).catch(nop)
-
-        if (this.telemetryTimeout) clearTimeout(this.telemetryTimeout)
-
-        if (!this.currentTranslation) return
-        this.telemetryTimeout = setTimeout(() => this.currentTranslation && collectTelemetry(this.currentTranslation), 120000)
-        // 2 mins is enough in avg for user to settle on a single translation
     }
 
-    @Watch('currentTranslation')
-    onTranslationChanged (val: ExtendedSingleTranslationData | null = this.currentTranslation): void {
-        // if (val?.id === old?.id) {
-        //     return
-        // }
-
-        if (!val) {
-            this.iframeUrl = 'about:blank'
-            return
-        }
-
-        let author = ''
-        if (val.author.name) {
-            let { studio } = processAuthorName(val.author.name)
-            author = studio
-        }
-        appStore.merge({
-            lastAuthor: author,
-            lastKind: val.author.kind,
-            lastPlayer: val.name
-        })
-
-        this.iframeUrl = val.url
-    }
-
-    @Watch('iframeUrl')
-    onIframeUrlChanged (val: string): void {
-        this.iframeLoading = true
-
-        // workaround so urls in iframe dont pollute browser history
-        this.$nextTick(() => {
-            const el = this.iframe
-            if (el) {
-                const cont = el.parentElement as HTMLDivElement
-                el.remove()
-                el.setAttribute('src', val)
-                cont.prepend(el)
-            }
-        })
-    }
-
-    @Watch('authenticated')
-    authenticationChanged (val: boolean): void {
-        if (!val) {
-            this.userRate = null
+    episodeInputDone (): void {
+        let q = parseInt(this.episodeInput)
+        if (isNaN(q) || q <= 0) {
+            this.episodeInput = this.partNumber + ''
         } else {
-            this.updateUserRate()
+            this.partNumber = q
         }
     }
 
-    useExtensionChanged (): void {
-        if (this.translationId === null) return
-
-        this.onTranslationChanged()
-    }
-
-    onIframeLoad (): void {
-        this.iframeLoading = false
+    setTheaterMode (val: boolean) {
+        configStore.merge({
+            viewerTheaterMode: val,
+        })
     }
 
     genreLink (genre: MediaGenre): string {
         return '/search?p=' + getProviderNow().getGenreSearchParams(genre)
     }
 
+    @Watch('$route')
+    routeChanged (to: Route, from: Route): void {
+        if (to.params.id !== from.params.id) {
+            const mediaId = parseInt(this.$route.params.id)
+            this.mediaId = mediaId
+            setTimeout(() => configStore.addRecentMedia({
+                type: this.mediaType,
+                id: mediaId
+            }), 120000)
+            this.update()
+        }
+        if (to.params.part !== from.params.part && to.params.part !== this.partNumber + '') {
+            this.partNumber = to.params.part !== undefined ? parseInt(to.params.part) : 1
+            this.unsetPartNumber = to.params.part !== undefined
+        }
+        if (to.params.translationId !== from.params.translationId && to.params.translationId !== this.translationId + '') {
+            this.translationId = to.params.translationId === undefined ? parseInt(to.params.translationId) : null
+        }
+    }
+
     updateUserRate (): Promise<void> {
         if (!this.authenticated) return Promise.resolve()
-        // separate method coz it should also be updated when user logins
         this.userRateLoading = true
         return getUserRates({
             target_id: this.mediaId,
-            target_type: this.mediaType
+            target_type: this.mediaType,
         }).then(([rate]) => {
             this.userRate = rate ?? null
             this.userRateLoading = false
 
-            if (this.unsetPartNumber && rate) {
-                this.partNumber = rate.status === UserRateStatus.Completed ? 1 : rate.parts + 1
+            if (this.unsetPartNumber) {
+                if (rate) {
+                    this.partNumber = rate.status == UserRateStatus.Completed ? 1 : rate.parts + 1
+                }
                 this.unsetPartNumber = false
             }
         }).catch(iziToastError)
         // note that in case of error user rate is still marked as loading
         // which means user cant edit (create) user rate
-        // he can still update data on page anyway
+        // they can update data on page though
     }
 
-    update (): Promise<any> {
+    userRateControlClicked (): void {
+        this.userRateControlLoading = true
+        let prom: Promise<void>
+        if (this.userRateStatus === 'new') {
+            prom = createUserRate({
+                target_id: parseInt(this.$route.params.id),
+                target_type: this.mediaType,
+                parts: this.partNumber,
+                status: UserRateStatus.InProgress,
+            }).then((rate) => {
+                this.userRate = rate
+                this.$emit('rate-update', rate)
+                if (this.media && this.partNumber !== this.media.partsCount) {
+                    this.partNumber++
+                }
+            })
+        } else if (this.userRateStatus === 'new-part') {
+            prom = updateUserRate(this.userRate!.id, {
+                target_type: this.mediaType,
+                parts: this.partNumber,
+                status: UserRateStatus.InProgress,
+            }).then((rate) => {
+                merge(this.userRate!, rate)
+                if (this.media && this.partNumber !== this.media.partsCount) {
+                    this.partNumber++
+                }
+            })
+        } else if (this.userRateStatus === 'start-repeat') {
+            prom = updateUserRate(this.userRate!.id, {
+                target_type: this.mediaType,
+                parts: 1,
+                status: UserRateStatus.InProgress,
+                repeats: this.userRate!.repeats + 1,
+            }).then((rate) => {
+                merge(this.userRate!, rate)
+                if (this.media && this.partNumber !== this.media.partsCount) {
+                    this.partNumber++
+                }
+            })
+        } else if (this.userRateStatus === 'old-part') {
+            prom = updateUserRate(this.userRate!.id, {
+                target_type: this.mediaType,
+                parts: this.partNumber - 1,
+                status: UserRateStatus.InProgress,
+            }).then((rate) => {
+                merge(this.userRate!, rate)
+            })
+        }
+        prom!.catch(iziToastError).finally(() => {
+            this.userRateControlLoading = false
+        })
+    }
+
+    update (): Promise<void> {
         this.error = null
         this.loading = true
-        let mediaProm = getSingleMedia(this.mediaId, this.mediaType)
+        let media = getSingleMedia(this.mediaId, this.mediaType)
             .then((media) => {
                 this.media = media
             }).catch((err) => {
-                // media load error is not as bad as data load, so toast is ok i guess..
-                iziToastError(err)
-            })
-        let dataProm = getTranslationsFor(this.mediaId, this.mediaType)
-            .then((data) => {
-                this.data = Object.freeze(sortTranslations(processTranslations(data)))
-                this.onPartNumberChanged(this.partNumber)
-            }).catch((err) => {
                 this.error = err
             })
-        let userRateProm = this.updateUserRate()
-        return Promise.all([mediaProm, dataProm, userRateProm]).finally(() => {
+        let userRate = this.updateUserRate()
+        this.$nextTick(() => this.sidebar.update())
+        return Promise.all([media, userRate]).then(() => {
             this.loading = false
         })
     }
 
-    requestUpdate (): Promise<void> {
-        return this.update()
+    requestUpdate (): void {
+        this.update()
     }
 
     @Watch('name')
@@ -479,45 +699,23 @@ export default class Viewer extends LoadableVue {
             pageTitle: this.name,
             navTitle: this.name,
             showUpdateButton: true,
-            showSearch: true,
         })
     }
 
-    @Watch('$route')
-    routeChanged (to: Route, from: Route): void {
-        if (to.params.id !== from.params.id) {
-            const mediaId = parseInt(this.$route.params.id)
-            this.mediaId = mediaId
-
-            setTimeout(() => configStore.addRecentMedia({
-                type: this.mediaType,
-                id: mediaId
-            }), 120000)
-
-            this.update()
-        }
-
-        if (to.params.part !== from.params.part && to.params.part !== this.partNumber + '') {
-            this.partNumber = to.params.part !== undefined ? parseInt(to.params.part) : 1
-            this.unsetPartNumber = to.params.part !== undefined
-        }
-
-        if (to.params.translationId !== from.params.translationId && to.params.translationId !== this.translationId + '') {
-            this.translationId = to.params.translationId === undefined ? parseInt(to.params.translationId) : null
-        }
-    }
-
     mounted (): void {
-        this.updateName()
+        this.loading = true
+        this.partChanged()
 
+        appStore.merge({
+            showSearch: true,
+        })
+        this.updateName()
         const mediaId = parseInt(this.$route.params.id)
         this.mediaId = mediaId
-
         setTimeout(() => configStore.addRecentMedia({
             type: this.mediaType,
-            id: mediaId
+            id: mediaId,
         }), 120000)
-
         if (this.$route.params.part !== undefined) {
             this.partNumber = parseInt(this.$route.params.part)
             if (this.$route.params.translationId !== undefined) {
@@ -527,46 +725,123 @@ export default class Viewer extends LoadableVue {
             this.partNumber = 1
             this.unsetPartNumber = true
         }
-        this.mobilePage = 'authors'
-
         this.update()
     }
 }
 </script>
 
-<style>
-.viewer-poster {
-    max-width: 96px;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-}
-
-.viewer-poster--small {
-    width: 64px;
-}
-
-.viewer-frame--wrap {
-    max-height: 420px;
-    max-width: 746.66px;
-    margin: 0 auto;
-    width: 100%;
-    border-radius: 4px;
-}
-
-@media screen and (min-width: 968px) {
-    .viewer-frame--wrap {
-        max-height: 500px;
-        max-width: 888.89px;
+<style lang="scss">
+.viewer-container {
+    .theme--light & {
+        background: #fff;
     }
-}
 
-.viewer-frame--card {
-    overflow: hidden;
-    flex-grow: 1;
+    .theme--dark & {
+        background: #363636;
+    }
+
+    display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
-.viewer-frame--card .v-card__text {
-    height: 100%
+.viewer-header {
+    display: flex;
+    flex-direction: row;
+
+    .v-skeleton-loader__image {
+        height: 120px;
+        width: 80px;
+    }
+
+    .v-skeleton-loader__heading {
+        margin-bottom: 12px;
+    }
+}
+
+.viewer-iframe {
+    height: 100%;
+}
+
+.viewer-player-row {
+    .viewer-container:not(.viewer-container--theater) .fixed-ar--container {
+        margin-bottom: 8px;
+    }
+
+    .viewer-container--theater & .fixed-ar--container {
+        background: black;
+    }
+
+    .resizable-div--grip {
+        width: 16px;
+    }
+
+    .resizable-div--content {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-right: 8px;
+    }
+
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    max-height: 100%;
+}
+
+.viewer-player-col {
+    .viewer-container:not(.viewer-container--theater) & {
+        padding: 8px
+    }
+
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .viewer-container:not(.viewer-container--theater) & {
+        .fixed-ar--wrap, iframe {
+            border-radius: 4px;
+        }
+    }
+}
+
+
+
+.viewer-player-controls {
+    padding: 4px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .viewer-container--theater & {
+        background: black;
+
+        a {
+            color: #56a1eb
+        }
+    }
+}
+
+.viewer-player-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: white;
+    padding: 16px;
+    pointer-events: none;
+
+    .v-btn {
+        pointer-events: all;
+    }
+}
+
+.resize-pending {
+    iframe {
+        pointer-events: none;
+    }
+
+    user-select: none;
 }
 </style>

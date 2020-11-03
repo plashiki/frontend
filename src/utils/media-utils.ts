@@ -2,7 +2,7 @@ import { configStore } from '@/store'
 import { i18n } from '@/plugins/vue-i18n'
 import { fallbackImage } from '@/config'
 import SortedArray from '@/utils/sorted-array'
-import { Translation, TranslationAuthor, TranslationData } from '@/types/translation'
+import { Translation, TranslationDataAuthor, TranslationData } from '@/types/translation'
 import { ImageMeta, NameMeta } from '@/types/media'
 import { isRussian } from '@/utils/i18n'
 
@@ -78,17 +78,9 @@ function optimizeName (name: string): string {
 // reason is pretty simple -- slightly decrease server load
 export function processTranslations (translations: Translation[]): TranslationData {
     const ret: TranslationData = {}
-    const index: Record<string, TranslationAuthor> = {}
 
-    // tags registry is a place where all tags are stored as a SortedArray for faster lookup
-    // strings are compared by first N chars of in-array item, where N is length of requested item
-    const tagsRegistry = new SortedArray<string>([], (a, b) => {
-        if (a === b) return 0
-        if (a.length === b.length) return a > b ? 1 : -1
-        const substr = b.substr(0, a.length)
-        if (a === substr) return 0
-        return a > substr ? 1 : -1
-    })
+    const peopleCombiner: Record<number, Record<string, string[]>> = {}
+    const authorsIndex: Record<number, Record<string, TranslationDataAuthor>> = {}
 
     translations.forEach((tr) => {
         // normalize external urls
@@ -100,32 +92,25 @@ export function processTranslations (translations: Translation[]): TranslationDa
         }
 
         const playerHost = getPlayerHost(rawUrl)
-        const optName = optimizeName(tr.author)
 
+        const hasGroup = !!tr.author.group
+        let people: string[] = tr.author.people || []
+        if (hasGroup) {
+            if (!(tr.part in peopleCombiner)) peopleCombiner[tr.part] = {}
+            if (!(tr.author.group! in peopleCombiner[tr.part])) peopleCombiner[tr.part][tr.author.group!] = []
+            tr.author.people?.forEach((it) => {
+                if (peopleCombiner[tr.part][tr.author.group!].indexOf(it) === -1) {
+                    peopleCombiner[tr.part][tr.author.group!].push(it)
+                }
+            })
 
-        // creating internal meta tag. user-submitted info is always
-        // at the end, others params are sure not to have :,
-        // so collisions of any kind aren't possible
-        const key = `${tr.kind}:${tr.lang}:${optName}`
-        const metaTag = `${tr.part}:${key}`
-
-        // adding tag to registry if needed
-        let tagIndex = tagsRegistry.index(metaTag)
-        if (tagIndex === -1) {
-            tagIndex = tagsRegistry.insert(metaTag)
+            people = peopleCombiner[tr.part][tr.author.group!]
+        } else {
+            people = []
         }
 
-        // ensure current metaTag is longest
-        if (metaTag.length > tagsRegistry.raw[tagIndex].length) {
-            // first create a ref in index
-            index[metaTag] = index[tagsRegistry.raw[tagIndex]]
-
-            // then replace shorter boi with longer one.
-            // sort order should not change since our tag
-            // starts exactly as tag in sorted array
-            tagsRegistry.raw[tagIndex] = metaTag
-        }
-        const fullTag = tagsRegistry.raw[tagIndex]
+        const authorName = tr.author.group || tr.author.people?.join(', ') || ''
+        const metaTag = `${tr.kind}:${tr.lang}:${authorName}`
 
         // add part to ret if needed
         if (!(tr.part in ret)) {
@@ -135,37 +120,42 @@ export function processTranslations (translations: Translation[]): TranslationDa
             }
         }
 
-        // ref to current episode
-        const ep = ret[tr.part]
-        if (!ep.players.includes(playerHost)) {
-            ep.players.push(playerHost)
+        // ref to current part
+        const part = ret[tr.part]
+        if (!part.players.includes(playerHost)) {
+            part.players.push(playerHost)
         }
 
-        // adding author if needed
-        if (!(fullTag in index)) {
-            const author: TranslationAuthor = {
+        if (!(tr.part in authorsIndex)) authorsIndex[tr.part] = {}
+        if (!(metaTag in authorsIndex[tr.part])) {
+            const author: TranslationDataAuthor = {
                 kind: tr.kind,
                 lang: tr.lang,
-                name: tr.author,
                 translations: [],
+                name: authorName,
                 metaTag,
-                key
+                key: metaTag // idk where it is used, leaving to ensure nothing breaks D:
             }
+            if (tr.author.people) author.people = people
 
             // adding in index
-            index[fullTag] = author
+            authorsIndex[tr.part][metaTag] = author
             // adding in ret
-            ep.authors.push(author)
+            part.authors.push(author)
         }
 
         // adding translation in ret.
-        index[fullTag].translations.push({
+        let item: any = {
             id: tr.id,
             name: playerHost,
             url,
             rawUrl,
-            uploader: tr.uploader ?? null
-        })
+            uploader: tr.uploader
+        }
+        if (tr.author.ripper) {
+            item.ripper = tr.author.ripper
+        }
+        authorsIndex[tr.part][metaTag].translations.push(item)
     })
 
     return ret

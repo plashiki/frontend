@@ -39,6 +39,8 @@ export default class ConfigModule extends VuexModule {
     expandAllViewer = true
     hideSamePlayers = true
     highlightUnknownAuthor = false
+    viewerTheaterMode = false
+    sidebarVisible = true
     lightColors = {
         primary: '#1976D2',
         accent: '#82B1FF'

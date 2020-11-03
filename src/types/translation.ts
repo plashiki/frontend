@@ -41,7 +41,7 @@ export interface Translation {
     part: number
     kind: TranslationKind
     lang: TranslationLanguage
-    author: string
+    author: TranslationAuthor
     uploader_id: number
     uploader?: User | number
     status?: TranslationStatus
@@ -51,11 +51,17 @@ export interface Translation {
     updated_at: string
 }
 
+export interface TranslationAuthor {
+    group?: string
+    people?: string[]
+    ripper?: string
+}
+
 export type TranslationData = Record<number, SinglePartTranslations>
 
 export interface SinglePartTranslations {
     players: string[]
-    authors: TranslationAuthor[]
+    authors: TranslationDataAuthor[]
 }
 
 export interface SingleTranslationData {
@@ -64,15 +70,17 @@ export interface SingleTranslationData {
     url: string
     rawUrl?: string
     uploader: User | number | null
+    ripper?: string
 }
 
-export type ExtendedSingleTranslationData = SingleTranslationData & { author: TranslationAuthor }
+export type ExtendedSingleTranslationData = SingleTranslationData & { author: TranslationDataAuthor }
 
-export interface TranslationAuthor {
+export interface TranslationDataAuthor {
     kind: TranslationKind
     name: string
     lang: TranslationLanguage
     translations: SingleTranslationData[]
+    people?: string[]
 
     metaTag: string
     key: string

@@ -1,10 +1,10 @@
 <template>
-    <v-simple-card>
+    <div class="d-flex flex-column fill-height">
         <v-tabs
             ref="tabs"
             v-model="currentTab"
             background-color="transparent"
-            class="kinds-tabs mb-5"
+            class="kinds-tabs flex-grow-0"
         >
             <div style="display: flex; align-items: center">
                 <slot name="left" />
@@ -31,6 +31,10 @@
                 </v-icon>
             </v-tab>
             <v-spacer />
+
+            <div>
+                <AuthorsFiltersMenu :data="data" />
+            </div>
         </v-tabs>
         <transition mode="out-in" name="fade-transition">
             <template v-if="data != null && authors.length !== 0">
@@ -64,6 +68,13 @@
                                     </v-icon>
                                 </span>
                                 {{ author.name || $t('Items.Translation.UnknownAuthor') }}
+                                <span
+                                    v-if="author.people && author.people.length"
+                                    v-tooltip="author.people.length > 2 && author.people.join('<br/>')"
+                                    class="grey--text body-2"
+                                    :class="{ 'no-dots': author.people.length <= 3 }"
+                                    v-text="author.people.length > 3 ? $tc('Pages.Viewer.NPeople', author.people.length) : author.people.join(', ')"
+                                />
                                 <v-fade-transition>
                                     <span
                                         v-if="!expanded[author.key] && !expandAll"
@@ -89,15 +100,17 @@
                 </transition-group>
             </template>
             <v-skeleton-loader
-                v-else-if="data === null && loading"
-                type="list-item-two-line, list-item, list-item, list-item, list-item"
+                v-else-if="data === null || loading"
+                type="heading, chip@3, heading, chip@4"
+                class="translation-list-skeleton"
             />
             <NoItemsPlaceholder
                 v-else-if="data !== null && authors.length === 0"
+                mode="flex"
                 :text="$t('Pages.Viewer.NoTranslationsAvailable')"
             />
         </transition>
-    </v-simple-card>
+    </div>
 </template>
 
 <script lang="ts">
@@ -105,7 +118,7 @@ import { Component, Prop, PropSync, Vue, Watch } from 'vue-property-decorator'
 import TranslationsList from '@/components/viewer/TranslationsList.vue'
 import AuthorsFiltersMenu from '@/components/viewer/AuthorsFiltersMenu.vue'
 import { authStore, configStore } from '@/store'
-import { SingleTranslationData, TranslationAuthor } from '@/types/translation'
+import { SingleTranslationData, TranslationDataAuthor } from '@/types/translation'
 import { AuthorsTab, MediaType, TabToKind } from '@/types/media'
 import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
@@ -114,10 +127,10 @@ import VSimpleCard from '@/components/common/VSimpleCard.vue'
     components: { VSimpleCard, NoItemsPlaceholder, TranslationsList, AuthorsFiltersMenu }
 })
 export default class AuthorsList extends Vue {
-    @Prop({ default: () => [] }) data!: TranslationAuthor[]
+    @Prop({ default: () => [] }) data!: TranslationDataAuthor[]
     @Prop({ required: true }) mediaType!: MediaType
     @PropSync('translation') selectedTranslation!: number
-    @Prop() translationsIndex!: Readonly<Record<number, Readonly<SingleTranslationData & { author: TranslationAuthor }>>>
+    @Prop() translationsIndex!: Readonly<Record<number, Readonly<SingleTranslationData & { author: TranslationDataAuthor }>>>
     @Prop({ default: false }) loading!: boolean
     @Prop() selectedTranslations!: number[]
     @Prop() translationSelectionMode!: boolean
@@ -134,7 +147,7 @@ export default class AuthorsList extends Vue {
         return authStore.user?.moderator === true && configStore.highlightUnknownAuthor
     }
 
-    get authors (): TranslationAuthor[] {
+    get authors (): TranslationDataAuthor[] {
         let list = this.data ?? []
         if (this.currentTab !== AuthorsTab.All) {
             list = list.filter(it => it.kind === TabToKind[this.currentTab])
@@ -150,7 +163,7 @@ export default class AuthorsList extends Vue {
         return list
     }
 
-    authorClicked (author: TranslationAuthor): void {
+    authorClicked (author: TranslationDataAuthor): void {
         if (this.translationSelectionMode) {
             let translations = author.translations.filter(tr => configStore.playersFilters[tr.name] !== true)
             let allSelected = true
@@ -201,18 +214,18 @@ export default class AuthorsList extends Vue {
     }
 
     @Watch('data')
-    dataChanged (): void {
-        const fixSliderPosition = (n = 0) => {
+    fixSliderPosition (): void {
+        const fixSliderPositionWrap = (n = 0) => {
             if (!this.$refs.tabs && n < 5) {
-                setTimeout(fixSliderPosition, 100, n + 1)
+                setTimeout(fixSliderPositionWrap, 100, n + 1)
             } else {
                 (this.$refs.tabs as any).callSlider()
             }
         }
-        fixSliderPosition()
+        fixSliderPositionWrap()
     }
 
-    playerNames (author: TranslationAuthor): string {
+    playerNames (author: TranslationDataAuthor): string {
         const preFilteredData = author.translations.filter(tr => configStore.playersFilters[tr.name] !== true)
         let times: Record<string, number> = {}
 
@@ -250,20 +263,23 @@ export default class AuthorsList extends Vue {
 .kinds-tabs {
     .v-tab {
         min-width: 60px !important;
+        height: 100%;
     }
 
     .v-tabs-bar__content {
         justify-content: center;
+        align-items: center;
     }
 }
 
 .authors-list {
     overflow-y: auto;
-    max-height: 800px;
-
-    @media (max-width: 730px) {
-        max-height: 500px;
-    }
+    overflow-x: hidden;
+    //max-height: 800px;
+    //
+    //@media (max-width: 730px) {
+    //    max-height: 500px;
+    //}
 
     &-item {
         z-index: 1;

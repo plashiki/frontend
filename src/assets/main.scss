@@ -9,17 +9,6 @@ $mdi-font-path: '~@mdi/font/fonts/';
 @import './styles/transitions';
 @import './styles/vuetify';
 
-.viewer-iframe {
-    border: none;
-    height: 100%;
-    width: 100%;
-
-    &__overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        pointer-events: none;
-    }
+html {
+    overflow-y: auto!important;
 }
-

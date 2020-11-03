@@ -184,7 +184,18 @@ Pages:
         TabSub: Субтитры
         TabDub: Озвучка
         TabRaw: Оригинал
+        TheaterMode: Режим театра
+        NormalMode: Обычный режим
+        List: Список
+        NPeople:
+            - $n людей
+            - $n человек
+            - $n человека
+            - $n человек
+        RippedBy: от $name
     MediaInfo:
+        Name_anime: Информация об аниме
+        Name_manga: Информация о манге
         Information: Информация
         Description: Описание
         Related: Связанное
@@ -215,7 +226,7 @@ Pages:
         SentModeration: Отправлено на модерацию
         Added: Добавлено
     Report:
-        Name: Пожаловаться
+        Name: Жалоба
         SuggestEdit: Предложить изменение
         ReportSent: Жалоба отправлена! ID $id
         AutoReportDescription: Эта жалоба была создана автоматически.

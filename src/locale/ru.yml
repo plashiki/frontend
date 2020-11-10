@@ -557,7 +557,7 @@ Items:
         AuthorGroup: Группа
         AuthorPeople: Люди
         AuthorRipper: Сливер
-        LeaveBlankIfUnknown: Оставьте поле пустым если значение неизвестно или неприменимо
+        LeaveBlankIfUnknown: Оставьте пустыми неизвестные и неприменимые поля
         Url: Ссылка
         StatusName: Статус
         Status:

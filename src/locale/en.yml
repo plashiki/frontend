@@ -529,7 +529,7 @@ Items:
         AuthorGroup: Group
         AuthorPeople: People
         AuthorRipper: Ripper
-        LeaveBlankIfUnknown: Leave fields that are unknown or unapplicable blank
+        LeaveBlankIfUnknown: Leave unknown and inapplicable fields blank
         Url: URL
         StatusName: Status
         Status:

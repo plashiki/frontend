@@ -512,7 +512,24 @@ Items:
             koraw: Korean raw
             otherraw: Raw in other language
         Author: Translation author
-        LeaveBlankIfUnknown: Leave blank if author is unknown
+        AuthorInfo: >
+            <b>Group</b> - company or fandub/sub group who made the translation.
+            If translation was made by independent translator(-s), or group is unknown, leave blank.<br/>
+            <i>Examples: HorribleSubs, Wakanim.</i><br/><br/>
+
+            <b>People</b> - people, who took part in translation. This includes voice actors (for dubs)
+            and translators/editors (for subs). If the translation was made by entire (or significant part)
+            of a single Group, or people are unknown, leave blank.<br/>
+            <i>Examples: Lupin, Silv.</i><br/><br/>
+
+            <b>Ripper</b> - person/group, who ripped the release from official sources (like Wakanim, Crunchyroll).
+            Used only for translations ripped directly from legal streaming services unmodified. If the translation
+            was ripped by someone from Group or People, leave blank.<br/>
+            <i>Examples: FortunaTV.</i>
+        AuthorGroup: Group
+        AuthorPeople: People
+        AuthorRipper: Ripper
+        LeaveBlankIfUnknown: Leave fields that are unknown or unapplicable blank
         Url: URL
         StatusName: Status
         Status:

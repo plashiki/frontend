@@ -111,20 +111,78 @@
                 />
             </v-col>
         </v-row>
-        <v-combobox
-            v-model="form.author"
-            :disabled="disabled"
-            :hint="form.author ? undefined : $t('Items.Translation.LeaveBlankIfUnknown')"
-            :label="$t('Items.Translation.Author')"
-            :items="authorSearch && commonAuthors.indexOf(authorSearch) === -1 ? commonAuthors : []"
-            :search-input.sync="authorSearch"
-            :filter="(_, input, text) => input.length < 2 ? false : text.toLowerCase().indexOf(input.toLowerCase()) > -1"
-            autocomplete="off"
-            persistent-hint
-            hide-no-data
-            clearable
-            validate-on-blur
-        />
+        <v-divider class="my-2" />
+        <h4>
+            {{ $t('Items.Translation.Author') }}
+            <v-menu open-on-hover>
+                <template #activator="{ on }">
+                    <v-icon
+                        class="text--primary"
+                        small
+                        v-on="on"
+                    >
+                        mdi-help-circle-outline
+                    </v-icon>
+                </template>
+                <v-simple-card>
+                    <div v-html="$t('Items.Translation.AuthorInfo')" />
+                </v-simple-card>
+            </v-menu>
+        </h4>
+        <h6 class="caption">{{ $t('Items.Translation.LeaveBlankIfUnknown') }}</h6>
+        <v-row v-if="form.author != null">
+            <v-col
+                class="py-0"
+                cols="12"
+                md="4"
+            >
+                <v-combobox
+                    v-model="form.author.group"
+                    :disabled="disabled"
+                    :label="$t('Items.Translation.AuthorGroup')"
+                    :items="authorSearch && commonAuthors.indexOf(authorSearch) === -1 ? commonAuthors : []"
+                    :search-input.sync="authorSearch"
+                    :filter="(_, input, text) => input.length < 2 ? false : text.toLowerCase().indexOf(input.toLowerCase()) > -1"
+                    autocomplete="off"
+                    hide-no-data
+                    clearable
+                    validate-on-blur
+                />
+            </v-col>
+            <v-col
+                class="py-0"
+                cols="12"
+                md="4"
+            >
+                <v-combobox
+                    v-model="form.author.people"
+                    :disabled="disabled"
+                    :label="$t('Items.Translation.AuthorPeople')"
+                    :delimiters="[',']"
+                    class="fix-small-chips"
+                    append-icon=""
+                    autocomplete="off"
+                    multiple
+                    hide-no-data
+                    clearable
+                    small-chips
+                />
+            </v-col>
+            <v-col
+                class="py-0"
+                cols="12"
+                md="4"
+            >
+                <v-text-field
+                    v-model="form.author.ripper"
+                    :disabled="disabled"
+                    :label="$t('Items.Translation.AuthorRipper')"
+                    autocomplete="off"
+                    persistent-hint
+                />
+            </v-col>
+        </v-row>
+        <v-divider class="my-2" />
         <v-text-field
             v-model="inputUrl"
             :disabled="disabled || noUrl"
@@ -237,7 +295,11 @@ import { authors as commonAuthors } from '@/assets/authors.txt'
 import { getProviderNow } from '@/api/providers'
 
 const formDefaults = {
-    author: '',
+    author: {
+        group: '',
+        people: [],
+        ripper: ''
+    },
     url: '',
 } as any
 
@@ -393,8 +455,8 @@ export default class TranslationForm extends Vue {
     }
 
     applyPendingChanges () {
-        if (this.authorSearch) {
-            this.form.author = this.authorSearch
+        if (this.authorSearch && this.form.author) {
+            this.form.author.group = this.authorSearch
         }
     }
 

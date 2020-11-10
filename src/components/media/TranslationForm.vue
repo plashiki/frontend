@@ -216,12 +216,7 @@
                 class="elevation-3 ma-2"
                 style="max-width: 360px"
             >
-                <iframe
-                    :src="form.url"
-                    allowfullscreen
-                    allow="autoplay, encrypted-media"
-                    class="viewer-iframe"
-                ></iframe>
+                <BetterIframe :url="form.url" />
             </v-responsive>
             <v-layout
                 flex-grow-1
@@ -293,6 +288,7 @@ import { getPlayerMeta } from '@/api/moderation'
 import { iziToastError } from '@/plugins/izitoast'
 import { authors as commonAuthors } from '@/assets/authors.txt'
 import { getProviderNow } from '@/api/providers'
+import BetterIframe from '@/components/common/BetterIframe.vue'
 
 const formDefaults = {
     author: {
@@ -309,7 +305,7 @@ type TranslationFormData = {
 }
 
 @Component({
-    components: { VSimpleCard, VNumberField, ErrorAlert, MediaByIdField, TwoOptionSwitch, SearchFieldAutocomplete }
+    components: { BetterIframe, VSimpleCard, VNumberField, ErrorAlert, MediaByIdField, TwoOptionSwitch, SearchFieldAutocomplete }
 })
 export default class TranslationForm extends Vue {
     @Prop({ type: Object, default: () => ({}) }) form!: TranslationFormData

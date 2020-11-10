@@ -58,6 +58,8 @@ export default class BetterIframe extends Vue {
 .better-iframe {
     &--container {
         position: relative;
+        width: 100%;
+        height: 100%;
     }
 
     &--frame {

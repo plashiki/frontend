@@ -1,6 +1,7 @@
 <template>
     <div class="resizable-div">
         <div
+            v-show="!noLimit"
             ref="grip"
             class="resizable-div--grip"
             @mousedown="onMouseDown"
@@ -10,7 +11,7 @@
         </div>
         <div
             class="resizable-div--content d-flex flex-column"
-            :style="{ width: width + 'px' }"
+            :style="{ width: noLimit ? undefined : width + 'px' }"
         >
             <slot />
         </div>
@@ -27,6 +28,7 @@ export default class ResizableDiv extends Vue {
     @Prop({ type: Number, default: 0 }) minimumWidth!: number
     @Prop({ type: Number, default: Infinity }) maximumWidth!: number
     @Prop({ type: Number, default: 320 }) defaultWidth!: number
+    @Prop({ type: Boolean, default: false }) noLimit!: boolean
 
     @Ref() grip!: HTMLDivElement
 

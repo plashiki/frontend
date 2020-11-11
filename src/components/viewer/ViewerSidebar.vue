@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column fill-height">
+    <div class="viewer-sidebar d-flex flex-column fill-height">
         <v-dialog
             v-model="reportDialog"
             max-width="1000"
@@ -66,6 +66,7 @@
         <SmoothSlideGroup
             ref="slider"
             class="viewer-sidebar-parts"
+            :show-buttons="showPartsArrows"
             :count="partsLoading || partsTransitionPending ? -1 : availableParts.length"
             :height="36"
             :disabled="partsLoading"
@@ -145,6 +146,8 @@ export default class ViewerSidebar extends Vue {
     @PropSync('translationId') translationIdSync!: number | null
     @PropSync('partNumber') partNumberSync!: number
     @Prop({ default: null }) userRate!: UserRate | null
+
+    @Prop({ type: Boolean, default: true }) showPartsArrows!: boolean
 
     @Ref() authors!: any
     @Ref('parts-grid') partsGrid!: any
@@ -417,7 +420,10 @@ export default class ViewerSidebar extends Vue {
 }
 
 .viewer-sidebar-translations {
-    height: 0;
+    .viewer-container:not(.viewer-container--mobile) & {
+        height: 0;
+    }
+
     margin-bottom: 8px;
 }
 

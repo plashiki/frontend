@@ -39,18 +39,6 @@
             />
         </v-dialog>
 
-        <!--        <v-dialog-->
-        <!--            v-model="editMultipleDialog"-->
-        <!--            max-width="800"-->
-        <!--        >-->
-        <!--            <MultipleTranslationEditDialog-->
-        <!--                v-if="editMultipleDialog"-->
-        <!--                :translation-ids="selectedTranslations"-->
-        <!--                @close="editMultipleDialog = false"-->
-        <!--                @update="requestUpdate"-->
-        <!--            />-->
-        <!--        </v-dialog>-->
-
         <div v-show="displayMode !== 'theater'">
             <div class="viewer-header">
                 <transition mode="out-in" name="fade-transition">
@@ -61,10 +49,14 @@
                     />
                     <ImageWithRadiosity
                         v-else
-                        class="viewer-poster ma-4 mr-0"
-                        :width="80"
-                        :max-width="80"
-                        :height="120"
+                        class="viewer-poster mr-0"
+                        :class="{
+                            'ma-4': displayMode !== 'mobile',
+                            'ma-2': displayMode === 'mobile'
+                        }"
+                        :width="displayMode === 'mobile' ? 60 : 80"
+                        :max-width="displayMode === 'mobile' ? 60 : 80"
+                        :height="displayMode === 'mobile' ? 90 : 120"
                         :aspect-ratio="2/3"
                         :lazy-src="smallImage"
                         :src="fullImage"
@@ -78,16 +70,25 @@
                     />
                     <div
                         v-else
-                        class="d-flex flex-column ml-8 flex text-truncate my-4"
+                        class="d-flex flex-column flex text-truncate"
+                        :class="{
+                            'ml-8 my-4': displayMode !== 'mobile',
+                            'ml-4 mt-2': displayMode === 'mobile'
+                        }"
                     >
                         <h2
-                            class="lh-2 mb-1 text-truncate"
+                            :class="{
+                                'subtitle-05 pb-1': displayMode === 'mobile',
+                                'lh-2 mb-1': displayMode !== 'mobile'
+                            }"
+                            class="text-truncate"
                             :title="name"
                             v-text="name"
                         />
                         <h3
                             v-show="!!secondaryName"
                             class="grey--text text-truncate"
+                            :class="{ 'subtitle-025': displayMode === 'mobile' }"
                             :title="secondaryName"
                             v-text="secondaryName"
                         />
@@ -100,7 +101,7 @@
                                 :key="genre.id"
                                 class="elevation-1"
                                 :href="genreLink(genre)"
-                                :small="false"
+                                :small="displayMode === 'mobile'"
                             >
                                 {{ $t(genre.name) }}
                             </v-chip>
@@ -132,17 +133,16 @@
                         </v-icon>
                     </v-btn>
 
-                    <template v-show="displayMode !== 'mobile'">
-                        <v-spacer />
+                    <v-spacer v-show="displayMode !== 'mobile'" />
 
-                        <v-btn
-                            v-tooltip="$t('Pages.Viewer.TheaterMode')"
-                            icon
-                            @click="setTheaterMode(true)"
-                        >
-                            <v-icon>mdi-arrow-expand</v-icon>
-                        </v-btn>
-                    </template>
+                    <v-btn
+                        v-show="displayMode !== 'mobile'"
+                        v-tooltip="$t('Pages.Viewer.TheaterMode')"
+                        icon
+                        @click="setTheaterMode(true)"
+                    >
+                        <v-icon>mdi-arrow-expand</v-icon>
+                    </v-btn>
                 </div>
             </div>
 
@@ -150,8 +150,12 @@
         </div>
 
         <div class="viewer-player-row">
-            <div class="viewer-player-col">
-                <FixedAspectRatio
+            <div
+                ref="col"
+                class="viewer-player-col"
+            >
+                <component
+                    :is="displayMode === 'mobile' ? 'v-responsive' : 'FixedAspectRatio'"
                     ref="aspect"
                     :aspect-ratio="16/9"
                 >
@@ -180,15 +184,22 @@
                             </v-btn>
                         </div>
                     </template>
-                </FixedAspectRatio>
+                </component>
                 <div class="viewer-player-controls">
                     <v-btn
                         :dark="displayMode === 'theater'"
-                        text
+                        :text="colWidth >= 600"
+                        :icon="colWidth < 600"
                         @click="reportDialog = true"
                     >
-                        <v-icon left>mdi-alert-decagram</v-icon>
-                        {{ $t('Pages.Report.Name') }}
+                        <v-icon
+                            :left="colWidth >= 600"
+                        >
+                            mdi-alert-decagram
+                        </v-icon>
+                        <template v-if="colWidth >= 600">
+                            {{ $t('Pages.Report.Name') }}
+                        </template>
                     </v-btn>
 
                     <v-spacer />
@@ -216,6 +227,7 @@
                     </TranslationSubscribeMenu>
 
                     <v-btn
+                        v-show="colWidth >= 420"
                         v-tooltip="$t(mediaType === 'anime' ? 'Pages.Viewer.PrevEpisode' : 'Pages.Viewer.PrevChapter')"
                         :disabled="partNumber <= 1"
                         :dark="displayMode === 'theater'"
@@ -252,6 +264,7 @@
                     </v-layout>
 
                     <v-btn
+                        v-show="colWidth >= 420"
                         v-tooltip="$t(mediaType === 'anime' ? 'Pages.Viewer.NextEpisode' : 'Pages.Viewer.NextChapter')"
                         :disabled="media && (media.partsCount === 0 ? false : partNumber >= media.partsCount)"
                         :dark="displayMode === 'theater'"
@@ -262,6 +275,7 @@
                     </v-btn>
 
                     <v-btn
+                        v-show="colWidth >= 320"
                         v-tooltip="{ content: $t(`Items.UserRate.ControlButton.${userRateStatus}-${mediaType}`), trigger: 'hover click focus' }"
                         :color="userRateStatus === 'old-part' ? 'success' : undefined"
                         :disabled="!authenticated || userRateLoading"
@@ -272,6 +286,8 @@
                     >
                         <v-icon>{{ userRateIcon }}</v-icon>
                     </v-btn>
+
+                    <v-spacer v-show="displayMode === 'mobile'" />
 
                     <v-menu
                         v-model="userRateEditMenu"
@@ -304,29 +320,40 @@
                         />
                     </v-menu>
 
-                    <v-spacer />
+                    <v-spacer v-show="displayMode !== 'mobile'" />
 
                     <v-btn
+                        v-show="displayMode !== 'mobile'"
                         :dark="displayMode === 'theater'"
-                        text
+                        :text="colWidth >= 600"
+                        :icon="colWidth < 600"
                         @click="sidebarVisible = !sidebarVisible"
                     >
-                        {{ $t('Pages.Viewer.List') }}
-                        <v-icon right>mdi-format-list-bulleted</v-icon>
+
+                        <template v-if="colWidth >= 600">
+                            {{ $t('Pages.Viewer.List') }}
+                        </template>
+                        <v-icon
+                            :right="colWidth >= 600"
+                        >
+                            mdi-format-list-bulleted
+                        </v-icon>
                     </v-btn>
                 </div>
             </div>
             <v-divider
-                v-show="displayMode !== 'theater'"
+                v-show="displayMode === 'normal'"
                 class="ml-2"
                 vertical
             />
             <ResizableDiv
                 v-show="sidebarVisible"
-                persistent-id="viewer-list"
                 :minimum-width="400"
                 :maximum-width="$r12s.screenWidth * 0.5"
-                @resize="() => { resizeIframe(); this.$refs.sidebar.onResize() }"
+                :no-limit="displayMode === 'mobile'"
+                persistent-id="viewer-list"
+                class="viewer-sidebar-wrap"
+                @resize="onSidebarResize"
                 @resizestart="$el.classList.add('resize-pending')"
                 @resizeend="$el.classList.remove('resize-pending')"
             >
@@ -379,6 +406,7 @@
                     :media-id="mediaId"
                     :media-type="mediaType"
                     :media="media"
+                    :show-parts-arrows="colWidth >= 480"
                     @iframe="iframeUrl = $event"
                     @translation="translation = $event"
                 />
@@ -415,6 +443,7 @@ import ReportForm from '@/components/moderation/ReportForm.vue'
 import { ExtendedSingleTranslationData } from '@/types/translation'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { Route } from 'vue-router'
+import { VResponsive } from 'vuetify/lib'
 
 type ViewerDisplayMode = 'mobile' | 'normal' | 'theater'
 type UserRateControlStatus = 'new' | 'new-part' | 'start-repeat' | 'old-part'
@@ -438,12 +467,14 @@ const userRateIconMap: Record<UserRateControlStatus, string> = {
         BetterIframe,
         VSimpleCard,
         ImageWithRadiosity,
+        VResponsive
     },
 })
 export default class Viewer extends LoadableVue {
     @Prop({ type: String, required: true }) mediaType!: MediaType
     @Ref() iframe!: HTMLIFrameElement
     @Ref() sidebar!: any
+    @Ref() col!: any
 
     error: ApiException | null = null
     userRateLoading = false
@@ -461,6 +492,8 @@ export default class Viewer extends LoadableVue {
     userRate: UserRate | null = null
     translationId: number | null = null
     translation: ExtendedSingleTranslationData | null = null
+
+    colWidth = 0
 
     partNumber = NaN
     unsetPartNumber = false
@@ -485,7 +518,7 @@ export default class Viewer extends LoadableVue {
     }
 
     get displayMode (): ViewerDisplayMode {
-        return this.$r12s.screenWidth < 480 ? 'mobile' : configStore.viewerTheaterMode ? 'theater' : 'normal'
+        return this.$r12s.screenWidth < 960 ? 'mobile' : configStore.viewerTheaterMode ? 'theater' : 'normal'
     }
 
     get sidebarVisible (): boolean {
@@ -534,8 +567,13 @@ export default class Viewer extends LoadableVue {
         this.$nextTick(() => {
             (
                 this.$refs.aspect as any
-            ).onResize()
+            )?.onResize?.()
         })
+        if (this.displayMode === 'mobile') {
+            document.documentElement.classList.remove('fullscreen-page')
+        } else {
+            document.documentElement.classList.add('fullscreen-page')
+        }
     }
 
     @Watch('partNumber')
@@ -584,7 +622,7 @@ export default class Viewer extends LoadableVue {
             this.mediaId = mediaId
             setTimeout(() => configStore.addRecentMedia({
                 type: this.mediaType,
-                id: mediaId
+                id: mediaId,
             }), 120000)
             this.update()
         }
@@ -592,9 +630,22 @@ export default class Viewer extends LoadableVue {
             this.partNumber = to.params.part !== undefined ? parseInt(to.params.part) : 1
             this.unsetPartNumber = to.params.part !== undefined
         }
-        if (to.params.translationId !== from.params.translationId && to.params.translationId !== this.translationId + '') {
+        if (to.params.translationId !== from.params.translationId && to.params.translationId !== this.translationId
+            + '') {
             this.translationId = to.params.translationId === undefined ? parseInt(to.params.translationId) : null
         }
+    }
+
+    @Watch('$r12s.screenWidth')
+    updateColWidth (): void {
+        this.colWidth = this.col.clientWidth
+        this.sidebar.onResize()
+    }
+
+    onSidebarResize (): void {
+        this.updateColWidth()
+        this.resizeIframe()
+        this.sidebar.onResize()
     }
 
     updateUserRate (): Promise<void> {
@@ -706,6 +757,8 @@ export default class Viewer extends LoadableVue {
         this.loading = true
         this.partChanged()
 
+        this.updateColWidth()
+
         appStore.merge({
             showSearch: true,
         })
@@ -768,7 +821,7 @@ export default class Viewer extends LoadableVue {
         margin-bottom: 8px;
     }
 
-    .viewer-container--theater & .fixed-ar--container {
+    .viewer-container:not(.viewer-container--normal) & .fixed-ar--container {
         background: black;
     }
 
@@ -789,22 +842,24 @@ export default class Viewer extends LoadableVue {
 }
 
 .viewer-player-col {
-    .viewer-container:not(.viewer-container--theater) & {
+    .viewer-container--normal & {
         padding: 8px
     }
 
-    height: 100%;
+    .viewer-container:not(.viewer-container--mobile) & {
+        height: 100%;
+    }
+
     width: 100%;
     display: flex;
     flex-direction: column;
 
-    .viewer-container:not(.viewer-container--theater) & {
+    .viewer-container--normal & {
         .fixed-ar--wrap, iframe {
             border-radius: 4px;
         }
     }
 }
-
 
 
 .viewer-player-controls {
@@ -843,5 +898,26 @@ export default class Viewer extends LoadableVue {
     }
 
     user-select: none;
+}
+
+.viewer-container--mobile {
+    .viewer-player-row {
+        flex-direction: column;
+    }
+
+    .viewer-sidebar {
+        flex-direction: column-reverse!important;
+    }
+
+    .viewer-sidebar-wrap .resizable-div--content {
+        margin: 8px;
+        width: 100%;
+        display: flex;
+        flex-grow: 1;
+    }
+
+    .authors-list {
+        padding: 8px
+    }
 }
 </style>

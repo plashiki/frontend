@@ -5,6 +5,7 @@
             v-model="currentTab"
             background-color="transparent"
             class="kinds-tabs flex-grow-0"
+            :show-arrows="false"
         >
             <div style="display: flex; align-items: center">
                 <slot name="left" />

@@ -60,7 +60,7 @@ export default class FixedAspectRatio extends Vue {
         })
     }
 
-    beforeDestroyed (): void {
+    beforeDestroy (): void {
         this.removeListeners()
     }
 }

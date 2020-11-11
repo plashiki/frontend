@@ -139,7 +139,7 @@ export default class SmoothSlideGroup extends Vue {
         this.$nextTick(() => this.updateButtons())
     }
 
-    beforeDestroyed (): void {
+    beforeDestroy (): void {
         this.group.removeEventListener('scroll', this.updateButtons)
         window.removeEventListener('resize', this.updateButtons)
         this.group.removeEventListener('resize', this.updateButtons)

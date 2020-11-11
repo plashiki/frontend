@@ -157,13 +157,19 @@
                 </div>
             </template>
             <template #item.author="{ value }">
-                <span
-                    v-tooltip="value || $t('Items.Translation.UnknownAuthor')"
-                    class="text-truncate no-dots d-block"
+                <div
+                    v-tooltip.bottom="(value.ripper || value.group && value.people && value.people.length) && $t('Items.Translation.AuthorTooltip', {
+                        group: value.group || 'N/A',
+                        people: value.people && value.people.length ? value.people.join(', ') : 'N/A',
+                        ripper: value.ripper || 'N/A'
+                    })"
+                    class="text-truncate"
+                    :class="{ 'underline-dots': value.ripper || value.group && value.people && value.people.length }"
                     style="width: 140px"
                 >
-                    {{ value || $t('Items.Translation.UnknownAuthor') }}
-                </span>
+                    {{ value.group || (value.people && value.people.join(', ')) || $t('Items.Translation.UnknownAuthor') }}
+                    {{ value.group && value.people && value.people.length && ` (${value.people.join(', ')})` || '' }}
+                </div>
             </template>
             <template #item.updated_at="{ value }">
                 {{ formatTime(value) }}

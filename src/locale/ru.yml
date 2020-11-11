@@ -557,6 +557,10 @@ Items:
         AuthorGroup: Группа
         AuthorPeople: Люди
         AuthorRipper: Риппер
+        AuthorTooltip: >
+            <b>Группа</b>: $group<br/>
+            <b>Люди</b>: $people<br/>
+            <b>Риппер</b>: $ripper<br/>
         LeaveBlankIfUnknown: Оставьте пустыми неизвестные и неприменимые поля
         Url: Ссылка
         StatusName: Статус

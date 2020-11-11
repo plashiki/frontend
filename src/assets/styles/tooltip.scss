@@ -50,7 +50,7 @@
     text-decoration: none !important;
 }
 
-span.has-tooltip:not(.no-dots) {
+span.has-tooltip:not(.no-dots), .underline-dots {
     text-decoration: underline;
     text-decoration-style: dotted
 }

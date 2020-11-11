@@ -4,6 +4,7 @@
             ref="grip"
             class="resizable-div--grip"
             @mousedown="onMouseDown"
+            @touchstart="onMouseDown"
         >
             <div class="resizable-div--grip-icon" />
         </div>
@@ -32,20 +33,32 @@ export default class ResizableDiv extends Vue {
     width = 0
     gripOffset = 0
 
-    onMouseDown (evt: MouseEvent): void {
+    onMouseDown (evt: MouseEvent | TouchEvent): void {
         this.$emit('resizestart')
-        document.addEventListener('mousemove', this.onMouseMove)
-        document.addEventListener('mouseup', this.onMouseUp)
 
-        this.gripOffset = this.grip.getBoundingClientRect().right - evt.clientX
+        if (evt instanceof MouseEvent) {
+            document.addEventListener('mousemove', this.onMouseMove)
+            document.addEventListener('mouseup', this.onMouseUp)
+            this.gripOffset = this.grip.getBoundingClientRect().right - (evt as MouseEvent).clientX
+        } else {
+            document.addEventListener('touchmove', this.onMouseMove, { passive: false })
+            document.addEventListener('touchend', this.onMouseUp, { passive: false })
+            this.gripOffset = this.grip.getBoundingClientRect().right - (evt as TouchEvent).changedTouches[0].clientX
+        }
 
         this.onMouseMove(evt)
     }
 
-    onMouseUp (): void {
+    onMouseUp (evt: MouseEvent | TouchEvent): void {
         this.$emit('resizeend')
-        document.removeEventListener('mousemove', this.onMouseMove)
-        document.removeEventListener('mouseup', this.onMouseUp)
+
+        if (evt instanceof MouseEvent) {
+            document.removeEventListener('mousemove', this.onMouseMove)
+            document.removeEventListener('mouseup', this.onMouseUp)
+        } else {
+            document.removeEventListener('touchmove', this.onMouseMove)
+            document.removeEventListener('touchend', this.onMouseUp)
+        }
 
         if (this.persistentId) {
             configStore.merge({
@@ -56,9 +69,14 @@ export default class ResizableDiv extends Vue {
         }
     }
 
-    onMouseMove (evt: MouseEvent): void {
+    onMouseMove (evt: MouseEvent | TouchEvent): void {
         const rect = this.$el.getBoundingClientRect()
-        const neededWidth = rect.right - evt.clientX - this.gripOffset
+        let neededWidth: number
+        if (evt instanceof MouseEvent) {
+            neededWidth = rect.right - (evt as MouseEvent).clientX - this.gripOffset
+        } else {
+            neededWidth = rect.right - (evt as TouchEvent).changedTouches[0].clientX - this.gripOffset
+        }
 
         this.setWidth(neededWidth)
     }

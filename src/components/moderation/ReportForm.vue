@@ -42,12 +42,7 @@
                         :disabled="sending"
                         class="elevation-3 ma-2"
                     >
-                        <iframe
-                            :src="editableTranslation.url"
-                            allowfullscreen
-                            allow="autoplay, encrypted-media"
-                            class="viewer-iframe"
-                        ></iframe>
+                        <BetterIframe :url="editableTranslation.url" />
                     </v-responsive>
                 </v-col>
                 <v-col
@@ -117,9 +112,10 @@ import { submitReport } from '@/api/moderation'
 import { sendCaptcha } from '@/api/auth'
 import { clone, shallowDiff } from '@/utils/object-utils'
 import { iziToastSuccess } from '@/plugins/izitoast'
+import BetterIframe from '@/components/common/BetterIframe.vue'
 
 @Component({
-    components: { Recaptcha, ErrorAlert, TranslationForm }
+    components: { BetterIframe, Recaptcha, ErrorAlert, TranslationForm }
 })
 export default class ReportForm extends Vue {
     @Prop({ required: true }) translation!: ExtendedSingleTranslationData

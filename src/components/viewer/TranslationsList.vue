@@ -11,6 +11,7 @@
                 rounded
                 small
                 @click="itemClicked(tr, $event)"
+                @mousedown.middle.native.prevent="selectedTranslation = tr.id"
             >
                 {{ tr.name }}
                 <span
@@ -121,7 +122,6 @@ export default class TranslationsList extends Vue {
 
     itemClicked (it: SingleTranslationData, event: MouseEvent): void {
         let active = this.itemActive(it)
-        this.selectedTranslation = it.id
 
         if (this.translationSelectionMode) {
             if (event.shiftKey && this.selectedTranslations.length) {
@@ -177,6 +177,8 @@ export default class TranslationsList extends Vue {
             } else {
                 this.selectedTranslations.push(it.id)
             }
+        } else {
+            this.selectedTranslation = it.id
         }
     }
 

@@ -85,6 +85,10 @@ module.exports = {
         proxy: {
             '/api': {
                 target: 'http://127.0.0.1:7281',
+
+                onError (err) {
+                    console.log('Suppressing WDS proxy upgrade error:', err)
+                },
             },
         },
     },
@@ -94,3 +98,7 @@ module.exports = {
         },
     },
 }
+
+process.on('uncaughtException', function (err) {
+    console.error(err.stack)
+})

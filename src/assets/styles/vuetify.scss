@@ -127,7 +127,7 @@ html.dark.overflow-y-hidden {
 
 // fsr small chips input is smaller than normal input
 .fix-small-chips .v-input__slot {
-    height: 32px!important;
+    min-height: 32px!important;
 }
 
 html.fullscreen-page {

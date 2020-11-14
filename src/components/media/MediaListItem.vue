@@ -95,7 +95,7 @@ export default class MediaListItem extends Vue {
         }
 
         if (this.item.genres?.length) {
-            ret.push(this.$t('Genres.' + this.item.genres[0].name))
+            ret.push(this.$t(this.item.genres[0].name))
         }
 
         if (this.item.year) {

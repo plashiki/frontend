@@ -149,7 +149,7 @@
                                 </v-btn>
                             </template>
                         </template>
-                        <template v-else>
+                        <template v-else-if="item.status !== 'pending'">
                             <v-btn
                                 v-tooltip="$t('Items.Report.Reopen')"
                                 :disabled="loading"

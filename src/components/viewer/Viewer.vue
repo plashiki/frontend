@@ -244,11 +244,12 @@
                         style="max-width: 90px;"
                     >
                         <v-text-field
+                            v-model="episodeInput"
                             :label="$t('anime' === 'anime' ? 'Items.Media.Episode' : 'Items.Media.Chapter')"
-                            :value="partNumber"
                             :suffix="media && media.partsCount ? $t('Pages.Viewer.OutOf', { n: media.partsCount }) : undefined"
                             :dark="displayMode === 'theater'"
                             class="mt-2 mb-1 text-right"
+                            autocomplete="off"
                             height="24"
                             hide-details
                             @change="episodeInputDone"

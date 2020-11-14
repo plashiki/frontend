@@ -1,8 +1,7 @@
 import { configStore } from '@/store'
 import { i18n } from '@/plugins/vue-i18n'
 import { fallbackImage } from '@/config'
-import SortedArray from '@/utils/sorted-array'
-import { Translation, TranslationDataAuthor, TranslationData } from '@/types/translation'
+import { Translation, TranslationDataAuthor, TranslationData, TranslationAuthor } from '@/types/translation'
 import { ImageMeta, NameMeta } from '@/types/media'
 import { isRussian } from '@/utils/i18n'
 
@@ -58,20 +57,22 @@ function getPlayerHost (url: string): string {
     }
 }
 
-function optimizeName (name: string): string {
-    if (name === '') {
-        return 'unknown'
+export function authorToString (author: TranslationAuthor, short = false): string {
+    let ret = ''
+    if (author.group) {
+        ret = author.group
+        if (author.people?.length) {
+            ret += ` (${author.people.join(', ')})`
+        }
+    } else if (author.people?.length) {
+        ret = author.people.join(', ')
+    } else return ''
+
+    if (author.ripper && !short) {
+        ret += ` [${author.ripper}]`
     }
-    name = name.toLowerCase()
-        .match(/^(.+?)(?:\s+[[(].+[\])]|\s+на\s+.+)?$/)![1]  // magic, dont touch
-    if (name.indexOf(', ') !== -1 || name.indexOf(' & ') !== -1) {
-        name = name.split(/(?:, | & )/)
-            .sort()
-            .join(', ')
-        // if name is multiple names divided by comma or ampersand we sort them so the order does not matter
-        // i.e. FooSub (Eva & Bob) is same as FooSub (Bob & Eva)
-    }
-    return name
+
+    return ret || i18n.t('Items.Translation.UnknownAuthor')
 }
 
 // basically copy-pasted from backend

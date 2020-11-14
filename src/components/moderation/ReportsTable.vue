@@ -243,6 +243,7 @@ import UserChip from '@/components/user/UserChip.vue'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
 import { convertDataTableOptionsToPagination } from '@/utils/helpers'
+import { authorToString } from '@/utils/media-utils'
 
 // type ProposedEditField = [string, string, string, any] // display key, object key, display value (html), value
 interface ProposedEditField {
@@ -408,7 +409,7 @@ export default class ReportsTable extends Vue {
 
                     if (key === 'author') {
                         return {
-                            display: [this.$t('Items.Translation.Author'), value],
+                            display: [this.$t('Items.Translation.Author'), authorToString(value)],
                             object
                         }
                     }

@@ -28,13 +28,14 @@
                     <ReportsTable
                         ref="reports"
                         moderator
+                        @complex="reportsc.update()"
                     />
                 </v-simple-card>
             </v-tab-item>
             <v-tab-item>
                 <v-simple-card>
                     <ReportsTable
-                        ref="reports"
+                        ref="reportsc"
                         moderator
                         for-complex
                     />
@@ -132,6 +133,7 @@ import { subscribeToTopics, unsubscribeFromTopics } from '@/api/notifications'
 })
 export default class ModerationPage extends LoadableVue {
     @Ref() reports!: any
+    @Ref() reportsc!: any
     @Ref() translations!: any
 
     tab = 0
@@ -177,7 +179,9 @@ export default class ModerationPage extends LoadableVue {
     }
 
     requestUpdate (): void {
-        (this.tab === 0 ? this.translations : this.reports).update()
+        if (this.tab === 0) this.translations.update()
+        if (this.tab === 1) this.reports.update()
+        if (this.tab === 2) this.reportsc.update()
     }
 
     mounted (): void {

@@ -369,6 +369,7 @@ export default class ReportsTable extends Vue {
         makeReportComplex(item.id).then(() => {
             iziToastSuccess()
             this.update()
+            this.$emit('complex')
         }).catch(iziToastError)
     }
 

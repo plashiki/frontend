@@ -289,6 +289,7 @@ import { iziToastError } from '@/plugins/izitoast'
 import { authors as commonAuthors } from '@/assets/authors.txt'
 import { getProviderNow } from '@/api/providers'
 import BetterIframe from '@/components/common/BetterIframe.vue'
+import { shallowClone } from '@/utils/object-utils'
 
 const formDefaults = {
     author: {
@@ -379,6 +380,8 @@ export default class TranslationForm extends Vue {
     setField (key: string, value: any): void {
         if (key === 'url') {
             this.inputUrl = value
+        } else if (key === 'author') {
+            this.form.author = shallowClone(value)
         } else {
             (this.form as any)[key] = value
         }

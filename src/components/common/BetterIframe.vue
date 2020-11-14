@@ -29,7 +29,7 @@ export default class BetterIframe extends Vue {
 
     loading = false
 
-    @Watch('iframeUrl')
+    @Watch('url')
     onIframeUrlChanged (val: string): void {
         this.loading = true
         // workaround so urls in iframe dont pollute browser history

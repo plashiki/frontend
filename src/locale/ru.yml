@@ -230,6 +230,7 @@ Pages:
         SuggestEdit: Предложить изменение
         ReportSent: Жалоба отправлена! ID $id
         AutoReportDescription: Эта жалоба была создана автоматически.
+        IsComplex: Затрагивает много переводов
     Calendar:
         Name: Календарь
     Lists:
@@ -247,6 +248,8 @@ Pages:
         DeclineReason: Причина (необязательно)
         Translations: Переводы
         Reports: Жалобы
+        ComplexReports: Составные жалобы
+        MakeComplex: Сделать составным
         Options: Параметры
         Stats: Статистика
         YourStats: 'Ваша статистика:'
@@ -390,6 +393,7 @@ Items:
         Moderator: Модератор
         Admin: Админ
     Media:
+        Name: Медиа
         PartPrefix: '#'
         Episode: Серия
         Chapter: Глава
@@ -482,6 +486,7 @@ Items:
         Studio: Студия
         OtherNames: Другия названия
     Translation:
+        Name: Перевод
         NamePlural: Переводы
         UnknownAuthor: Неизвестный автор
         KindName: Тип перевода
@@ -614,6 +619,7 @@ Items:
         Status: Статус
         InList: В списке
     Report:
+        IsComplex: Составной
         NamePlural: Жалобы
         TypeText: Тип жалобы
         Type:
@@ -629,6 +635,7 @@ Items:
             pending: Ожидает
             resolved: Обработано
             discarded: Отклонено
+        Reopen: Открыть заново
         Discard: Игнорировать
         EditNFields:
             - $n полей

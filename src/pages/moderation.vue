@@ -5,6 +5,7 @@
                 <v-tabs v-model="tab">
                     <v-tab>{{ $t('Pages.Moderation.Translations') }}</v-tab>
                     <v-tab>{{ $t('Pages.Moderation.Reports') }}</v-tab>
+                    <v-tab>{{ $t('Pages.Moderation.ComplexReports') }}</v-tab>
                     <v-tab>{{ $t('Pages.Moderation.Options') }}</v-tab>
                 </v-tabs>
             </v-card-text>
@@ -27,6 +28,15 @@
                     <ReportsTable
                         ref="reports"
                         moderator
+                    />
+                </v-simple-card>
+            </v-tab-item>
+            <v-tab-item>
+                <v-simple-card>
+                    <ReportsTable
+                        ref="reports"
+                        moderator
+                        for-complex
                     />
                 </v-simple-card>
             </v-tab-item>

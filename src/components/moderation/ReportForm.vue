@@ -12,10 +12,19 @@
                 >
                     <ErrorAlert :error="error" />
                     <v-switch
-                        v-model="showEdit"
+                        v-model="isComplex"
                         :disabled="sending"
+                        :label="$t('Pages.Report.IsComplex')"
+                        class="ma-0"
+                        hide-details
+                    />
+                    <v-switch
+                        v-model="showEdit"
+                        :disabled="sending || isComplex"
                         :label="$t('Pages.Report.SuggestEdit')"
                         :loading="translationLoading"
+                        class="ma-0"
+                        hide-details
                     />
                     <v-form v-model="valid1">
                         <v-select
@@ -127,6 +136,8 @@ export default class ReportForm extends Vue {
 
     requiredField = requiredField
 
+    isComplex = false
+
     valid1 = false
     valid2 = false
     form: Partial<Report> = {}
@@ -147,6 +158,13 @@ export default class ReportForm extends Vue {
             text: this.$t(`Items.Report.Type.${type}`),
             value: type
         }))
+    }
+
+    @Watch('isComplex')
+    isComplexChanged (val: boolean) {
+        if (val) {
+            this.showEdit = false
+        }
     }
 
     @Watch('showEdit')
@@ -183,8 +201,9 @@ export default class ReportForm extends Vue {
 
         return submitReport({
             ...this.form,
-            translation_id: this.translation.id,
-            edit: this.originalTranslation && this.editableTranslation ? shallowDiff(this.originalTranslation, this.editableTranslation) as any : undefined
+            translation_id: this.isComplex ? this.media.id as number : this.translation.id,
+            edit: this.originalTranslation && this.editableTranslation ? shallowDiff(this.originalTranslation, this.editableTranslation) as any : undefined,
+            is_complex: this.isComplex
         }).then((report: Report) => {
             iziToastSuccess(this.$t(report.status === ReportStatus.Pending ? 'Pages.Report.ReportSent' : 'Common.Form.ChangesSaved', { id: report.id }))
             this.sending = false

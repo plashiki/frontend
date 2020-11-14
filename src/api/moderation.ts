@@ -19,6 +19,12 @@ export function submitReport (report: Partial<Report>): Promise<Report> {
     })
 }
 
+export function reopenReport (id: number): Promise<void> {
+    return makeApiRequest({
+        path: `/v2/reports/${id}/reopen`
+    })
+}
+
 export function getSubmittedTranslations (pagination?: PaginationSort): Promise<PaginatedResponse<Translation>> {
     return makeApiRequest({
         path: '/v2/submissions',
@@ -42,10 +48,10 @@ export function getRecentlySubmittedTranslations (pagination?: Pagination, all =
     })
 }
 
-export function getRecentlySubmittedReports (pagination?: Pagination): Promise<PaginatedResponse<Report>> {
+export function getRecentlySubmittedReports (complex: boolean | undefined, pagination?: Pagination): Promise<PaginatedResponse<Report>> {
     return makeApiRequest({
         path: '/v2/reports/recent',
-        query: pagination,
+        query: { complex, ...pagination },
         timeout: 15000 // slow yep
     })
 }
@@ -113,11 +119,18 @@ export function deleteReport (id: number): Promise<void> {
     })
 }
 
+export function makeReportComplex (id: number): Promise<void> {
+    return makeApiRequest({
+        path: `/v2/reports/${id}/makeComplex`
+    })
+}
+
 // actually it does not return translation, teehee
 export function resolveReport (id: number, edit: Partial<Translation>): Promise<Translation> {
     return makeApiRequest({
         path: `/v2/reports/${id}/resolve`,
-        body: edit
+        body: edit,
+        method: 'POST'
     })
 }
 

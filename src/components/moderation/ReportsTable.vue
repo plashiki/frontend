@@ -100,15 +100,65 @@
                             </v-icon>
                         </v-btn>
                         <template v-if="item.status === 'pending' && moderator">
+                            <template v-if="!item.is_complex">
+                                <v-btn
+                                    v-tooltip="$t('Pages.Moderation.Consider')"
+                                    :disabled="loading"
+                                    icon
+                                    small
+                                    @click="edit(item)"
+                                >
+                                    <v-icon small>
+                                        mdi-eye
+                                    </v-icon>
+                                </v-btn>
+                                <v-btn
+                                    v-tooltip="$t('Pages.Moderation.MakeComplex')"
+                                    :disabled="loading"
+                                    icon
+                                    small
+                                    @click="makeComplex(item)"
+                                >
+                                    <v-icon small>
+                                        mdi-tag-multiple
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-else>
+                                <v-btn
+                                    v-tooltip="$t('Items.Report.Status.resolved')"
+                                    :disabled="loading"
+                                    icon
+                                    small
+                                    @click="resolve(item)"
+                                >
+                                    <v-icon small>
+                                        mdi-check
+                                    </v-icon>
+                                </v-btn>
+                                <v-btn
+                                    v-tooltip="$t('Items.Report.Discard')"
+                                    :disabled="loading"
+                                    icon
+                                    small
+                                    @click="discard(item)"
+                                >
+                                    <v-icon small>
+                                        mdi-close
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                        </template>
+                        <template v-else>
                             <v-btn
-                                v-tooltip="$t('Pages.Moderation.Consider')"
+                                v-tooltip="$t('Items.Report.Reopen')"
                                 :disabled="loading"
                                 icon
                                 small
-                                @click="edit(item)"
+                                @click="reopen(item)"
                             >
                                 <v-icon small>
-                                    mdi-eye
+                                    mdi-backup-restore
                                 </v-icon>
                             </v-btn>
                         </template>
@@ -127,9 +177,15 @@
                             {{ $t('Common.No') }}
                         </b>
                     </td>
+                    <td v-else>
+                        <v-simple-checkbox
+                            :value="item.is_complex"
+                            readonly
+                        />
+                    </td>
                     <td>
                         <a
-                            :href="'/translations/' + item.translation_id"
+                            :href="item.is_complex ? '/anime/' + item.translation_id : '/translations/' + item.translation_id"
                             target="_blank"
                         >
                             {{ item.translation_id }}
@@ -165,10 +221,16 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { Translation } from '@/types/translation'
-import { deleteReport, getRecentlySubmittedReports, getSubmittedReports } from '@/api/moderation'
+import {
+    deleteReport, discardReport,
+    getRecentlySubmittedReports,
+    getSubmittedReports,
+    makeReportComplex, reopenReport,
+    resolveReport,
+} from '@/api/moderation'
 import { EditableTranslationFields, Report } from '@/types/moderation'
 import ErrorAlert from '@/components/common/ErrorAlert.vue'
-import { ApiException } from '@/types/api'
+import { ApiException, PaginatedResponse } from '@/types/api'
 import UserChip from '@/components/user/UserChip.vue'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { iziToastError, iziToastSuccess } from '@/plugins/izitoast'
@@ -187,6 +249,7 @@ interface ProposedEditField {
 })
 export default class ReportsTable extends Vue {
     @Prop({ type: Boolean, default: false }) moderator!: boolean
+    @Prop({ type: Boolean, default: false }) forComplex!: boolean
     error: ApiException | null = null
 
     options: any = {}
@@ -209,9 +272,11 @@ export default class ReportsTable extends Vue {
         }
 
         let ret = [
-
             {
-                text: this.$t('Items.Translation.Target'),
+                text: this.moderator
+                    ? this.forComplex
+                        ? this.$t('Items.Media.Name') : this.$t('Items.Translation.Name')
+                    : this.$t('Items.Translation.Target'),
                 value: 'translation_id',
                 width: 140
             },
@@ -238,6 +303,12 @@ export default class ReportsTable extends Vue {
                 value: 'sender_id',
                 width: 160
             })
+        } else {
+            ret.unshift({
+                text: this.$t('Items.Report.IsComplex'),
+                value: 'is_complex',
+                width: 120
+            })
         }
 
         ret.unshift(status)
@@ -250,6 +321,27 @@ export default class ReportsTable extends Vue {
         this.currentReport = it
     }
 
+    resolve (item: Report) {
+        resolveReport(item.id).then(() => {
+            iziToastSuccess()
+            this.update()
+        }).catch(iziToastError)
+    }
+
+    discard (item: Report) {
+        discardReport(item.id).then(() => {
+            iziToastSuccess()
+            this.update()
+        }).catch(iziToastError)
+    }
+
+    reopen (item: Report) {
+        reopenReport(item.id).then(() => {
+            iziToastSuccess()
+            this.update()
+        }).catch(iziToastError)
+    }
+
     del (item: Report): void {
         this.$set(this.deleting, item.id, true)
         deleteReport(item.id).then(() => {
@@ -258,6 +350,13 @@ export default class ReportsTable extends Vue {
         }).catch(iziToastError).finally(() => {
             this.$delete(this.deleting, item.id)
         })
+    }
+
+    makeComplex (item: Report): void {
+        makeReportComplex(item.id).then(() => {
+            iziToastSuccess()
+            this.update()
+        }).catch(iziToastError)
     }
 
     proposedEditText (it: Report, full = false): ProposedEditField[] {
@@ -336,9 +435,16 @@ export default class ReportsTable extends Vue {
         this.loading = true
         this.error = null
 
-        return (this.moderator ? getRecentlySubmittedReports : getSubmittedReports)(
-            convertDataTableOptionsToPagination(this.options, true)
-        ).then((data) => {
+        const pagination = convertDataTableOptionsToPagination(this.options, true)
+
+        let promise: Promise<PaginatedResponse<Report>>
+        if (this.moderator) {
+            promise = getRecentlySubmittedReports(this.forComplex, pagination)
+        } else {
+            promise = getSubmittedReports(pagination)
+        }
+
+        return promise.then((data) => {
             this.items = data.items
             this.count = data.count
         }).catch((err) => {

@@ -28,6 +28,7 @@ export interface Report {
     edit: Partial<Leave<Translation, EditableTranslationFields>> | null
     created_at: Date
     updated_at: Date
+    is_complex: boolean
 }
 
 export interface ModerationStatistics {

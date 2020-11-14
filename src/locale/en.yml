@@ -214,6 +214,7 @@ Pages:
         SuggestEdit: Suggest edit
         ReportSent: Report sent! ID $id
         AutoReportDescription: This report was sent automatically.
+        IsComplex: Covers multiple translations
     Calendar:
         Name: Calendar
     Lists:
@@ -231,6 +232,8 @@ Pages:
         DeclineReason: Reason (optional)
         Translations: Translations
         Reports: Reports
+        ComplexReports: Complex reports
+        MakeComplex: Make complex
         Options: Options
         Stats: Stats
         YourStats: 'Your stats:'
@@ -357,6 +360,7 @@ Items:
         Moderator: Moderator
         Admin: Admin
     Media:
+        Name: Media
         PartPrefix: '#'
         Episode: Episode
         Chapter: Chapter
@@ -453,6 +457,7 @@ Items:
         Studio: Studio
         OtherNames: Other names
     Translation:
+        Name: Translation
         NamePlural: Translations
         UnknownAuthor: Unknown author
         KindName: Translation kind
@@ -582,6 +587,7 @@ Items:
         Status: Status
         InList: In list
     Report:
+        IsComplex: Is complex
         NamePlural: Report
         TypeText: Report type
         Type:
@@ -597,6 +603,7 @@ Items:
             pending: Pending
             resolved: Resolved
             discarded: Discarded
+        Reopen: Re-open
         Discard: Discard
         EditNFields:
             - $n field

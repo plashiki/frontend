@@ -167,6 +167,13 @@ export default class ReportForm extends Vue {
         }
     }
 
+    @Watch('translation')
+    translationChanged (): void {
+        if (this.showEdit) {
+            this.showEditChanged(this.showEdit)
+        }
+    }
+
     @Watch('showEdit')
     showEditChanged (val: boolean): void {
         if (val) {

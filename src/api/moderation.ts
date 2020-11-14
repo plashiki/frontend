@@ -126,7 +126,7 @@ export function makeReportComplex (id: number): Promise<void> {
 }
 
 // actually it does not return translation, teehee
-export function resolveReport (id: number, edit: Partial<Translation>): Promise<Translation> {
+export function resolveReport (id: number, edit?: Partial<Translation>): Promise<Translation> {
     return makeApiRequest({
         path: `/v2/reports/${id}/resolve`,
         body: edit,

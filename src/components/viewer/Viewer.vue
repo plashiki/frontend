@@ -633,7 +633,7 @@ export default class Viewer extends LoadableVue {
         }
         if (to.params.translationId !== from.params.translationId && to.params.translationId !== this.translationId
             + '') {
-            this.translationId = to.params.translationId === undefined ? parseInt(to.params.translationId) : null
+            this.translationId = to.params.translationId != undefined ? parseInt(to.params.translationId) : null
         }
     }
 

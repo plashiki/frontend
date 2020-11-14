@@ -1,5 +1,6 @@
 import { Leave } from '@/types/index'
 import { Translation } from '@/types/translation'
+import { User } from '@/types/user'
 
 export enum ReportType {
     InvalidMedia = 'invalid_media',
@@ -29,6 +30,7 @@ export interface Report {
     created_at: Date
     updated_at: Date
     is_complex: boolean
+    closed_by: User | null
 }
 
 export interface ModerationStatistics {

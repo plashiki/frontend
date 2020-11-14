@@ -212,6 +212,14 @@
                             {{ $tc('Items.Report.EditNFields', Object.keys(item.edit).length) }}
                         </span>
                     </td>
+                    <td>
+                        <UserChip
+                            v-if="item.closed_by"
+                            :user="item.closed_by"
+                            :control="moderator"
+                            small
+                        />
+                    </td>
                 </tr>
             </template>
         </v-data-table>
@@ -294,6 +302,11 @@ export default class ReportsTable extends Vue {
                 text: this.$t('Items.Report.ProposedEdit'),
                 sortable: false,
                 width: 320
+            },
+            {
+                text: this.$t('Items.Report.ClosedBy'),
+                value: 'closed_by_id',
+                width: 160
             }
         ]
 

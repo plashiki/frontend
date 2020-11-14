@@ -603,6 +603,7 @@ Items:
             pending: Pending
             resolved: Resolved
             discarded: Discarded
+        ClosedBy: Closed by
         Reopen: Re-open
         Discard: Discard
         EditNFields:

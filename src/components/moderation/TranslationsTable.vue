@@ -167,8 +167,7 @@
                     :class="{ 'underline-dots': value.ripper || value.group && value.people && value.people.length }"
                     style="width: 140px"
                 >
-                    {{ value.group || (value.people && value.people.join(', ')) || $t('Items.Translation.UnknownAuthor') }}
-                    {{ value.group && value.people && value.people.length && ` (${value.people.join(', ')})` || '' }}
+                    {{ authorToString(value, true) }}
                 </div>
             </template>
             <template #item.updated_at="{ value }">
@@ -201,7 +200,7 @@ import {
     getTranslationsInGroup
 } from '@/api/moderation'
 import { Media, MediaId } from '@/types/media'
-import { getPreferredName } from '@/utils/media-utils'
+import { getPreferredName, authorToString } from '@/utils/media-utils'
 import { getMedias } from '@/api/media'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { uniqueBy } from '@/utils/object-utils'
@@ -223,6 +222,8 @@ export default class TranslationsTable extends Vue {
     @Prop({ type: Boolean, default: false }) moderator!: boolean
     @Prop({ type: Boolean, default: false }) admin!: boolean
     @Prop({ type: String, default: '' }) group!: string
+
+    authorToString = authorToString
 
     options: any = {}
     count = 0

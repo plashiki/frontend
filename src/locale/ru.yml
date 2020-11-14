@@ -635,7 +635,7 @@ Items:
             pending: Ожидает
             resolved: Обработано
             discarded: Отклонено
-        ClosedBy: Закрыто
+        ClosedBy: Закрыл
         Reopen: Открыть заново
         Discard: Игнорировать
         EditNFields:

@@ -15,6 +15,15 @@
                 @update="update"
             >
                 <v-card
+                    v-if="currentReport.comment.length"
+                    outlined
+                >
+                    <v-card-title>
+                        {{ $t('Items.Report.Comment') }}
+                    </v-card-title>
+                    <v-card-text v-text="currentReport.comment" />
+                </v-card>
+                <v-card
                     v-if="currentReport.edit"
                     outlined
                 >

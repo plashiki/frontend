@@ -6,6 +6,7 @@
         :mini-variant="mini"
         :permanent="mini"
         :expand-on-hover="expandOnHover"
+        :touchless="mini"
         app
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"

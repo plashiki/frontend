@@ -83,7 +83,7 @@ import { Component, Ref, Vue, Watch } from 'vue-property-decorator'
 import { authStore, notificationsStore } from '@/store'
 import Notification from '@/components/notifications/Notification.vue'
 import VirtualGrid from '@/components/common/VirtualGrid.vue'
-import { registerFirebaseToken } from '@/api/notifications'
+import { markAsSeen, registerFirebaseToken } from '@/api/notifications'
 import { ApiNotification } from '@/types/notification'
 import IndexedDBClient from '@/utils/indexed-db-client'
 import { firebaseMessaging } from '@/plugins/firebase'
@@ -111,7 +111,7 @@ export default class NotificationsDialog extends Vue {
     }
 
     get missed (): number {
-        return this.items.filter(i => i.new === true).length
+        return this.items.filter(i => !i.seen).length
     }
 
     get webPushSupported (): boolean {
@@ -162,11 +162,12 @@ export default class NotificationsDialog extends Vue {
     }
 
     onNotificationVisible (item?: ApiNotification<any>, visible?: boolean): void {
-        if (item?.new && visible && this.visible) {
+        if (item && !item?.seen && visible && this.visible) {
             notificationsStore.updateNotification({
                 $id: item.id,
-                new: false
+                seen: true
             })
+            markAsSeen(item.id)
         }
     }
 

@@ -123,6 +123,7 @@ import Notification from '@/components/notifications/Notification.vue'
 import { ApiNotification } from '@/types/notification'
 import { WebSocketStatusState } from '@/types/api'
 import { merge } from '@/utils/object-utils'
+import { markAsSeen } from '@/api/notifications'
 
 @Component({
     components: { Notification, NotificationsDialog, AppNavigation }
@@ -242,8 +243,9 @@ export default class DefaultLayout extends Vue {
 
         notificationsStore.updateNotification({
             $id: this.currentNotification.id,
-            new: false
+            seen: true
         })
+        markAsSeen(this.currentNotification.id)
         this.currentNotification = null
     }
 

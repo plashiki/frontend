@@ -1,5 +1,6 @@
 import { makeApiRequest } from '@/api/index'
 import { ApiNotification } from '@/types/notification'
+import { iziToastError } from '@/plugins/izitoast'
 
 
 export async function getMissedNotifications (since: number): Promise<ApiNotification[]> {
@@ -48,4 +49,22 @@ export function getUserTopics (): Promise<string[]> {
     return makeApiRequest({
         path: '/v2/notifications/mytopics'
     })
+}
+
+let markAsSeenBuffer: number[] = []
+let markAsSeenTimeout: number | null = null
+export function markAsSeen (id: number) {
+    if (markAsSeenTimeout != null) clearTimeout(markAsSeenTimeout)
+    if (markAsSeenBuffer.indexOf(id) === -1) markAsSeenBuffer.push(id)
+
+    markAsSeenTimeout = setTimeout(() => {
+        let ids = markAsSeenBuffer.join(',')
+        markAsSeenTimeout = null
+        markAsSeenBuffer = []
+
+        makeApiRequest({
+            path: '/v2/notifications/markAsSeen',
+            query: { ids }
+        }).catch(iziToastError)
+    }, 1000)
 }

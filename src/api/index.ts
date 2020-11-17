@@ -191,7 +191,7 @@ async function handleWebsocketMessage (data: WebSocketRPCIn): Promise<void> {
                 payload: data.data!,
                 deleted: false,
                 time: new Date().toISOString(),
-                new: true
+                seen: false
             })
             webSocketEventBus.$emit('push', notif)
         }
@@ -387,7 +387,6 @@ export function updateInitData (retry = false): void {
             Promise.all([
                 Promise.all(createdNotifications.map(i => prepareNotification(i))).then((items) => {
                     notificationsStore.addNotifications(items.map(it => {
-                        it.new = true
                         it.background = true
                         return it
                     }))

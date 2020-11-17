@@ -8,12 +8,10 @@ export interface ApiNotification<T = AnyKV> {
     topics: string[]
     payload: T
     deleted: boolean
+    seen: boolean
 
     // was this boi received from background?
     background?: boolean
-
-    // is this boi new (aka wasnt viewed by user)?
-    new?: boolean
 }
 
 // below are notification types

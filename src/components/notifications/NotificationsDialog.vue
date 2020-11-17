@@ -24,13 +24,6 @@
                 <span>
                     {{ $t('Items.Notification.NamePlural') }}
                 </span>
-                <v-spacer />
-                <v-btn
-                    icon
-                    @click="clear"
-                >
-                    <v-icon>mdi-notification-clear-all</v-icon>
-                </v-btn>
             </v-card-title>
             <v-divider />
 
@@ -60,8 +53,8 @@
                 >
                     <Notification
                         :item="item"
+                        :close-button="false"
                         @click="visible = false"
-                        @close="onNotificationClose(item)"
                     />
                 </virtual-grid>
                 <v-row
@@ -144,11 +137,6 @@ export default class NotificationsDialog extends Vue {
         } else {
             (this.$refs.browserPushSwitch as any).lazyValue = false
         }
-    }
-
-    clear (): void {
-        notificationsStore.clear();
-        (this.$refs.grid as any)?.onResize()
     }
 
     @Watch('visible')

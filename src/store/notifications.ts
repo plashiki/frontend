@@ -44,9 +44,4 @@ export default class NotificationsModule extends VuexModule {
             if (index !== -1) this.items.splice(index, 1)
         })
     }
-
-    @LocalSharedMutation()
-    clear (): void {
-        this.items = []
-    }
 }

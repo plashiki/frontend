@@ -50,6 +50,7 @@
                             {{ title }}
                         </h4>
                         <v-btn
+                            v-if="closeButton"
                             class="flex-shrink-1"
                             icon
                             small
@@ -96,6 +97,7 @@ export default class Notification extends Vue {
     @Prop() item!: ApiNotification
     @Prop({ type: Boolean, default: false }) absolute!: boolean
     @Prop({ type: Boolean, default: true }) visible!: boolean
+    @Prop({ type: Boolean, default: true }) closeButton!: boolean
 
     cachedBody: string | null = null
     bodyPromise: Promise<void> | null = null

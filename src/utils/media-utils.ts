@@ -106,8 +106,6 @@ export function processTranslations (translations: Translation[]): TranslationDa
             })
 
             people = peopleCombiner[tr.part][tr.author.group!]
-        } else {
-            people = []
         }
 
         const authorName = tr.author.group || tr.author.people?.join(', ') || ''
@@ -133,7 +131,7 @@ export function processTranslations (translations: Translation[]): TranslationDa
                 kind: tr.kind,
                 lang: tr.lang,
                 translations: [],
-                name: authorName,
+                name: tr.author.group || '',
                 metaTag,
                 key: metaTag // idk where it is used, leaving to ensure nothing breaks D:
             }

@@ -68,9 +68,9 @@
                                         }}
                                     </v-icon>
                                 </span>
-                                {{ author.name || $t('Items.Translation.UnknownAuthor') }}
+                                {{ author.name || author.people && author.people.length ? author.people.join(', ') : $t('Items.Translation.UnknownAuthor') }}
                                 <span
-                                    v-if="author.people && author.people.length"
+                                    v-if="author.name && author.people && author.people.length"
                                     v-tooltip="author.people.length > 2 && author.people.join('<br/>')"
                                     class="grey--text body-2"
                                     :class="{ 'no-dots': author.people.length <= 3 }"

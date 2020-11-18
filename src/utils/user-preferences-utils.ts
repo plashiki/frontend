@@ -41,32 +41,6 @@ function getMapWeights (map: Record<string, number>, add: Record<string, number>
     return ret
 }
 
-export function processAuthorName (name: string): {
-    studio: string
-    names: string[]
-} {
-    let match = name.toLowerCase()
-        .replace(/[.,?:\-!%^&*@#+=`~\\/[\]<>;'"_—–]/gi, '') // remove trash
-        .match(/^(.+?)(?:\s+[[(](.+)[\])]|\s+на\s+.+)?$/) // holy fuck
-
-    if (!match) return {
-        studio: name,
-        names: []
-    }
-
-    let [, studio, names] = match
-
-    if (studio.match(/[,;]|\s[и&]\s/)) {
-        names = studio
-        studio = ''
-    }
-
-    return {
-        studio,
-        names: names?.split(/[,;]|\s[и&]\s/gi).map(i => i.trim()) ?? []
-    }
-}
-
 /**
  * Sorts translations based on user preferences. IN PLACE!
  *
@@ -111,13 +85,13 @@ export function sortTranslations (data: TranslationData): TranslationData {
             })
 
             // determine author weight (by name)
-            let { studio, names } = processAuthorName(author.name)
-            let authorWeight = authorWeights[studio.trim()] ?? 0
+            let { name, people } = author
+            let authorWeight = authorWeights[name.toLowerCase().trim()] ?? 0
 
-            if (names.length) {
+            if (people?.length) {
                 let totalNamesWeight = 0
-                names.forEach((name) => {
-                    totalNamesWeight += authorWeights[name.trim()] ?? 0
+                people.forEach((name) => {
+                    totalNamesWeight += authorWeights[name.toLowerCase().trim()] ?? 0
                 })
                 if (author.kind === TranslationKind.Dubbed) {
                     // dubbed translations rating should rely on names more that subbed/raw, so using avg
@@ -174,9 +148,12 @@ export function filterVisibleTranslations (translations: SingleTranslationData[]
 // not sure if its really called telemetry but it sounds cool, lmao
 export function collectTelemetry (translation: SingleTranslationData & { author: TranslationDataAuthor }) {
     let authorPreferences: Record<string, number> = {}
-    let { studio, names } = processAuthorName(translation.author.name)
-    for (let it of [studio, ...names]) {
-        authorPreferences[it] = (configStore.authorPreferences[it] ?? 0) + 1
+    let { name, people } = translation.author
+    for (let it of [name, ...(people ?? [])]) {
+        if (it) {
+            let itl = it.toLowerCase()
+            authorPreferences[itl] = (configStore.authorPreferences[itl] ?? 0) + 1
+        }
     }
 
     configStore.merge({
@@ -214,8 +191,8 @@ export function getDefaultTranslation (
         if (!ignoreAuthor && lastAuthor !== null) {
             if (lastAuthor === '' && authors[i].name !== '') continue
             if (authors[i].kind !== lastKind) continue
-            let { studio } = processAuthorName(authors[i].name)
-            if (studio !== lastAuthor) continue
+            let group = authors[i].name
+            if (group !== lastAuthor) continue
         }
 
         for (let k = 0; k <= 1; k++) {

@@ -37,4 +37,8 @@ new Vue({
 
 onceStoreReady(() => {
     changeLanguage(configStore.language)
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        configStore.merge({ dark: e.matches })
+    })
 })

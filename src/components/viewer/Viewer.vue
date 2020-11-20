@@ -926,5 +926,9 @@ export default class Viewer extends LoadableVue {
     .authors-list {
         padding: 8px
     }
+
+    .kinds-tabs {
+        margin-top: 12px;
+    }
 }
 </style>

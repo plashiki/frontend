@@ -563,6 +563,15 @@ export default class Viewer extends LoadableVue {
         return userRateIconMap[this.userRateStatus]
     }
 
+
+    updateHtmlClass (): void {
+        if (this.displayMode === 'mobile') {
+            document.documentElement.classList.remove('fullscreen-page')
+        } else {
+            document.documentElement.classList.add('fullscreen-page')
+        }
+    }
+
     @Watch('displayMode')
     resizeIframe (): void {
         this.$nextTick(() => {
@@ -570,11 +579,7 @@ export default class Viewer extends LoadableVue {
                 this.$refs.aspect as any
             )?.onResize?.()
         })
-        if (this.displayMode === 'mobile') {
-            document.documentElement.classList.remove('fullscreen-page')
-        } else {
-            document.documentElement.classList.add('fullscreen-page')
-        }
+        this.updateHtmlClass()
     }
 
     @Watch('partNumber')
@@ -759,6 +764,7 @@ export default class Viewer extends LoadableVue {
         this.partChanged()
 
         this.updateColWidth()
+        this.updateHtmlClass()
 
         appStore.merge({
             showSearch: true,

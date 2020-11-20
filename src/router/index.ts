@@ -244,12 +244,14 @@ router.beforeResolve((to, from, next) => {
         appStore.reset({
             keepSearch: to.name === 'search'
         })
+
+        if (to.meta.full) {
+            document.documentElement.classList.add('fullscreen-page')
+        } else {
+            document.documentElement.classList.remove('fullscreen-page')
+        }
     }
-    if (to.meta.full) {
-        document.documentElement.classList.add('fullscreen-page')
-    } else {
-        document.documentElement.classList.remove('fullscreen-page')
-    }
+
     if ((from.meta.noapi || !apiInitialized) && !to.meta.noapi) {
         initApi()
     }

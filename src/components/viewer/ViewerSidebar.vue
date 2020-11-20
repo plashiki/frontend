@@ -266,7 +266,7 @@ export default class ViewerSidebar extends Vue {
                     + this.partsGrid.cellWidth / 2
                     - (
                         this.$refs.slider as any
-                    ).$el.clientWidth / 2.5 // я ебу? O_o
+                    ).$refs.group.clientWidth / 2
 
                 if (jump) {
                     (

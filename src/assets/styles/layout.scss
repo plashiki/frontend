@@ -18,3 +18,36 @@
 .theme--dark.v-application, .theme--dark .card-layout-bg, html.dark {
     background: #303030;
 }
+
+// more condense card layout for smol devices
+@media screen and (max-width: 540px) {
+    .cards-page-container {
+        // compensate .container padding
+        margin: -12px !important;
+
+        > .v-sheet.v-card, > .v-simple-card.v-card, .page-card, .v-alert {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+
+            > .v-card__text {
+                padding: 12px;
+            }
+
+            > .v-card__title {
+                padding-bottom: 0;
+            }
+        }
+
+        .v-alert {
+            margin-bottom: 8px;
+        }
+
+        & > h1, & > h2, & > h3, & > .page-heading {
+            margin-left: 12px !important;
+        }
+    }
+
+    .v-dialog {
+        margin: 16px;
+    }
+}

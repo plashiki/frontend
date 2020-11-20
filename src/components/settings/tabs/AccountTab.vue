@@ -101,6 +101,7 @@
                 <v-simple-card
                     class="v-card--outlined fill-height"
                     text-class="text-center d-flex flex-column align-center fill-height"
+                    flat
                 >
                     <div class="d-flex flex-row fill-width align-center justify-center">
                         <component :is="s.icon" class="connectable-service-icon ml-10" />

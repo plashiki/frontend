@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <v-simple-card
             :class="{'v-card--outlined': flat, 'mb-2': true }"
         >
@@ -20,7 +20,7 @@
                 v-for="(tab, i) in tabs"
                 :key="i"
             >
-                <v-simple-card>
+                <v-simple-card class="page-card">
                     <component :is="tab[0]" />
                 </v-simple-card>
             </v-tab-item>

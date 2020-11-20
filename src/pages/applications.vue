@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <v-dialog
             v-model="editingDialog"
             max-width="600"

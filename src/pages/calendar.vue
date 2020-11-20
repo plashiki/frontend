@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <ErrorAlert :error="error" />
 
         <v-fade-transition v-if="items.length > 0 || loading">
@@ -7,7 +7,7 @@
                 <v-card
                     v-for="day in days"
                     :key="day.name"
-                    class="my-2"
+                    class="mb-2 page-card"
                 >
                     <v-card-title>
                         {{ day.name }}

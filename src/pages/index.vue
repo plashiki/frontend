@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <ErrorAlert :error="error" />
         <v-alert
             transition="slide-y-transition"
@@ -13,14 +13,14 @@
         <v-card
             v-for="(meta, name) of sections"
             :key="name"
-            class="my-2"
+            class="mb-2"
         >
             <v-card-text>
                 <HeadlineWithLinkButton
                     :text="meta.name"
                     :to="meta.search"
                     :tooltip="$t('Pages.Index.OpenInSearch')"
-                    class="my-2"
+                    class="mb-2"
                 />
                 <MediaCarousel
                     :items="states[name].items"
@@ -31,7 +31,7 @@
             </v-card-text>
         </v-card>
 
-        <p class="text-center body-2 text--secondary">
+        <p class="text-center body-2 text--secondary my-2 pb-0">
             {{ $t('Common.Collection.DataFrom', { provider: $t('Providers.' + dataProvider) }) }}
         </p>
     </div>

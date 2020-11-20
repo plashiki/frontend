@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <v-row>
+    <div class="cards-page-container">
+        <v-row class="no-gutters">
             <v-col class="d-flex flex-column">
-                <v-simple-card class="fill-height">
+                <v-simple-card class="fill-height page-card">
                     <div>
                         <v-text-field
                             v-model="searchInput"
@@ -36,13 +36,13 @@
                 </v-simple-card>
             </v-col>
             <v-col class="d-flex flex-column">
-                <v-simple-card class="fill-height">
+                <v-simple-card class="fill-height page-card">
                     <BudgetControl />
                 </v-simple-card>
             </v-col>
         </v-row>
 
-        <v-simple-card class="mt-2">
+        <v-simple-card class="mt-2 page-card">
             <UsersTable />
         </v-simple-card>
     </div>

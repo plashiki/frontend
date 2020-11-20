@@ -104,7 +104,7 @@ export default class MediaList extends Vue {
                 aspectRatio: 3 / 2,
                 minColumns: 2,
                 maxColumns: 6,
-                minCellWidth: 160
+                minCellWidth: 140
             },
             items: {
                 fixedHeight: 136,

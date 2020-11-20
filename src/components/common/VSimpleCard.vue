@@ -2,9 +2,10 @@
     <div
         :class="[
             data.class,
-            data.staticClass
+            data.staticClass,
+            props.flat ? '' : 'elevation-3'
         ]"
-        class="v-card v-simple-card elevation-3"
+        class="v-card v-simple-card"
         v-bind="data.attrs"
     >
         <div :class="props.textClass" class="v-card__text">
@@ -21,6 +22,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 @Component({})
 export default class VSimpleCard extends Vue {
     @Prop() textClass!: string
+    @Prop({ type: Boolean, default: false }) flat!: boolean
 }
 </script>
 

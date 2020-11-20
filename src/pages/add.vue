@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <v-card>
             <v-card-text>
                 <ErrorAlert :error="error" />
@@ -29,9 +29,7 @@
             :display-legal-notice="false"
         />
 
-        <v-card
-            class="mt-2"
-        >
+        <v-card class="mt-2">
             <v-tabs
                 v-model="tab"
             >

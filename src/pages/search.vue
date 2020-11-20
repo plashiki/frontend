@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <MediaList
             :items="items"
             :no-placeholder="hasMore"

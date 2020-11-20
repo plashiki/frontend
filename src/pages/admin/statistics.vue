@@ -1,5 +1,5 @@
 <template>
-    <div class="card-layout-bg">
+    <div class="cards-page-container">
         <v-simple-card>
             <DateRangeInput
                 ref="dateRange"

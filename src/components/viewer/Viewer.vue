@@ -930,5 +930,9 @@ export default class Viewer extends LoadableVue {
     .kinds-tabs {
         margin-top: 12px;
     }
+
+    .viewer-sidebar-parts {
+        margin-right: 8px!important; // idk
+    }
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-    <v-card>
-        <v-card-text
-            class="text--primary"
-            v-html="$t('Pages.Legal.Text')"
-        />
-    </v-card>
+    <div class="cards-page-container">
+        <v-card>
+            <v-card-text
+                class="text--primary"
+                v-html="$t('Pages.Legal.Text')"
+            />
+        </v-card>
+    </div>
 </template>
 
 <script lang="ts">

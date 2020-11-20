@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <v-card class="mb-3">
             <v-card-text>
                 <v-tabs v-model="tab">
@@ -15,7 +15,7 @@
             touchless
         >
             <v-tab-item>
-                <v-simple-card>
+                <v-simple-card class="page-card">
                     <TranslationsTable
                         ref="translations"
                         :medias="medias"
@@ -24,7 +24,7 @@
                 </v-simple-card>
             </v-tab-item>
             <v-tab-item>
-                <v-simple-card>
+                <v-simple-card class="page-card">
                     <ReportsTable
                         ref="reports"
                         moderator
@@ -33,7 +33,7 @@
                 </v-simple-card>
             </v-tab-item>
             <v-tab-item>
-                <v-simple-card>
+                <v-simple-card class="page-card">
                     <ReportsTable
                         ref="reportsc"
                         moderator

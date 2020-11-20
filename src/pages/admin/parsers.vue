@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cards-page-container">
         <ParsersStatisticsDialog
             v-model="statsDialog"
             :parser-uid="selectedForDialog ? selectedForDialog.uid : ''"

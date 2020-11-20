@@ -289,8 +289,8 @@ export default class SearchPage extends Vue {
     }
 
     loadPreset (it: AnyKV): void {
-        this.provider.applyPreset(it as any, this.filters)
-        this.sortMode = it.sortMode
+        let cfg = this.provider.applyPreset(it as any, this.filters)
+        this.sortMode = cfg.sortMode
         this.reset()
     }
 

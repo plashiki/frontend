@@ -145,7 +145,9 @@ export class ShikimoriSearchProvider implements ISearchProvider {
         })
     }
 
-    applyPreset (preset: AnyKV & { sortMode: string }, vue: Vue): void {
+    applyPreset (preset: AnyKV, vue: Vue): { sortMode: string } {
         (vue as any).filters = mergeClone(emptyShikimoriFilters, preset)
+
+        return { sortMode: preset.sort ?? 'ranked' }
     }
 }

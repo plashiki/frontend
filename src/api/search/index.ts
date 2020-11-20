@@ -27,7 +27,7 @@ export interface ISearchProvider {
 
     getCurrentFilters (vue: Vue): AnyKV
 
-    applyPreset (preset: AnyKV & { sortMode: string }, vue: Vue): void
+    applyPreset (preset: AnyKV, vue: Vue): { sortMode: string }
 }
 
 let providersCache: Partial<Record<DataProviderName, ISearchProvider>> = {}

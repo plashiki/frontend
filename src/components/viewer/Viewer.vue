@@ -188,16 +188,16 @@
                 <div class="viewer-player-controls">
                     <v-btn
                         :dark="displayMode === 'theater'"
-                        :text="colWidth >= 600"
-                        :icon="colWidth < 600"
+                        :text="colWidth >= 600 && displayMode !== 'mobile'"
+                        :icon="colWidth < 600 || displayMode === 'mobile'"
                         @click="reportDialog = true"
                     >
                         <v-icon
-                            :left="colWidth >= 600"
+                            :left="colWidth >= 600 && displayMode !== 'mobile'"
                         >
                             mdi-alert-decagram
                         </v-icon>
-                        <template v-if="colWidth >= 600">
+                        <template v-if="colWidth >= 600 && displayMode !== 'mobile'">
                             {{ $t('Pages.Report.Name') }}
                         </template>
                     </v-btn>

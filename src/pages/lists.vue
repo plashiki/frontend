@@ -345,6 +345,7 @@ export default class ListsPage extends Vue {
         if (!this.selectedState) return
 
         this.selectedState.error = null
+        this.selectedState.next = undefined
         this.selectedState.items = []
         this.selectedState.more = true
     }

@@ -65,24 +65,7 @@
                             </ErrorAlert>
                         </template>
 
-                        <template #actions-card="{ item }">
-                            <v-btn
-                                v-if="selected === '$recent'"
-                                color="error"
-                                class="ma-1"
-                                depressed
-                                small
-                                @click="deleteFromRecent(item.type, item.id)"
-                            >
-                                <v-icon left>
-                                    mdi-delete
-                                </v-icon>
-
-                                {{ $t('Common.Form.Delete') }}
-                            </v-btn>
-                        </template>
-
-                        <template #actions-list="{ item }">
+                        <template #actions="{ item }">
                             <v-btn
                                 v-if="selected === '$recent'"
                                 icon

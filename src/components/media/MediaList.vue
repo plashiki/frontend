@@ -43,7 +43,7 @@
                         v-if="actions"
                         #actions="data"
                     >
-                        <slot name="actions-card" v-bind="data" />
+                        <slot name="actions" v-bind="data" />
                     </template>
                 </MediaCard>
                 <MediaListItem
@@ -55,7 +55,7 @@
                         v-if="actions"
                         #actions="data"
                     >
-                        <slot name="actions-list" v-bind="data" />
+                        <slot name="actions" v-bind="data" />
                     </template>
                 </MediaListItem>
             </virtual-grid>

@@ -3,7 +3,7 @@
         :height="fixedSize ? height : undefined"
         :ripple="!$r12s.isTouchDevice && !actions"
         :title="name"
-        :to="noLink || actions ? undefined : `/${item.type}/${item.id}`"
+        :to="noLink ? undefined : `/${item.type}/${item.id}`"
         :width="fixedSize ? width : undefined"
         class="media-card"
         :class="{ 'media-card--has-actions': actions }"
@@ -44,21 +44,6 @@
                         class="media-card--actions-overlay"
                     >
                         <slot name="actions" :item="item" />
-
-                        <v-btn
-                            v-if="!noLink"
-                            color="primary"
-                            class="ma-1"
-                            :to="`/${item.type}/${item.id}`"
-                            depressed
-                            small
-                        >
-                            <v-icon left>
-                                mdi-open-in-new
-                            </v-icon>
-
-                            {{ $t('Common.Action.Open') }}
-                        </v-btn>
                     </div>
                 </transition>
             </v-img>
@@ -126,19 +111,20 @@ export default class MediaCard extends Vue {
 
     &--actions-overlay {
         position: absolute;
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding: 8px;
         left: 0;
         right: 0;
         top: 0;
-        bottom: 0;
+        height: 52px;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(2px);
+        flex-direction: row;
+        justify-content: flex-end;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
         transition: all 0.25s linear;
+
+        .v-icon {
+            color: white!important;
+        }
     }
 
     &:hover {

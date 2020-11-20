@@ -10,6 +10,7 @@
         <v-app-bar
             v-if="showAppBar"
             :hide-on-scroll="$r12s.isMobileByWidth || $r12s.screenHeight < 480"
+            :scroll-threshold="50"
             :dark="isDark"
             dense
             flat

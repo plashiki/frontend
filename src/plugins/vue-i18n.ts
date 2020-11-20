@@ -3,7 +3,7 @@ import VueI18n from 'vue-i18n'
 import axios from 'axios'
 import { AnyKV } from '@/types'
 import { configStore } from '@/store'
-import { languageChanged } from '@/api'
+import { languageChanged } from '@/api/internal/ipc'
 
 export const availableLocales: string[] = process.env.AVAILABLE_LOCALES as any
 

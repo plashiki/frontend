@@ -1,4 +1,4 @@
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { Galo4ka, User } from '@/types/user'
 
 export function isAuthDataAvailable (type: 'nickname', value: string): Promise<boolean> {
@@ -18,7 +18,7 @@ export function getCurrentUser (): Promise<User> {
 
 export function getUser (id: number): Promise<User> {
     return makeApiRequest({
-        path: '/v2/users/' + id
+        path: `/v2/users/${id}`
     })
 }
 

@@ -1,5 +1,5 @@
 import { OauthApp } from '@/types/misc'
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 
 export function getAuthedApplications (): Promise<OauthApp[]> {
     return makeApiRequest({

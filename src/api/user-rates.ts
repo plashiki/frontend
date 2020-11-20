@@ -1,4 +1,4 @@
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { Leave } from '@/types'
 import { UserRate } from '@/types/user-rate'
 import { Pagination } from '@/types/api'

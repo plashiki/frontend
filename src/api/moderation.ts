@@ -1,4 +1,4 @@
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { ModerationStatistics, PlayerMeta, Report } from '@/types/moderation'
 import { Translation } from '@/types/translation'
 import { PaginatedResponse, Pagination, PaginationSort } from '@/types/api'

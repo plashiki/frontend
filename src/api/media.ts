@@ -1,5 +1,5 @@
 import { cacheStore, configStore } from '@/store'
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { getProviderNow } from '@/api/providers'
 import { createIndex, uniqueBy } from '@/utils/object-utils'
 import { PaginatedData } from '@/types/api'

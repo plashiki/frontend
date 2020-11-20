@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { User } from '@/types/user'
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { Donation } from '@/types/misc'
 import { ApiException } from '@/types/api'
 import { imgurClientId } from '@/config'

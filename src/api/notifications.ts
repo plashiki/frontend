@@ -1,4 +1,4 @@
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { ApiNotification } from '@/types/notification'
 import { iziToastError } from '@/plugins/izitoast'
 

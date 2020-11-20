@@ -1,5 +1,5 @@
 import { KeyValue, Parser, ParsersState, StatisticsDay } from '@/types/misc'
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { PaginatedResponse, PaginationSort } from '@/types/api'
 import { User } from '@/types/user'
 

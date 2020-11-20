@@ -1,8 +1,9 @@
-import { createWebSocket, makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { isProduction, shikimori } from '@/config'
 import { User } from '@/types/user'
 import { authStore } from '@/store'
 import { registerFirebaseToken, unregisterFirebaseToken } from '@/api/notifications'
+import { createWebSocket } from '@/api/internal/websocket'
 
 export interface ShikimoriAuthParams {
     code: string

@@ -1,5 +1,5 @@
 import { Translation } from '@/types/translation'
-import { makeApiRequest } from '@/api/index'
+import { makeApiRequest } from './internal/request'
 import { MediaType } from '@/types/media'
 
 export function getSingleTranslation (id: number): Promise<Translation> {

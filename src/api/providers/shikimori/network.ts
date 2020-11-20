@@ -1,6 +1,6 @@
 import { AnyKV } from '@/types'
 import { ApiException } from '@/types/api'
-import { makeApiRequest } from '@/api'
+import { makeApiRequest } from '@/api/internal/request'
 import { configStore } from '@/store'
 import qs from "querystring"
 import { isProduction } from '@/config'

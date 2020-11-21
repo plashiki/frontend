@@ -28,7 +28,7 @@
                     <ReportsTable
                         ref="reports"
                         moderator
-                        @complex="reportsc.update()"
+                        @complex="reportsc && reportsc.update()"
                     />
                 </v-simple-card>
             </v-tab-item>

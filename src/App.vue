@@ -57,6 +57,7 @@ export default class VueApp extends Vue {
 
     errorCaptured (err: Error, vm: Vue, info: string): void {
         this.error = [err, vm, info]
+        // eslint-disable-next-line
         console.error(err)
     }
 

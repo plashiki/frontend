@@ -96,7 +96,7 @@ Pages:
         OnlyOngoingsInRecent: Only ongoings in recent
         OnlyOngoingsInRecentDescriptionOn: On home page in "Recent" only ongoings will appear
         OnlyOngoingsInRecentDescriptionOff: On home page in "Recent" all recent translation will appear
-        OneColumnInList: One column in media list view
+        OneColumnInMediaList: One column in media list view
         UseSmartSorting: Use "smart" sorting
         TranslationPreferenceOrder: Translation preference order
         Field_lang: Language
@@ -534,6 +534,10 @@ Items:
         AuthorGroup: Group
         AuthorPeople: People
         AuthorRipper: Ripper
+        AuthorTooltip: >
+            <b>Group</b>: $group<br/>
+            <b>People</b>: $people<br/>
+            <b>Ripper</b>: $ripper<br/>
         LeaveBlankIfUnknown: Leave unknown and inapplicable fields blank
         Url: URL
         StatusName: Status

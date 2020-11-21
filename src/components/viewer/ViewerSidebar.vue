@@ -278,7 +278,7 @@ export default class ViewerSidebar extends Vue {
                     ).scrollTo(center)
                 }
             }
-        } else if (retry <= 3) {
+        } else if (retry <= 10) {
             setTimeout(() => this.scrollPartsListToCurrent(jump, retry + 1), 50)
         }
     }

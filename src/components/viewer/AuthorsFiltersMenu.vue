@@ -57,11 +57,11 @@
                 <v-tabs-items v-model="tab">
                     <v-tab-item>
                         <v-switch
-                            v-for="(it, i) in availablePlayers"
+                            v-for="it in availablePlayers"
                             :key="it"
-                            :class="{ 'mt-0': i === 0 }"
                             :input-value="!isActive('player', it)"
                             :label="it"
+                            class="mt-0"
                             hide-details
                             @change="setFilter('player', it, !$event)"
                         />
@@ -72,10 +72,10 @@
                     </v-tab-item>
                     <v-tab-item>
                         <v-switch
-                            v-for="(it, i) in availableLanguages"
+                            v-for="it in availableLanguages"
                             :key="it"
-                            :class="{ 'mt-0': i === 0 }"
                             :input-value="!isActive('language', it)"
+                            class="mt-0"
                             hide-details
                             @change="setFilter('language', it, !$event)"
                         >

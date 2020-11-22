@@ -227,7 +227,7 @@ export default class AuthorAvailabilityPopup extends Vue {
             }
 
             ret.push({
-                author: tr.author,
+                author: tr.author as any,
                 availability: str.join(', '),
                 kind: tr.kind,
                 lang: tr.lang,

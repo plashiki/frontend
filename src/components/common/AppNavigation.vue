@@ -402,7 +402,7 @@ export default class AppNavigation extends Vue {
     }
 
     forceBlurSearchField (): void {
-        document.activeElement.blur()
+        (document.activeElement as any)?.blur?.()
         this.onSearchFieldBlur(true)
     }
 

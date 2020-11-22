@@ -132,7 +132,7 @@ import {
 import { processTranslations } from '@/utils/media-utils'
 import AuthorsList from '@/components/viewer/AuthorsList.vue'
 import { getDefaultTranslation, collectTelemetry } from '@/utils/user-preferences-utils'
-import { appStore, authStore, configStore } from '@/store'
+import { authStore, configStore } from '@/store'
 import VirtualGrid from '@/components/common/VirtualGrid.vue'
 import InlineMoreMenu from '@/components/common/InlineMoreMenu.vue'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'

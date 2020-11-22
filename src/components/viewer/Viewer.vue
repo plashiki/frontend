@@ -450,7 +450,7 @@ type ViewerDisplayMode = 'mobile' | 'normal' | 'theater'
 type UserRateControlStatus = 'new' | 'new-part' | 'start-repeat' | 'old-part'
 const userRateIconMap: Record<UserRateControlStatus, string> = {
     new: 'mdi-playlist-plus',
-    'new-part': 'mdi-check',
+    'new-part': 'mdi-plus-one',
     'start-repeat': 'mdi-repeat',
     'old-part': 'mdi-check',
 }
@@ -683,14 +683,11 @@ export default class Viewer extends LoadableVue {
             prom = createUserRate({
                 target_id: parseInt(this.$route.params.id),
                 target_type: this.mediaType,
-                parts: this.partNumber,
+                parts: 0,
                 status: UserRateStatus.InProgress,
             }).then((rate) => {
                 this.userRate = rate
                 this.$emit('rate-update', rate)
-                if (this.media && this.partNumber !== this.media.partsCount) {
-                    this.partNumber++
-                }
             })
         } else if (this.userRateStatus === 'new-part') {
             prom = updateUserRate(this.userRate!.id, {

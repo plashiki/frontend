@@ -75,6 +75,10 @@ export default class ConfigModule extends VuexModule {
     authorPreferences: Record<string, number> = {}
     playerPreferences: Record<string, number> = {}
 
+    lastAuthor: string | null = null
+    lastKind = ''
+    lastPlayer = ''
+
     // filtering in viewer. they do not interfere things above and do not affect sorting.
     languageFilters: Record<string, true | undefined> = defaultLanguageFilters
     playersFilters: Record<string, true | undefined> = defaultPlayersFilters

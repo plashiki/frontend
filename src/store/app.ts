@@ -16,10 +16,6 @@ export default class AppModule extends VuexModule {
     showSearch = false
     searchInput = ''
 
-    lastAuthor: string | null = null
-    lastKind = ''
-    lastPlayer = ''
-
     loading = false
 
     @Mutation

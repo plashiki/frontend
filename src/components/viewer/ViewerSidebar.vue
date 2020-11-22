@@ -127,7 +127,7 @@ import {
 import { processTranslations } from '@/utils/media-utils'
 import AuthorsList from '@/components/viewer/AuthorsList.vue'
 import { getDefaultTranslation, collectTelemetry } from '@/utils/user-preferences-utils'
-import { appStore, authStore } from '@/store'
+import { appStore, authStore, configStore } from '@/store'
 import VirtualGrid from '@/components/common/VirtualGrid.vue'
 import InlineMoreMenu from '@/components/common/InlineMoreMenu.vue'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
@@ -324,7 +324,7 @@ export default class ViewerSidebar extends Vue {
             this.$emit('iframe', 'about:blank')
             return
         }
-        appStore.merge({
+        configStore.merge({
             lastAuthor: val.author.name,
             lastKind: val.author.kind,
             lastPlayer: val.name,

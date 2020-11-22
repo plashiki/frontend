@@ -180,9 +180,8 @@ export function getDefaultTranslation (
     allTab?: true
 } {
     // this.data?.[val]?.authors?.[0]?.translations?.[0]?.id ?? null
-    let { playersFilters, languageFilters } = configStore
+    let { playersFilters, languageFilters, lastAuthor, lastKind, lastPlayer } = configStore
     let authors = translations?.authors
-    let { lastAuthor, lastKind, lastPlayer } = appStore
     if (!authors) return { translation: null }
 
     for (let i = 0; i < authors.length; i++) {

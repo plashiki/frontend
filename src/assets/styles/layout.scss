@@ -51,3 +51,12 @@
         margin: 16px;
     }
 }
+
+// fix for safari because safari stinks
+html, body, #app, .v-application {
+    height: 100%!important;
+}
+
+.v-application--wrap {
+    min-height: 100%!important;
+}

@@ -23,12 +23,12 @@ export function getAvailableParts (mediaId: number, mediaType: MediaType): Promi
         path: `/v2/translations/${mediaType}/${mediaId}/parts`
     })
 }
-export function getTranslationsFor (mediaId: number, mediaType: MediaType, part?: number): Promise<Translation[]> {
+export function getTranslationsFor (mediaId: number, mediaType: MediaType, part?: number, fullAuthor = true): Promise<Translation[]> {
     return makeApiRequest({
         path: `/v2/translations/${mediaType}/${mediaId}` + (part ? '/parts/' + part : ''),
         query: {
             raw: '',
-            fullAuthor: '',
+            fullAuthor: fullAuthor ? '' : undefined,
             external: 'proto'
         }
     })

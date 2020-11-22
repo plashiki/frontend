@@ -1,38 +1,77 @@
 <template>
-    <v-menu>
-        <template #activator="props">
-            <slot v-bind="props" />
-        </template>
-
-        <v-simple-card>
-            <v-row class="flex-wrap">
-                <v-col
-                    v-for="it in groupedAvailabilityData"
-                    :key="it.tag"
-                    cols="auto"
+    <v-dialog
+        v-model="vmodel"
+        :max-width="800"
+        scrollable
+    >
+        <v-card>
+            <v-card-title>
+                {{ $t('Pages.Viewer.Availability') }}
+                <v-spacer />
+                <v-btn
+                    icon
+                    @click="vmodel = false"
                 >
-                    <h3>{{ $t('Items.Translation.Language.' + it.lang + it.kind) }}</h3>
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </v-card-title>
+            <v-divider />
+
+            <v-card-text>
+                <transition>
                     <div
-                        v-for="i in it.items"
-                        :key="i.key"
-                        class="caption"
+                        v-if="loading"
+                        class="text-center"
                     >
-                        <b>{{ i.author || $t('Items.Translation.UnknownAuthor') }}</b>
-                        —
-                        {{ i.availability }}
+                        <v-progress-circular
+                            v-if="loading"
+                            class="my-5"
+                            color="primary"
+                            :size="64"
+                            :width="3"
+                            indeterminate
+                        />
                     </div>
-                </v-col>
-            </v-row>
-        </v-simple-card>
-    </v-menu>
+                    <NoItemsPlaceholder
+                        v-else-if="!data || data.length === null"
+                        :text="$t('Common.Collection.NoItemsFound')"
+                    />
+                    <v-row
+                        v-else
+                        class="flex-wrap"
+                    >
+                        <v-col
+                            v-for="it in groupedAvailabilityData"
+                            :key="it.tag"
+                            cols="auto"
+                        >
+                            <h3 class="text--primary" v-text="$t('Items.Translation.Language.' + it.lang + it.kind)" />
+                            <div
+                                v-for="i in it.items"
+                                :key="i.key"
+                                class="caption"
+                            >
+                                <b>{{ i.author || $t('Items.Translation.UnknownAuthor') }}</b>
+                                —
+                                {{ i.availability }}
+                            </div>
+                        </v-col>
+                    </v-row>
+                </transition>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { TranslationDataAuthor, TranslationData, TranslationKind, TranslationLanguage } from '@/types/translation'
-import VSimpleCard from '@/components/common/VSimpleCard.vue'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Translation, TranslationKind, TranslationLanguage } from '@/types/translation'
 import SortedArray from '@/utils/sorted-array'
 import { configStore } from '@/store'
+import { MediaType } from '@/types/media'
+import NoItemsPlaceholder from '@/components/common/NoItemsPlaceholder.vue'
+import { getTranslationsFor } from '@/api/translations'
+import { iziToastError } from '@/plugins/izitoast'
 
 interface AvailabilityData {
     kind: TranslationKind
@@ -53,10 +92,25 @@ interface AvailabilityDataGroup {
 }
 
 @Component({
-    components: { VSimpleCard }
+    components: { NoItemsPlaceholder },
 })
 export default class AuthorAvailabilityPopup extends Vue {
-    @Prop({ default: () => ({}) }) data!: Readonly<TranslationData>
+    @Prop({ required: true }) mediaId!: number
+    @Prop({ required: true }) mediaType!: MediaType
+
+    @Prop({ default: false }) value!: boolean
+
+    loading = false
+
+    data: Translation[] | null = null
+
+    get vmodel (): boolean {
+        return this.value
+    }
+
+    set vmodel (val: boolean) {
+        this.$emit('input', val)
+    }
 
     get groupedAvailabilityData (): AvailabilityDataGroup[] {
         // meta tag -> index in `ret`
@@ -65,12 +119,14 @@ export default class AuthorAvailabilityPopup extends Vue {
 
         for (let it of this.availabilityData) {
             let tag = `${it.lang}:${it.kind}`
-            if (!(tag in index)) {
+            if (!(
+                tag in index
+            )) {
                 index[tag] = ret.push({
                     kind: it.kind,
                     lang: it.lang,
                     items: [],
-                    tag
+                    tag,
                 }) - 1
             }
 
@@ -81,9 +137,11 @@ export default class AuthorAvailabilityPopup extends Vue {
     }
 
     get availabilityData (): AvailabilityData[] {
+        if (this.loading || !this.data) return []
+
         // create indexes
         // meta tag (w/out episode) -> episodes -> true
-        let index: Record<string, Record<number, true> & { author: TranslationDataAuthor }> = {}
+        let index: Record<string, Record<number, true> & { meta: Translation }> = {}
         // author -> number of available episodes
         let counts: Record<string, number> = {}
 
@@ -98,42 +156,43 @@ export default class AuthorAvailabilityPopup extends Vue {
         // populate them
         const { languageFilters, playersFilters } = configStore
 
-        for (let [ep, data] of Object.entries(this.data)) {
-            for (let author of data.authors.filter(it =>
-                languageFilters[it.lang] !== true &&
-                it.translations.some(tr => playersFilters[tr.name] !== true)
-            )) {
-                let tag = author.key
+        for (let tr of this.data) {
+            if (languageFilters[tr.lang] === true || playersFilters[new URL(tr.url).hostname] === true) continue
+            const tag = `${tr.kind}:${tr.lang}:${tr.author}`
+            ;(tr as any).tag = tag
 
-                // same stuff as when sorting translations
-                // we need to find best tag
-                let tagIndex = tagsRegistry.index(tag)
-                if (tagIndex === -1) {
-                    tagIndex = tagsRegistry.insert(tag)
-                }
+            // same stuff as when sorting translations
+            // we need to find best tag
+            let tagIndex = tagsRegistry.index(tag)
+            if (tagIndex === -1) {
+                tagIndex = tagsRegistry.insert(tag)
+            }
 
-                let updateAuthor = false
-                if (tag.length > tagsRegistry.raw[tagIndex].length) {
-                    index[tag] = index[tagsRegistry.raw[tagIndex]]
+            let updateAuthor = false
+            if (tag.length > tagsRegistry.raw[tagIndex].length) {
+                index[tag] = index[tagsRegistry.raw[tagIndex]]
 
-                    tagsRegistry.raw[tagIndex] = tag
-                    updateAuthor = true
-                }
-                const fullTag = tagsRegistry.raw[tagIndex]
+                tagsRegistry.raw[tagIndex] = tag
+                updateAuthor = true
+            }
+            const fullTag = tagsRegistry.raw[tagIndex]
 
-                if (!(tag in index)) index[fullTag] = { author }
-                if (updateAuthor) index[fullTag].author = author
-                if (!(tag in counts)) counts[fullTag] = 0
-                if (!(ep in index[fullTag])) {
-                    counts[tag] += 1
-                    index[tag][ep as any] = true
-                }
+            if (!(tag in index)) index[fullTag] = { meta: tr }
+            if (updateAuthor) index[fullTag].meta = tr
+            if (!(tag in counts)) counts[fullTag] = 0
+            if (!(tr.part in index[fullTag])) {
+                counts[tag] += 1
+                index[tag][tr.part] = true
             }
         }
 
         let ret: AvailabilityData[] = []
+        let met: Record<string, true> = {}
         for (let key of Object.keys(index)) {
-            let author = index[key].author
+            let tr = index[key].meta
+            if ((tr as any).tag in met) continue
+            met[(tr as any).tag] = true
+
             let episodes = Object.keys(index[key])
 
             // find min & max episodes
@@ -154,7 +213,9 @@ export default class AuthorAvailabilityPopup extends Vue {
                 if (index[key][i]) inRow += 1
                 else if (inRow > 0) {
                     if (inRow === 1) {
-                        str.push((i - 1) + '')
+                        str.push((
+                            i - 1
+                        ) + '')
                     } else {
                         let first = i - inRow
                         let last = i - 1
@@ -166,15 +227,32 @@ export default class AuthorAvailabilityPopup extends Vue {
             }
 
             ret.push({
-                author: author.name,
+                author: tr.author,
                 availability: str.join(', '),
-                kind: author.kind,
-                lang: author.lang,
-                key
+                kind: tr.kind,
+                lang: tr.lang,
+                key,
             })
         }
 
         return ret.sort((a, b) => counts[b.key] - counts[a.key])
+    }
+
+    @Watch('value')
+    valueChanged (val: boolean) {
+        if (val) this.update()
+    }
+
+    update (): void {
+        this.loading = true
+        getTranslationsFor(this.mediaId, this.mediaType, undefined, false)
+            .then((res) => {
+                this.data = res
+            })
+            .catch(iziToastError)
+            .finally(() => {
+                this.loading = false
+            })
     }
 }
 </script>

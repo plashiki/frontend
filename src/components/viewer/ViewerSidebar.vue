@@ -43,6 +43,11 @@
             />
         </v-dialog>
 
+        <AuthorAvailabilityPopup
+            v-model="authorAvailabilityPopup"
+            :media-id="mediaId"
+            :media-type="mediaType"
+        />
 
         <div class="flex overflow-y-auto viewer-sidebar-translations">
             <AuthorsList
@@ -134,9 +139,10 @@ import TranslationEditDialog from '@/components/moderation/TranslationEditDialog
 import MultipleTranslationEditDialog from '@/components/moderation/MultipleTranslationEditDialog.vue'
 import ReportForm from '@/components/moderation/ReportForm.vue'
 import { deleteTranslation, deleteMultipleTranslations } from '@/api/moderation'
+import AuthorAvailabilityPopup from '@/components/viewer/AuthorAvailabilityPopup.vue'
 
 @Component({
-    components: { ReportForm, MultipleTranslationEditDialog, TranslationEditDialog, InlineMoreMenu, VirtualGrid, AuthorsList, SmoothSlideGroup },
+    components: { AuthorAvailabilityPopup, ReportForm, MultipleTranslationEditDialog, TranslationEditDialog, InlineMoreMenu, VirtualGrid, AuthorsList, SmoothSlideGroup },
 })
 export default class ViewerSidebar extends Vue {
     @Prop({ required: true }) media!: Media | null
@@ -159,6 +165,7 @@ export default class ViewerSidebar extends Vue {
     reportDialog = false
     editDialog = false
     editMultipleDialog = false
+    authorAvailabilityPopup = false
 
     availableParts: number[] = []
     translations: SinglePartTranslations | null = null
@@ -187,6 +194,13 @@ export default class ViewerSidebar extends Vue {
 
                     window.open(routeData.href, '_blank')
                 },
+            },
+            {
+                icon: 'mdi-folder-information',
+                label: this.$t('Pages.Viewer.Availability'),
+                callback: () => {
+                    this.authorAvailabilityPopup = true
+                }
             }
         ]
 

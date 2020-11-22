@@ -8,11 +8,11 @@
         :rules="required ? [requiredField] : undefined"
         :search-input.sync="input"
 
-        append-icon=""
+        :append-icon="$attrs.appendIcon || ''"
         autocomplete="off"
         class="search-field-autocomplete"
-        hide-no-data
         item-value="id"
+        hide-no-data
         no-filter
         v-bind="$attrs"
         @keyup.enter="links && openSearch()"
@@ -94,6 +94,8 @@ export default class SearchFieldAutocomplete extends Vue {
     media: Media | null = null
     selected: MediaId | null = null
 
+    lastNavigated = 0
+
     @Watch('selected')
     onSelectionChange (): void {
         this.$nextTick(() => {
@@ -104,8 +106,9 @@ export default class SearchFieldAutocomplete extends Vue {
         if (!this.selected) this.items = []
         if (this.selected && this.links) {
             this.$router.push(`/${this.mediaType}/${this.selected}`)
-            this.selected = null
             this.$emit('navigation')
+            this.selected = null
+            this.lastNavigated = Date.now()
         }
     }
 
@@ -135,10 +138,18 @@ export default class SearchFieldAutocomplete extends Vue {
     }
 
     openSearch (): void {
+        // this is fucking cringe. fuck vuetify, fuck frontend
+        if (this.selected || Date.now() - this.lastNavigated < 100) return
+
+        this.$emit('search')
         this.$router.push({
             name: 'search',
             query: { q: this.input }
         }).catch(nop)
+        this.$nextTick(() => {
+            this.input = ''
+            this.selected = null
+        })
     }
 
     @Watch('input')

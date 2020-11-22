@@ -84,7 +84,8 @@
             solo
             @focusin.native="onSearchFieldFocus"
             @focusout.native="onSearchFieldBlur"
-            @navigation="onSearchFieldBlur"
+            @navigation="forceBlurSearchField"
+            @search="forceBlurSearchField"
         />
         <v-divider />
 
@@ -400,9 +401,14 @@ export default class AppNavigation extends Vue {
         this.searchFieldFocused = true
     }
 
-    onSearchFieldBlur (): void {
+    forceBlurSearchField (): void {
+        document.activeElement.blur()
+        this.onSearchFieldBlur(true)
+    }
+
+    onSearchFieldBlur (forceCollapse = true): void {
         this.searchFieldFocused = false
-        if (this.collapseOnceSearchFieldUnfocused) {
+        if (this.collapseOnceSearchFieldUnfocused || forceCollapse) {
             this.onMouseLeave()
             this.collapseOnceSearchFieldUnfocused = false
         }

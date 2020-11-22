@@ -12,7 +12,8 @@ export function getTranslations (ids: number[]): Promise<Translation[]> {
     return makeApiRequest({
         path: '/v2/translations',
         query: {
-            ids: ids.join(',')
+            ids: ids.join(','),
+            fullAuthor: '',
         }
     })
 }

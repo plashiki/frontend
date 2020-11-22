@@ -292,7 +292,9 @@ export function findCommon (a: AnyKV, b: AnyKV): AnyKV {
     let ret: AnyKV = {}
 
     Object.entries(a).forEach(([k, v]) => {
-        if (b[k] === v) {
+        if (typeof b[k] === 'object' && deepEqual(b[k], v)) {
+            ret[k] = v
+        } else if (b[k] === v) {
             ret[k] = v
         }
     })

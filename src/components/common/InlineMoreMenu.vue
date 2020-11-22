@@ -12,7 +12,7 @@
                     :color="dark ? 'grey darken-3' : 'grey'"
                     :content="badgeValue"
                     :offset-x="24"
-                    :value="badgeValue !== null"
+                    :value="badgeValue !== null && badgeValue > 0"
                     bottom
                     right
                     overlap

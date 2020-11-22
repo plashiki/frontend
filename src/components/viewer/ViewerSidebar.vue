@@ -194,6 +194,7 @@ export default class ViewerSidebar extends Vue {
             ret.unshift(
                 {
                     icon: this.translationSelectionMode ? 'mdi-select-off' : 'mdi-select-group',
+                    badge: this.translationSelectionMode ? this.selectedTranslations.length : 0,
                     label: this.$t(this.translationSelectionMode ? 'Common.Collection.Deselect' : 'Common.Collection.Select'),
                     callback : () => {
                         if (this.translationSelectionMode) {

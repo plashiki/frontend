@@ -349,7 +349,7 @@ export default class AppNavigation extends Vue {
     }
 
     onMouseEnter (): void {
-        if (!this.mini || this.timer) return
+        if (!this.mini || this.timer || configStore.drawerStyle === 'slim-no-hover') return
         if (this.searchFieldFocused && this.collapseOnceSearchFieldUnfocused) {
             this.collapseOnceSearchFieldUnfocused = false
             return

@@ -28,6 +28,7 @@ let defaultLanguageFilters: Record<string, true> = {}
 // }
 
 export type ListViewMode = 'cards' | 'items'
+export type DrawerStyle = 'slim' | 'slim-no-hover' | 'normal'
 
 @VLocalModule('ConfigModule')
 export default class ConfigModule extends VuexModule {
@@ -36,6 +37,7 @@ export default class ConfigModule extends VuexModule {
     // ui
     dark = false
     listViewMode: ListViewMode = 'cards'
+    drawerStyle: DrawerStyle = 'slim'
     expandAllViewer = true
     hideSamePlayers = true
     highlightUnknownAuthor = false

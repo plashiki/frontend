@@ -81,10 +81,15 @@ Pages:
         JumpToProfile: Open
         Connect: Connect
         Disconnect: Disconnect
-        # PersonalizationTab
+        # InterfaceTab
         UiLanguage: UI language
         PrimaryColor: Primary color
         AccentColor: Accent color
+        DrawerStyle: Drawer style
+        Drawer_slim: Slim
+        Drawer_slim-no-hover: Slim (ignore hover)
+        Drawer_normal: Normal
+        # BehaviourTab
         PreferredNameLanguage: Preferred name language
         PreferredNameLanguageShiki: Currently Shikimori returns only russian and romaji names when requesting multiple anime at once.
         Language_russian: Russian

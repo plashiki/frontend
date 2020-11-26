@@ -4,6 +4,8 @@
             v-model="language"
             :label="$t('Pages.Settings.UiLanguage')"
             :items="uiLanguages"
+            class="my-2"
+            hide-details
         >
             <template #item="{ item }">
                 <v-list-item-title>
@@ -13,7 +15,7 @@
             </template>
         </v-select>
 
-        <v-divider class="mb-2" />
+        <v-divider class="my-2" />
 
         <v-row no-gutters>
             <v-col
@@ -23,6 +25,8 @@
                 <v-color-field
                     v-model="primaryColor"
                     :label="$t('Pages.Settings.PrimaryColor')"
+                    class="my-2"
+                    hide-details
                 />
             </v-col>
             <v-col
@@ -32,11 +36,21 @@
                 <v-color-field
                     v-model="accentColor"
                     :label="$t('Pages.Settings.AccentColor')"
+                    class="my-2"
+                    hide-details
                 />
             </v-col>
         </v-row>
 
-        <v-divider class="mb-2" />
+        <v-divider class="my-2" />
+
+        <v-select
+            v-model="drawerStyle"
+            :label="$t('Pages.Settings.DrawerStyle')"
+            :items="drawerStyles"
+            class="my-2"
+            hide-details
+        />
     </div>
 </template>
 
@@ -51,12 +65,28 @@ import { setUserLanguage } from '@/api/user'
 import { iziToastError } from '@/plugins/izitoast'
 import { languages } from '@/utils/i18n'
 import BooleanSwitch from '@/components/settings/BooleanSwitch.vue'
+import { DrawerStyle } from '@/store/config'
 
 @Component({
     components: { BooleanSwitch, ReorderList, VColorField }
 })
 export default class InterfaceTab extends Vue {
     uiLanguages = languages
+
+    get drawerStyles (): any[] {
+        return ['slim', 'slim-no-hover', 'normal']
+            .map(i => ({ text: this.$t('Pages.Settings.Drawer_' + i), value: i }))
+    }
+
+    get drawerStyle (): DrawerStyle {
+        return configStore.drawerStyle
+    }
+
+    set drawerStyle (val: DrawerStyle) {
+        configStore.merge({
+            drawerStyle: val
+        })
+    }
 
     get moderator (): boolean {
         return authStore.user?.moderator ?? false

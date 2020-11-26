@@ -89,10 +89,15 @@ Pages:
         JumpToProfile: Перейти
         Connect: Привязать
         Disconnect: Отвязать
-        # PersonalizationTab
+        # InterfaceTab
         UiLanguage: Язык интерфейса
         PrimaryColor: Основной цвет
         AccentColor: Цвет акцента
+        DrawerStyle: Стиль бокового меню
+        Drawer_slim: Узкий
+        Drawer_slim-no-hover: Узкий (игнорировать наведение)
+        Drawer_normal: Нормальный
+        # BehaviourTab
         PreferredNameLanguage: Предпочтительный язык названия
         PreferredNameLanguageShiki: На данный момент Шикимори при получении нескольких аниме за раз возвращает
             только русское и романизированное названия.

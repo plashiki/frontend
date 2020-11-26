@@ -3,8 +3,9 @@
         <AppNavigation
             v-if="showAppBar && showNavBar"
             :current-title="navTitle"
-            :visible.sync="navigationVisible"
-            :mini="$r12s.screenWidth > 1264"
+            :visible="miniNavBar || navigationVisible"
+            :mini="miniNavBar"
+            @update:visible="navigationVisible = $event"
         />
 
         <v-app-bar
@@ -17,7 +18,7 @@
             app
         >
             <v-app-bar-nav-icon
-                v-if="showNavBar && $r12s.screenWidth <= 1264"
+                v-if="showNavBar && !miniNavBar"
                 class="mr-1"
                 @click="navigationVisible = !navigationVisible"
             />
@@ -199,6 +200,10 @@ export default class DefaultLayout extends Vue {
 
     get useContainer (): boolean {
         return !this.$route.meta.full
+    }
+
+    get miniNavBar (): boolean {
+        return configStore.drawerStyle !== 'normal' && this.$r12s.screenWidth > 1264
     }
 
     @Watch('isDark')

@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref, Prop } from 'vue-property-decorator'
+import { Component, Vue, Ref, Prop, Watch } from 'vue-property-decorator'
 
 @Component({})
 export default class FixedAspectRatio extends Vue {
@@ -25,14 +25,22 @@ export default class FixedAspectRatio extends Vue {
     @Ref() container!: HTMLDivElement
     @Ref() wrap!: HTMLDivElement
 
-    onResize (): void {
-        const width = this.container.offsetWidth
-        if (this.forContainer) {
-            this.container.style.height = width / this.aspectRatio + 'px'
+    @Watch('forContainer')
+    forContainerChanged (val: boolean) {
+        if (val) {
             this.wrap.style.width = '100%'
             this.wrap.style.height = '100%'
             this.wrap.style.left = '0'
             this.wrap.style.top = '0'
+        } else {
+            this.container.style.height = ''
+        }
+    }
+
+    onResize (): void {
+        const width = this.container.offsetWidth
+        if (this.forContainer) {
+            this.container.style.height = width / this.aspectRatio + 'px'
         } else {
             const height = this.container.offsetHeight
             const elementRatio = width / height

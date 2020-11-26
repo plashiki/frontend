@@ -154,10 +154,10 @@
                 ref="col"
                 class="viewer-player-col"
             >
-                <component
-                    :is="displayMode === 'mobile' ? 'v-responsive' : 'FixedAspectRatio'"
+                <FixedAspectRatio
                     ref="aspect"
                     :aspect-ratio="16/9"
+                    :for-container="displayMode === 'mobile'"
                 >
                     <BetterIframe
                         ref="iframe"
@@ -184,7 +184,7 @@
                             </v-btn>
                         </div>
                     </template>
-                </component>
+                </FixedAspectRatio>
                 <div class="viewer-player-controls">
                     <v-btn
                         :dark="displayMode === 'theater'"
@@ -427,7 +427,7 @@ import VSimpleCard from '@/components/common/VSimpleCard.vue'
 import BetterIframe from '@/components/common/BetterIframe.vue'
 import FixedAspectRatio from '@/components/common/FixedAspectRatio.vue'
 import ResizableDiv from '@/components/common/ResizableDiv.vue'
-import { isPointInsideElement, nop } from '@/utils/helpers'
+import { nop } from '@/utils/helpers'
 import { UserRate, UserRateStatus } from '@/types/user-rate'
 import { getSingleMedia } from '@/api/media'
 import { ApiException } from '@/types/api'
@@ -444,7 +444,6 @@ import ReportForm from '@/components/moderation/ReportForm.vue'
 import { ExtendedSingleTranslationData } from '@/types/translation'
 import TranslationEditDialog from '@/components/moderation/TranslationEditDialog.vue'
 import { Route } from 'vue-router'
-import { VResponsive } from 'vuetify/lib'
 
 type ViewerDisplayMode = 'mobile' | 'normal' | 'theater'
 type UserRateControlStatus = 'new' | 'new-part' | 'start-repeat' | 'old-part'
@@ -467,8 +466,7 @@ const userRateIconMap: Record<UserRateControlStatus, string> = {
         FixedAspectRatio,
         BetterIframe,
         VSimpleCard,
-        ImageWithRadiosity,
-        VResponsive
+        ImageWithRadiosity
     },
 })
 export default class Viewer extends LoadableVue {

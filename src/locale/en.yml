@@ -262,16 +262,16 @@ Pages:
         Text: >
             Hi. <br>
             PlaShiki is an open non-profit project, supported by enthusiasts.
-            We don't have ads (yet), so the only way for us to live -
+            We don't have ads (yet), so the only way for us to survive -
             monetary donations from users. All money goes to support, develop and maintain project and infrastructure.
             We are happy to receive any amount of donations, but cannot offer much in return...
             <br><br>
-            Everyone, who supported project, will end up in history, and those who donated more than 5$
+            Everyone, who supported project, will end up in history, and those who donated more than 300 RUB
             will have a badge, visible to all PlaShiki userscript users on all supported services.
             <br><br>
             A few donation links are below ＞﹏＜
         Left:
-            - 'Left: $n\$'
+            - 'Left: $n RUB'
         WillLast:
             - It is enough to pay for $n month of server. Thank you!
             - It is enough to pay for $n months of server. Thank you!

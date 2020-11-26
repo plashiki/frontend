@@ -67,7 +67,8 @@ Pages:
         DisableDarkMode: Light mode
         AccountTab: Account
         NetworkTab: Network
-        PersonalizationTab: Personalization
+        InterfaceTab: Interface
+        BehaviourTab: Behaviour
         AboutTab: About
         NotificationsTab: Notifications
         # AccountTab

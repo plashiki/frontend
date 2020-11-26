@@ -75,7 +75,8 @@ Pages:
         DisableDarkMode: Светлая тема
         AccountTab: Аккаунт
         NetworkTab: Сеть
-        PersonalizationTab: Персонализация
+        InterfaceTab: Интерфейс
+        BehaviourTab: Поведение
         AboutTab: О проекте
         NotificationsTab: Уведомления
         # AccountTab

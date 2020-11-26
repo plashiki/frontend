@@ -37,65 +37,6 @@
         </v-row>
 
         <v-divider class="mb-2" />
-
-        <v-select
-            v-model="preferredNameLanguage"
-            :items="nameLanguageItems"
-            :label="$t('Pages.Settings.PreferredNameLanguage')"
-            :hint="provider === 'shikimori' && $t('Pages.Settings.PreferredNameLanguageShiki')"
-            class="mb-1"
-            persistent-hint
-        />
-
-        <v-divider class="mb-2" />
-
-        <v-switch
-            v-model="oneColumnInMediaList"
-            :label="$t('Pages.Settings.OneColumnInMediaList')"
-            hide-details
-        />
-        <v-switch
-            v-model="expandAllViewer"
-            :label="$t('Pages.Settings.ExpandAllAuthors')"
-            hide-details
-        />
-        <v-switch
-            v-model="hideSamePlayers"
-            :label="$t('Pages.Settings.HideSamePlayers')"
-            hide-details
-        />
-        <v-switch
-            v-if="moderator"
-            v-model="highlightUnknownAuthor"
-            :label="$t('Pages.Settings.HighlightUnknownAuthor')"
-            hide-details
-        />
-
-        <v-switch
-            v-model="onlyOngoingsInRecent"
-            :label="$t('Pages.Settings.OnlyOngoingsInRecent')"
-            :hint="$t('Pages.Settings.OnlyOngoingsInRecentDescription' + (onlyOngoingsInRecent ? 'On' : 'Off'))"
-            class="mb-1"
-            persistent-hint
-        />
-
-        <v-divider />
-
-        <v-switch
-            v-model="useSmartSorting"
-            :label="$t('Pages.Settings.UseSmartSorting')"
-            class="mb-1"
-        />
-
-        <h3
-            class="mb-2"
-            v-html="$t('Pages.Settings.TranslationPreferenceOrder')"
-        />
-        <reorder-list
-            v-model="translationPreferenceOrder"
-            :disabled="!useSmartSorting"
-            dense
-        />
     </div>
 </template>
 
@@ -109,11 +50,12 @@ import { changeLanguage } from '@/plugins/vue-i18n'
 import { setUserLanguage } from '@/api/user'
 import { iziToastError } from '@/plugins/izitoast'
 import { languages } from '@/utils/i18n'
+import BooleanSwitch from '@/components/settings/BooleanSwitch.vue'
 
 @Component({
-    components: { ReorderList, VColorField }
+    components: { BooleanSwitch, ReorderList, VColorField }
 })
-export default class PersonalizationTab extends Vue {
+export default class InterfaceTab extends Vue {
     uiLanguages = languages
 
     get moderator (): boolean {

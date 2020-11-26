@@ -33,7 +33,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import VSimpleCard from '@/components/common/VSimpleCard.vue'
 import AccountTab from '@/components/settings/tabs/AccountTab.vue'
 import NetworkTab from '@/components/settings/tabs/NetworkTab.vue'
-import PersonalizationTab from '@/components/settings/tabs/PersonalizationTab.vue'
+import InterfaceTab from '@/components/settings/tabs/InterfaceTab.vue'
+import BehaviourTab from '@/components/settings/tabs/BehaviourTab.vue'
 import AboutTab from '@/components/settings/tabs/AboutTab.vue'
 import NotificationsTab from './tabs/NotificationsTab.vue'
 
@@ -47,7 +48,8 @@ export default class AppSettings extends Vue {
 
     tabs = Object.freeze([
         [AccountTab, 'AccountTab'],
-        [PersonalizationTab, 'PersonalizationTab'],
+        [InterfaceTab, 'InterfaceTab'],
+        [BehaviourTab, 'BehaviourTab'],
         [NotificationsTab, 'NotificationsTab'],
         [NetworkTab, 'NetworkTab'],
         [AboutTab, 'AboutTab']

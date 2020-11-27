@@ -17,11 +17,11 @@ export default class BooleanSwitch extends Vue {
     @Prop({ required: true }) name!: string
 
     get value (): boolean {
-        return configStore[this.name]
+        return (configStore as any)[this.name]
     }
 
     set value (val: boolean) {
-        configStore.merge({ [this.name]: val })
+        (configStore as any).merge({ [this.name]: val })
     }
 }
 </script>

@@ -75,6 +75,7 @@ export default class FixedAspectRatio extends Vue {
         this.$nextTick(() => {
             this.onResize()
         })
+        this.forContainerChanged(this.forContainer)
     }
 
     beforeDestroy (): void {

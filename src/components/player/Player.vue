@@ -632,7 +632,7 @@ export default {
                 case 'arrowleft': {
                     const fr = this.currentTime
                     let to = fr - (
-                        e.ctrlKey ? 90 : 10
+                        e.altKey ? 5 : e.ctrlKey ? 90 : 10
                     )
                     if (to < 0) {
                         to = 0
@@ -644,7 +644,7 @@ export default {
                 case 'arrowright': {
                     const fr = this.currentTime
                     let to = fr + (
-                        e.ctrlKey ? 90 : 10
+                        e.altKey ? 5 : e.ctrlKey ? 90 : 10
                     )
                     if (to > this.totalDuration) {
                         to = this.totalDuration

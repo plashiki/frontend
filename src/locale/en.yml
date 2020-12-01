@@ -183,6 +183,7 @@ Pages:
             - $n person
             - $n people
         RippedBy: by $name
+        NFiltered: 'Filtered: $n'
     MediaInfo:
         Name_anime: About anime
         Name_manga: About manga

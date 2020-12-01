@@ -198,6 +198,7 @@ Pages:
             - $n человека
             - $n человек
         RippedBy: от $name
+        NFiltered: 'Отфильтровано: $n'
     MediaInfo:
         Name_anime: Информация об аниме
         Name_manga: Информация о манге

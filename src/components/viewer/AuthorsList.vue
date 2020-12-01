@@ -34,7 +34,10 @@
             <v-spacer />
 
             <div>
-                <AuthorsFiltersMenu :data="data" />
+                <AuthorsFiltersMenu
+                    ref="filters"
+                    :data="data"
+                />
             </div>
         </v-tabs>
         <transition mode="out-in" name="fade-transition">
@@ -108,7 +111,7 @@
             <NoItemsPlaceholder
                 v-else-if="data !== null && authors.length === 0"
                 mode="flex"
-                :text="$t('Pages.Viewer.NoTranslationsAvailable')"
+                :text="$t('Pages.Viewer.NoTranslationsAvailable') + (filteredCount > 0 ? ('<br>' + $t('Pages.Viewer.NFiltered', { n: filteredCount })) : '')"
             />
         </transition>
     </div>
@@ -162,6 +165,10 @@ export default class AuthorsList extends Vue {
         )
 
         return list
+    }
+
+    get filteredCount (): number {
+        return (this.$refs.filters as any).filteredCount
     }
 
     authorClicked (author: TranslationDataAuthor): void {

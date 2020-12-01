@@ -124,6 +124,12 @@ export default class TranslationsList extends Vue {
         let active = this.itemActive(it)
 
         if (this.translationSelectionMode) {
+            if (event.button === 1) {
+                this.selectedTranslation = it.id
+                event.preventDefault()
+                event.stopImmediatePropagation()
+                return
+            }
             if (event.shiftKey && this.selectedTranslations.length) {
                 let lastSelected = this.selectedTranslations[this.selectedTranslations.length - 1]
                 let newlySelected = it.id

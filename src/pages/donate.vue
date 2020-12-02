@@ -13,7 +13,7 @@
                 <v-row justify="center">
                     <v-btn
                         class="ma-2"
-                        href="https://qiwi.com/n/tggdesu"
+                        href="https://qiwi.com/n/plashiki"
                         target="_blank"
                     >
                         {{ $t('Pages.Donate.Qiwi') }}
@@ -24,6 +24,13 @@
                         target="_blank"
                     >
                         {{ $t('Pages.Donate.YM') }}
+                    </v-btn>
+                    <v-btn
+                        class="ma-2"
+                        href="https://paypal.me/plashiki"
+                        target="_blank"
+                    >
+                        {{ $t('Pages.Donate.PayPal') }}
                     </v-btn>
                     <v-menu
                         :close-on-content-click="false"
@@ -39,7 +46,7 @@
 
                         <v-card>
                             <v-card-text>
-                                4276690015445056
+                                4274320048348273
                             </v-card-text>
                         </v-card>
                     </v-menu>

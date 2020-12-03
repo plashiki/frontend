@@ -6,6 +6,12 @@
 //        max-width: 1185px !important;
 //    }
 //}
+// slightly reduce last width breakpoint
+@media (min-width: 1804px) {
+    .container {
+        max-width: 1785px !important;
+    }
+}
 
 // md2 slider for tabs
 .v-tabs-slider {

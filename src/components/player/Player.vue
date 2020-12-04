@@ -668,7 +668,9 @@ export default {
             this.$emit('keydown', e)
         },
         onScroll (e) {
-            const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail))
+            const isTouchPad = e.wheelDeltaY ? e.wheelDeltaY === -3 * e.deltaY : e.deltaMode === 0
+            let delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail))
+            if (isTouchPad) delta = -delta
             e.preventDefault()
             this.volume = Math.min(1, Math.max(0, this.volume + 0.05 * delta))
             this.info('Volume: ' + Math.round(this.volume * 100) + '%')

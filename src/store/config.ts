@@ -36,6 +36,7 @@ export default class ConfigModule extends VuexModule {
 
     // ui
     dark = false
+    followSystemDark = true
     listViewMode: ListViewMode = 'cards'
     drawerStyle: DrawerStyle = 'slim'
     expandAllViewer = true

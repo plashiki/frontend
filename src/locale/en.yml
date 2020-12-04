@@ -85,6 +85,7 @@ Pages:
         UiLanguage: UI language
         PrimaryColor: Primary color
         AccentColor: Accent color
+        FollowSystemDark: Follow system dark theme
         DrawerStyle: Drawer style
         Drawer_slim: Slim
         Drawer_slim-no-hover: Slim (ignore hover)

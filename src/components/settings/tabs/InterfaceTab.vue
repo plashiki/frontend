@@ -42,6 +42,11 @@
             </v-col>
         </v-row>
 
+        <BooleanSwitch
+            name="followSystemDark"
+            :label="$t('Pages.Settings.FollowSystemDark')"
+        />
+
         <v-divider class="my-2" />
 
         <v-select

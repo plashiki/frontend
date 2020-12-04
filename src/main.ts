@@ -41,6 +41,7 @@ onceStoreReady(() => {
     // using deprecated methods because safari stinks
     if (window.matchMedia) {
         window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+            if (!configStore.followSystemDark) return
             configStore.merge({ dark: e.matches })
         })
     }

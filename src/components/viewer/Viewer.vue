@@ -517,7 +517,11 @@ export default class Viewer extends LoadableVue {
     }
 
     get displayMode (): ViewerDisplayMode {
-        return this.$r12s.screenWidth < 960 ? 'mobile' : configStore.viewerTheaterMode ? 'theater' : 'normal'
+        // explicitly because vue reactiveness sucks
+        let isMobileByWidth = this.$r12s.screenWidth < 960
+        let isMobileByHeight = this.$r12s.screenHeight < 540
+
+        return isMobileByWidth || isMobileByHeight ? 'mobile' : configStore.viewerTheaterMode ? 'theater' : 'normal'
     }
 
     get sidebarVisible (): boolean {

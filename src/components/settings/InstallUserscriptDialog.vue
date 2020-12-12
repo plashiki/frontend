@@ -44,9 +44,6 @@ export default class InstallUserscriptDialog extends Vue {
         if (ua.indexOf('edge') > -1) {
             return 'https://www.microsoft.com/store/apps/9NBLGGH5162S'
         }
-        if ((window as any).safari !== undefined) {
-            return 'https://safari-extensions.apple.com/details/?id=net.tampermonkey.safari-G3XV72R5TC'
-        }
         return 'https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=ru'
     }
 

@@ -138,40 +138,43 @@
         </v-list>
 
         <template #append>
-            <VListItemIconText
-                :title="$t(isDark ? 'Pages.Settings.DisableDarkMode' : 'Pages.Settings.EnableDarkMode')"
-                dense
-                @click="toggleDark"
-            >
-                <template #icon>
-                    <v-fade-transition>
-                        <v-icon v-if="isDark">
-                            mdi-white-balance-sunny
-                        </v-icon>
-                        <v-icon v-else>
-                            mdi-moon-waning-crescent
-                        </v-icon>
-                    </v-fade-transition>
-                </template>
-            </VListItemIconText>
-            <SettingsDialog
-                v-if="$r12s.screenWidth >= 768"
-                #default="{ on }"
-            >
+            <v-divider v-show="!mini" />
+            <div :class="{ 'float-bottom-part-nav': $r12s.isIphone && $r12s.isMobileByAspectRatio }">
                 <VListItemIconText
+                    :title="$t(isDark ? 'Pages.Settings.DisableDarkMode' : 'Pages.Settings.EnableDarkMode')"
+                    dense
+                    @click="toggleDark"
+                >
+                    <template #icon>
+                        <v-fade-transition>
+                            <v-icon v-if="isDark">
+                                mdi-white-balance-sunny
+                            </v-icon>
+                            <v-icon v-else>
+                                mdi-moon-waning-crescent
+                            </v-icon>
+                        </v-fade-transition>
+                    </template>
+                </VListItemIconText>
+                <SettingsDialog
+                    v-if="$r12s.screenWidth >= 768"
+                    #default="{ on }"
+                >
+                    <VListItemIconText
+                        icon="mdi-cog"
+                        :title="$t('Pages.Settings.Name')"
+                        dense
+                        v-on="on"
+                    />
+                </SettingsDialog>
+                <VListItemIconText
+                    v-else
                     icon="mdi-cog"
+                    to="/settings"
                     :title="$t('Pages.Settings.Name')"
                     dense
-                    v-on="on"
                 />
-            </SettingsDialog>
-            <VListItemIconText
-                v-else
-                icon="mdi-cog"
-                to="/settings"
-                :title="$t('Pages.Settings.Name')"
-                dense
-            />
+            </div>
         </template>
     </v-navigation-drawer>
 </template>
@@ -306,18 +309,27 @@ export default class AppNavigation extends Vue {
     }
 
     get canInstallUserscript (): boolean {
-        return this.$r12s.isPwa
+        if ('safari' in window || navigator.userAgent.match(/iphone|ipad/i)) {
+            // ios and safari stink
+            return false
+        }
+
+        if (this.$r12s.isPwa) {
             // desktop chromium supports plugins inside pwa
-            ? 'chrome' in window && !!navigator.userAgent.match(/windows nt|mac os x|X11/i)
-            : this.$r12s.isTouchDevice
-                // windows/macos/x11 (linux) with touchscreen are probably running full-featured browser
-                ? !!navigator.userAgent.match(/windows nt|mac os x|X11/i)
-                // firefox and yandex browser on android support plugins
+            return 'chrome' in window && !!navigator.userAgent.match(/windows nt|mac os x|X11/i)
+        }
+
+        if (this.$r12s.isTouchDevice) {
+            // windows/macos/x11 (linux) with touchscreen are probably running full-featured browser
+            return !!navigator.userAgent.match(/windows nt|mac os x|X11/i)
+                // firefox, yandex browser and kiwi on android support plugins
                 || (
-                    !!navigator.userAgent.match(/firefox\/|YaBrowser\/|Yowser\//i) &&
+                    !!navigator.userAgent.match(/firefox\/|YaBrowser\/|Yowser\/|Kiwi/i) &&
                     !!navigator.userAgent.match(/android/i)
                 )
-                : true
+        }
+
+        return true // default case
     }
 
     get versionInfo (): string {
@@ -402,7 +414,9 @@ export default class AppNavigation extends Vue {
     }
 
     forceBlurSearchField (): void {
-        (document.activeElement as any)?.blur?.()
+        (
+            document.activeElement as any
+        )?.blur?.()
         this.onSearchFieldBlur(true)
     }
 
@@ -448,8 +462,13 @@ export default class AppNavigation extends Vue {
     margin-left: revert !important;
     margin-right: 32px !important;
 }
+
 .v-navigation-drawer--mini-variant.fix-drawer-labels .fix-drawer-avatar > .v-list-item > *:first-child {
     margin-left: revert !important;
     margin-right: 16px !important;
+}
+
+.float-bottom-part-nav {
+    margin-bottom: 120px !important;
 }
 </style>

@@ -94,22 +94,23 @@ export function processTranslations (translations: Translation[]): TranslationDa
 
         const playerHost = getPlayerHost(rawUrl)
 
+        const groupLowercase = tr.author.group?.toLowerCase() ?? ''
         const hasGroup = !!tr.author.group
         let people: string[] = tr.author.people || []
         if (hasGroup) {
             if (!(tr.part in peopleCombiner)) peopleCombiner[tr.part] = {}
-            if (!(tr.author.group! in peopleCombiner[tr.part])) peopleCombiner[tr.part][tr.author.group!] = []
+            if (!(tr.author.group! in peopleCombiner[tr.part])) peopleCombiner[tr.part][groupLowercase] = []
             tr.author.people?.forEach((it) => {
-                if (peopleCombiner[tr.part][tr.author.group!].indexOf(it) === -1) {
-                    peopleCombiner[tr.part][tr.author.group!].push(it)
+                if (peopleCombiner[tr.part][groupLowercase].indexOf(it) === -1) {
+                    peopleCombiner[tr.part][groupLowercase].push(it)
                 }
             })
 
-            people = peopleCombiner[tr.part][tr.author.group!]
+            people = peopleCombiner[tr.part][groupLowercase]
         }
 
         const authorName = tr.author.group || tr.author.people?.join(', ') || ''
-        const metaTag = `${tr.kind}:${tr.lang}:${authorName}`
+        const metaTag = `${tr.kind}:${tr.lang}:${authorName.toLowerCase()}`
 
         // add part to ret if needed
         if (!(tr.part in ret)) {

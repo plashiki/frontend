@@ -224,7 +224,7 @@ Pages:
             All: Все
         Genres: Жанры
         MinimumScore: Минимальная оценка
-        Popular: Попуряные
+        Popular: Популярные
         Ongoings: Онгоинги
         Latest: Недавно вышедшие
         FilterName: Название фильтра
@@ -776,7 +776,6 @@ Api:
         ECONNABORTED: Соединение прервано
         BAD_CONNECTION: Ошибка соединения
         VALIDATION_ERROR: 'Ошибка API запроса: $description'
-        INTERNAL_ERROR: 'Внутренняя ошибка сервера. ID ошибки: $errorUuid'
         UNEXPECTED_RESPONSE: API вернул неожиданный объект
         RATE_LIMIT: Слишком частые запросы
         NO_AUTH: Вы не авторизованы

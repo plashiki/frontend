@@ -738,7 +738,6 @@ Api:
         ECONNABORTED: Connection aborted
         BAD_CONNECTION: Connection error
         VALIDATION_ERROR: 'API error: $description'
-        INTERNAL_ERROR: 'Internal API erorr. Error ID: $errorUuid'
         UNEXPECTED_RESPONSE: API returned unexpected response
         RATE_LIMIT: Too many requests
         NO_AUTH: You are not authorized

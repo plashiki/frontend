@@ -67,7 +67,7 @@ export async function getCurrentMotd (): Promise<string | null> {
         const today = lightFormat(new Date(), 'yyyy-MM-dd')
 
         for (let motd of doc.querySelectorAll('motd')) {
-            if (today > motd.getAttribute('start')! && today < motd.getAttribute('end')!) {
+            if (today >= motd.getAttribute('start')! && today <= motd.getAttribute('end')!) {
                 let languages = createIndex([...motd.querySelectorAll('text')], i => i.getAttribute('lang')!)
                 if (i18n.locale in languages) {
                     return languages[i18n.locale].innerHTML
